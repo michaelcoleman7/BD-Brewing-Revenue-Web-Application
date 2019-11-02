@@ -1,24 +1,21 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import ReactBootstrap, {Navbar, Button} from 'react-bootstrap';
-import CalculationSheet from './Components/CalculationSheet';
+import BrewControlSheet from './Components/BrewControlSheet';
+import NavBar from './Components/NavBar';
+import Home from './Components/Home';
+import {BrowserRouter as Router , Route, Switch, Link} from 'react-router-dom';
 
 function App() {
   return (
     <div className="App">
-      <Navbar bg="light" variant="light">
-        <Navbar.Brand>
-          <img src={require("./Images/BlackDonkeyLogo.png")} width="300" height="50"/>
-        </Navbar.Brand>
-      </Navbar>
-
-      <CalculationSheet name={"Brew Control Sheet"}></CalculationSheet>
-
-      
-
-
+    <NavBar></NavBar>
+    <Router>
+      <Switch>
+        <Route path="/" exact component={Home}/>
+        <Route path={"/brewcontrolsheet"} component={BrewControlSheet}/>
+      </Switch>
+  </Router>
 
     </div>
   );
