@@ -2,8 +2,10 @@ import React, { Component, useEffect, useState } from 'react';
 import {Link} from 'react-router-dom';
 import '../Stylesheets/Form.css';
 
+//set the url to send the data to
 const url = "http://127.0.0.1:5000/"
 
+// Set some styling for div
 const divStyle = {
     width: '500px',
     border: '5px',
@@ -12,6 +14,7 @@ const divStyle = {
     margin: '10px'
   };
 
+  // react arrow function component to create a brew
   const CreateBrew = () => {
     // using react hooks to get data back - adapted from https://reactjs.org/docs/hooks-state.html
     const [brewNo, setBrewNo] = useState("");
@@ -33,25 +36,25 @@ const divStyle = {
     const create = (event) => {
             event.preventDefault();   
 
-            //brew control sheet to be sent to server
+            //brew values to be sent to server
             const brew = {
                 brewNo: brewNo,
                 beer: beer,
-                batchNo: beer,
-                brewDate: beer,
-                og: beer,
-                pg: beer,
-                abv: beer,
-                postConditionDate: beer,
-                postConditionVol: beer,
-                kegNo: beer,
-                bottleNo500: beer,
-                bottleNo330: beer,
-                duty: beer,
-                status: beer
+                batchNo: batchNo,
+                brewDate: brewDate,
+                og: og,
+                pg: pg,
+                abv: abv,
+                postConditionDate: postConditionDate,
+                postConditionVol: postConditionVol,
+                kegNo: kegNo,
+                bottleNo500: bottleNo500,
+                bottleNo330: bottleNo330,
+                duty: duty,
+                status: status
             }
 
-            //options needed to send to server
+            //options needed to send request to server
             const options = {
                 method: "post",
                 headers: {
@@ -60,6 +63,7 @@ const divStyle = {
                 body: JSON.stringify(brew)
             }
 
+            //if all data is valid, then post to server
             if(brewNo && beer && batchNo && brewDate && og && pg && abv && postConditionDate && postConditionVol && kegNo && bottleNo500 && bottleNo330 && duty && status){
                 fetch(url +"api/createbrew", options)
                 .then(res => {
@@ -78,6 +82,7 @@ const divStyle = {
         // React Fragment is a way of sending back multiple elements - https://reactjs.org/docs/fragments.html
         <React.Fragment> 
             <div style={divStyle}>
+                //form which calls creatre function when submitted
                 <form onSubmit={create}>
                     <label>Brew No.</label>
                     <input type="text" name="BrewNo" placeholder="Enter Brew Number" onChange= {event => setBrewNo(event.target.value)}/>
@@ -101,10 +106,10 @@ const divStyle = {
                     <input type="text" name="abv" placeholder="Enter ABV" onChange={event => setABV(event.target.value)}/>
 
                     <label>Post Conditioning Date</label>
-                    <input type="text" name="pcs" placeholder="Enter Post Conditioning Date" onChange={event => setPCD(event.target.value)}/>
+                    <input type="text" name="postConditionDate" placeholder="Enter Post Conditioning Date" onChange={event => setPCD(event.target.value)}/>
 
                     <label>Post Conditioning Volume</label>
-                    <input type="text" name="pcv" placeholder="Enter Post Conditioning Volume" onChange={event => setPCV(event.target.value)}/>
+                    <input type="text" name="postConditionVol" placeholder="Enter Post Conditioning Volume" onChange={event => setPCV(event.target.value)}/>
 
                     <label>Keg No</label>
                     <input type="text" name="kegNo" placeholder="Enter Keg Number" onChange={event => setKegNo(event.target.value)}/>
