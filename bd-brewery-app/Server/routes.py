@@ -28,15 +28,15 @@ collection = db["brew"]
 
 #Blueprints
 indexRoute = Blueprint("index", __name__)
-createBCSRoute = Blueprint("createBCS", __name__)
+createBrewRoute = Blueprint("createBrew", __name__)
 
 #routes 
 @indexRoute.route("/api/brew")
 def index():
     return jsonify(data="Test")
 
-@createBrewRoute.route("/api/brew", methods=["POST"])
-def createBCS():
+@createBrewRoute.route("/api/createbrew", methods=["POST"])
+def createBrew():
     print(request.json, flush=True)
 
     brewNo = request.json.get("brewNo")
