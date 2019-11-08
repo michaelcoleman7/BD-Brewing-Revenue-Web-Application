@@ -23,7 +23,7 @@ client = MongoClient(connection)
 # Connect to database by name
 db = client["bd_brewery"]
 # link to collection name in mlab
-collection = db["brewcontrolsheet"]
+collection = db["brew"]
 
 
 #Blueprints
@@ -31,11 +31,11 @@ indexRoute = Blueprint("index", __name__)
 createBCSRoute = Blueprint("createBCS", __name__)
 
 #routes 
-@indexRoute.route("/api/brewcontrolsheet")
+@indexRoute.route("/api/brew")
 def index():
     return jsonify(data="Test")
 
-@createBCSRoute.route("/api/createbrewcontrolsheet", methods=["POST"])
+@createBrewRoute.route("/api/brew", methods=["POST"])
 def createBCS():
     print(request.json, flush=True)
 
@@ -44,11 +44,11 @@ def createBCS():
 
     print("Brew Number:" +brewNo + " Beer:" + beer)
 
-    brewcontrolsheet = {
+    brew = {
         "brewNo": brewNo,
         "beer": beer
     }
 
-    collection.insert_one(brewcontrolsheet)
+    collection.insert_one(brew)
 
-    return jsonify(data="Brew Control sheet created successfully")
+    return jsonify(data="Brew created successfully")
