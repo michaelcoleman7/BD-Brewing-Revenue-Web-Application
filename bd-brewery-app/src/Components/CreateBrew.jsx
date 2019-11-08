@@ -16,14 +16,39 @@ const divStyle = {
     // using react hooks to get data back - adapted from https://reactjs.org/docs/hooks-state.html
     const [brewNo, setBrewNo] = useState("");
     const [beer, setBeer] = useState("");
+    const [batchNo, setBatchNo] = useState("");
+    const [brewDate, setBrewDate] = useState("");
+    const [og, setOG] = useState("");
+    const [pg, setPG] = useState("");
+    //OG-PG is a also a variable, calculate using above values
+    const [abv, setABV] = useState("");
+    const [postConditionDate, setPCD] = useState("");
+    const [postConditionVol, setPCV] = useState("");
+    const [kegNo, setKegNo] = useState("");
+    const [bottleNo500, setBottleNo500] = useState("");
+    const [bottleNo330, setBottleNo330] = useState("");
+    const [duty, setDuty] = useState("");
+    const [status, setStatus] = useState("");
 
     const create = (event) => {
             event.preventDefault();   
 
             //brew control sheet to be sent to server
-            const brewcontrolsheet = {
+            const brew = {
                 brewNo: brewNo,
-                beer: beer
+                beer: beer,
+                batchNo: beer,
+                brewDate: beer,
+                og: beer,
+                pg: beer,
+                abv: beer,
+                postConditionDate: beer,
+                postConditionVol: beer,
+                kegNo: beer,
+                bottleNo500: beer,
+                bottleNo330: beer,
+                duty: beer,
+                status: beer
             }
 
             //options needed to send to server
@@ -32,10 +57,10 @@ const divStyle = {
                 headers: {
                 'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(brewcontrolsheet)
+                body: JSON.stringify(brew)
             }
 
-            if(brewNo && beer){
+            if(brewNo && beer && batchNo && brewDate && og && pg && abv && postConditionDate && postConditionVol && kegNo && bottleNo500 && bottleNo330 && duty && status){
                 fetch(url +"api/createbrew", options)
                 .then(res => {
                     return res.json();
@@ -50,19 +75,56 @@ const divStyle = {
     }
 
     return(
-      <React.Fragment> 
-        <div style={divStyle}>
-            <form onSubmit={create}>
-                <label>Brew No.</label>
-                <input type="text" name="BrewNo" placeholder="Enter Brew Number" onChange= {event => setBrewNo(event.target.value)}/>
+        // React Fragment is a way of sending back multiple elements - https://reactjs.org/docs/fragments.html
+        <React.Fragment> 
+            <div style={divStyle}>
+                <form onSubmit={create}>
+                    <label>Brew No.</label>
+                    <input type="text" name="BrewNo" placeholder="Enter Brew Number" onChange= {event => setBrewNo(event.target.value)}/>
 
-                <label>Beer</label>
-                <input type="text" name="beer" placeholder="Enter Beer" onChange={event => setBeer(event.target.value)}/>
-            
-                <input type="submit" value="Submit"/>
-            </form>
-        </div>
-    </React.Fragment>)
+                    <label>Beer</label>
+                    <input type="text" name="beer" placeholder="Enter Beer" onChange={event => setBeer(event.target.value)}/>
+
+                    <label>Batch No</label>
+                    <input type="text" name="batchNo" placeholder="Enter Batch Number" onChange={event => setBatchNo(event.target.value)}/>
+
+                    <label>Brew Date</label>
+                    <input type="text" name="brewDate" placeholder="Enter Brew Date" onChange={event => setBrewDate(event.target.value)}/>
+
+                    <label>OG (Original Gravity)</label>
+                    <input type="text" name="og" placeholder="Enter OG" onChange={event => setOG(event.target.value)}/>
+
+                    <label>PG (Present Gravity)</label>
+                    <input type="text" name="pg" placeholder="Enter PG" onChange={event => setPG(event.target.value)}/>
+
+                    <label>ABV</label>
+                    <input type="text" name="abv" placeholder="Enter ABV" onChange={event => setABV(event.target.value)}/>
+
+                    <label>Post Conditioning Date</label>
+                    <input type="text" name="pcs" placeholder="Enter Post Conditioning Date" onChange={event => setPCD(event.target.value)}/>
+
+                    <label>Post Conditioning Volume</label>
+                    <input type="text" name="pcv" placeholder="Enter Post Conditioning Volume" onChange={event => setPCV(event.target.value)}/>
+
+                    <label>Keg No</label>
+                    <input type="text" name="kegNo" placeholder="Enter Keg Number" onChange={event => setKegNo(event.target.value)}/>
+
+                    <label>Bottle Number (500ml)</label>
+                    <input type="text" name="bottleNo500" placeholder="Enter Bottle Number (500ml)" onChange={event => setBottleNo500(event.target.value)}/>
+
+                    <label>Bottle Number (330ml)</label>
+                    <input type="text" name="bottleNo330" placeholder="Enter Bottle Number (330ml)" onChange={event => setBottleNo330(event.target.value)}/>
+
+                    <label>Duty</label>
+                    <input type="text" name="duty" placeholder="Enter Duty" onChange={event => setDuty(event.target.value)}/>
+
+                    <label>Status</label>
+                    <input type="text" name="status" placeholder="Enter Status" onChange={event => setStatus(event.target.value)}/>
+                
+                    <input type="submit" value="Submit"/>
+                </form>
+            </div>
+        </React.Fragment>)
 }
     
 
