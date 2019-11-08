@@ -39,16 +39,45 @@ def index():
 def createBrew():
     print(request.json, flush=True)
 
+    # Request all information and store in variables
     brewNo = request.json.get("brewNo")
     beer = request.json.get("beer")
+    batchNo = request.json.get("batchNo")
+    brewDate = request.json.get("brewDate")
+    og = request.json.get("og")
+    pg = request.json.get("pg")
+    abv = request.json.get("abv")
+    postConditionDate = request.json.get("postConditionDate")
+    postConditionVol = request.json.get("postConditionVol")
+    kegNo = request.json.get("kegNo")
+    bottleNo500 = request.json.get("bottleNo500")
+    bottleNo330 = request.json.get("bottleNo330")
+    duty = request.json.get("duty")
+    status = request.json.get("status")
 
-    print("Brew Number:" +brewNo + " Beer:" + beer)
+    # print variables to check if correct
+    print("Brew Number:" +brewNo + " Beer:" + beer + " batchNo:" + batchNo + " brewDate:" + brewDate + " og:" + og + " pg:" + pg + " abv:" + abv + " postConditionDate:" + postConditionDate + " postConditionVol:" + postConditionVol + " kegNo:" + kegNo + " bottleNo500:" + bottleNo500 + " bottleNo330:" + bottleNo330 + " duty:" + duty + " status:" + status)
 
+    # create json format of data to send to MongoDB
     brew = {
         "brewNo": brewNo,
+        "beer": beer,
+        "batchNo": batchNo,
+        "brewDate": brewDate,
+        "og": og,
+        "pg": pg,
+        "abv": abv,
+        "postConditionDate": postConditionDate,
+        "postConditionVol": postConditionVol,
+        "kegNo": kegNo,
+        "bottleNo500": bottleNo500,
+        "bottleNo330": bottleNo330,
+        "duty": duty,
+        "status": status,
         "beer": beer
     }
 
+    # Insert the brew into the mongoDB in mlabs, adapted from - https://docs.mongodb.com/manual/reference/method/db.collection.insertOne/
     collection.insert_one(brew)
 
     return jsonify(data="Brew created successfully")
