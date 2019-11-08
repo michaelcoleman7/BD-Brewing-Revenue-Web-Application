@@ -4,7 +4,7 @@ import CalculationSheet from './CalculationSheet';
 class Home extends React.Component {
     render() {
       return <div>
-        <CalculationSheet name={"Brew Control Sheet"}></CalculationSheet>
+        <CalculationSheet name={"Brew Management"}></CalculationSheet>
     </div>
     }
   }

@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import BrewControlSheet from './Components/BrewControlSheet';
+import Brew from './Components/Brew';
 import NavBar from './Components/NavBar';
 import Home from './Components/Home';
 import {BrowserRouter as Router , Route, Switch, Link} from 'react-router-dom';
-import CreateBrewControlSheet from './Components/CreateBrewControlSheet';
+import CreateBrew from './Components/CreateBrew';
 
 function App() {
   return (
@@ -14,8 +14,8 @@ function App() {
     <Router>
       <Switch>
         <Route path="/" exact component={Home}/>
-        <Route path={"/brewcontrolsheet"} component={BrewControlSheet}/>
-        <Route path={"/createbrewcontrolsheet"} component={CreateBrewControlSheet}/>
+        <Route path={"/brew"} component={Brew}/>
+        <Route path={"/createbrew"} component={CreateBrew}/>
       </Switch>
   </Router>
 
