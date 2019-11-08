@@ -12,12 +12,12 @@ const divStyle = {
     margin: '10px'
   };
 
-  const CreateBrewControlSheet = () => {
+  const CreateBrew = () => {
     // using react hooks to get data back - adapted from https://reactjs.org/docs/hooks-state.html
     const [brewNo, setBrewNo] = useState("");
     const [beer, setBeer] = useState("");
 
-    const createcontrolsheet = (event) => {
+    const create = (event) => {
             event.preventDefault();   
 
             //brew control sheet to be sent to server
@@ -36,7 +36,7 @@ const divStyle = {
             }
 
             if(brewNo && beer){
-                fetch(url +"api/createbrewcontrolsheet", options)
+                fetch(url +"api/createbrew", options)
                 .then(res => {
                     return res.json();
                 }).catch(err => {
@@ -52,7 +52,7 @@ const divStyle = {
     return(
       <React.Fragment> 
         <div style={divStyle}>
-            <form onSubmit={createcontrolsheet}>
+            <form onSubmit={create}>
                 <label>Brew No.</label>
                 <input type="text" name="BrewNo" placeholder="Enter Brew Number" onChange= {event => setBrewNo(event.target.value)}/>
 
@@ -66,4 +66,4 @@ const divStyle = {
 }
     
 
-export default CreateBrewControlSheet;
+export default CreateBrew;

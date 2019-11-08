@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 
 class CalculationSheet extends React.Component {
     render() {
-      return <Button><Link to="/brewcontrolsheet" style={{ textDecoration: 'none', color: 'white' }}>{this.props.name}</Link></Button>;
+      return <Button><Link to="/brew" style={{ textDecoration: 'none', color: 'white' }}>{this.props.name}</Link></Button>;
     }
   }
 
