@@ -6,7 +6,7 @@ import sys
 from pymongo import MongoClient
 from bson import ObjectId
 
-# class to manage MongoDB id
+# class to manage MongoDB ObjectId - as returns "object of type ObjectId is not serializable" without encoder
 class JSONEncoder(json.JSONEncoder):
     def default(self, o):
         if isinstance(o, ObjectId):
@@ -33,7 +33,13 @@ createBrewRoute = Blueprint("createBrew", __name__)
 #routes 
 @indexRoute.route("/api/brew")
 def index():
-    return jsonify(data="Test")
+    brews = []
+
+    retrieval = collection.find({})
+
+    for document in retrieval:
+        brews.append({"_id": JSONEncoder().encode(document["_id"]), "brewNo":document["brewNo"], "beer":document["beer"]})
+    return jsonify(data=brews)
 
 @createBrewRoute.route("/api/createbrew", methods=["POST"])
 def createBrew():
