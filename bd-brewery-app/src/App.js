@@ -6,6 +6,7 @@ import NavBar from './Components/NavBar';
 import Home from './Components/Home';
 import {BrowserRouter as Router , Route, Switch, Link} from 'react-router-dom';
 import CreateBrew from './Components/CreateBrew';
+import SingleBrew from './Components/SingleBrew';
 
 function App() {
   return (
@@ -14,8 +15,9 @@ function App() {
     <Router>
       <Switch>
         <Route path="/" exact component={Home}/>
-        <Route path={"/brew"} component={Brew}/>
-        <Route path={"/createbrew"} component={CreateBrew}/>
+        <Route exact path={"/brew"} component={Brew}/>
+        <Route exact path={"/createbrew"} component={CreateBrew}/>
+        <Route exact path={"/brew/:id"} component={SingleBrew}/>
       </Switch>
   </Router>
 
