@@ -29,6 +29,7 @@ collection = db["brew"]
 #Blueprints
 indexRoute = Blueprint("index", __name__)
 createBrewRoute = Blueprint("createBrew", __name__)
+brewRoute = Blueprint("brew", __name__)
 
 #routes 
 @indexRoute.route("/api/brew")
@@ -41,6 +42,18 @@ def index():
         brews.append({"_id": JSONEncoder().encode(document["_id"]), "brewNo":document["brewNo"], "beer":document["beer"]})
     return jsonify(data=brews)
 
+
+# Route to handle individual brews
+@indexRoute.route("/api/brew/<id>", methods=["GET"])
+def brews(id):
+    # Find one object from mongo using the object id
+    cursor = collection.find_one({"_id":ObjectId(id)})
+    print(cursor, flush=True)
+
+    # Prevemt serializable error being thrown
+    return jsonify(data=JSONEncoder().encode(cursor))
+
+# Route to handle creation of a brew
 @createBrewRoute.route("/api/createbrew", methods=["POST"])
 def createBrew():
     print(request.json, flush=True)
