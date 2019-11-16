@@ -82,8 +82,20 @@ const divStyle = {
     return(
         // React Fragment is a way of sending back multiple elements - https://reactjs.org/docs/fragments.html
         <React.Fragment> 
-            <p>Brew No + {brew.brewNo}</p><br/>
-            <p>Beer + {brew.beer}</p><br/>
+            <p>Brew No: {brew.brewNo}</p><br/>
+            <p>Beer: {brew.beer}</p><br/>
+            <p>BatchNo: {brew.batchNo}</p><br/>
+            <p>Brewdate: {brew.brewDate}</p><br/>
+            <p>OG: {brew.og}</p><br/>
+            <p>PG: {brew.pg}</p><br/>
+            <p>ABV: {brew.abv}</p><br/>
+            <p>postConditionDate: {brew.postConditionDate}</p><br/>
+            <p>postConditionVol: {brew.postConditionVol}</p><br/>
+            <p>kegNo: {brew.kegNo}</p><br/>
+            <p>bottleNo500: {brew.bottleNo500}</p><br/>
+            <p>bottleNo330: {brew.bottleNo330}</p><br/>
+            <p>duty: {brew.duty}</p><br/>
+            <p>status: {brew.status}</p><br/>
             
         </React.Fragment>)
 }
