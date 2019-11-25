@@ -31,6 +31,7 @@ indexRoute = Blueprint("index", __name__)
 createBrewRoute = Blueprint("createBrew", __name__)
 brewRoute = Blueprint("brew", __name__)
 updateBrewRoute = Blueprint("updateBrew", __name__)
+deleteBrewRoute = Blueprint("deleteBrew", __name__)
 
 #routes 
 @indexRoute.route("/api/brew")
@@ -148,3 +149,11 @@ def updateBrew(id):
     # Set the contents of the id in mongo to the updated data above - {"$set": updatedBrew}
     collection.update_one({"_id": ObjectId(brewId)}, {"$set": updatedBrew})
     return jsonify(data = "update response")   
+
+@deleteBrewRoute.route("/api/delete/<id>", methods = ["DELETE"])
+def delete(id):
+    print(request.json, flush=True)
+    brewId = request.json.get("id")
+    collection.remove({"_id": ObjectId(brewId)})
+
+    return jsonify(data= "brew delete successfully")    
