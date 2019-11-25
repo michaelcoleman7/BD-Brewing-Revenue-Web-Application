@@ -129,7 +129,23 @@ const divStyle = {
     }
 
     const deleteItem = (brewId) => {
-        
+        const options = { 
+            method: 'delete',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({id: brewId})
+          } 
+          fetch(url+"api/delete/"+ brewId , options)
+          .then(res => {
+            return res.json()
+           })
+           .then(res => {
+               console.log(res);
+               setRedirect(true);
+           }).catch(err => {
+               console.log(err)
+           })
     }
 
 
@@ -187,10 +203,10 @@ const divStyle = {
                         <label>Status</label>
                         <input type="text" name="status" placeholder="Enter Status" onChange={event => setStatus(event.target.value)} defaultValue={brew.status}/>
                     </div>
-                    <input type="submit" value="Create Brew"/>
+                    <input type="submit" value="Update Brew"/>
                 </form>
-
-                <button className="delete" onClick={(e) => deleteItem(brewId)}>Delete Item</button>
+                
+                <button onClick={(e) => deleteItem(brewId)}>Delete Item</button>
             </React.Fragment>
     }
 
