@@ -30,6 +30,7 @@ collection = db["brew"]
 indexRoute = Blueprint("index", __name__)
 createBrewRoute = Blueprint("createBrew", __name__)
 brewRoute = Blueprint("brew", __name__)
+updateBrewRoute = Blueprint("updateBrew", __name__)
 
 #routes 
 @indexRoute.route("/api/brew")
@@ -100,3 +101,50 @@ def createBrew():
     collection.insert_one(brew)
 
     return jsonify(data="Brew created successfully")
+
+# Update a brew
+@updateBrewRoute.route("/api/update/<id>", methods=["PUT"])
+def updateBrew(id):
+    print(request.json, flush=True)
+    
+    # Request all information and store in variables
+    brewId= request.json.get("brewId")
+    brewNo = request.json.get("brewNo")
+    beer = request.json.get("beer")
+    batchNo = request.json.get("batchNo")
+    brewDate = request.json.get("brewDate")
+    og = request.json.get("og")
+    pg = request.json.get("pg")
+    abv = request.json.get("abv")
+    postConditionDate = request.json.get("postConditionDate")
+    postConditionVol = request.json.get("postConditionVol")
+    kegNo = request.json.get("kegNo")
+    bottleNo500 = request.json.get("bottleNo500")
+    bottleNo330 = request.json.get("bottleNo330")
+    duty = request.json.get("duty")
+    status = request.json.get("status")
+
+
+    # create json format of data to send to MongoDB
+    updatedBrew = {
+        "brewNo": brewNo,
+        "beer": beer,
+        "batchNo": batchNo,
+        "brewDate": brewDate,
+        "og": og,
+        "pg": pg,
+        "abv": abv,
+        "postConditionDate": postConditionDate,
+        "postConditionVol": postConditionVol,
+        "kegNo": kegNo,
+        "bottleNo500": bottleNo500,
+        "bottleNo330": bottleNo330,
+        "duty": duty,
+        "status": status,
+        "beer": beer
+    }
+
+    # need to parse id so that mongo gets correct instance of id, otherwise will take it as invalid - {"_id": ObjectId(brewId)}
+    # Set the contents of the id in mongo to the updated data above - {"$set": updatedBrew}
+    collection.update_one({"_id": ObjectId(brewId)}, {"$set": updatedBrew})
+    return jsonify(data = "update response")   
