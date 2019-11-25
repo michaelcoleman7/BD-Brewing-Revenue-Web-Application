@@ -1,5 +1,5 @@
 import React, { Component, useEffect, useState } from 'react';
-import {Link} from 'react-router-dom';
+import { Redirect } from 'react-router';
 import '../Stylesheets/Form.css';
 
 //set the url to send the data to
@@ -34,6 +34,7 @@ const divStyle = {
     const [bottleNo330, setBottleNo330] = useState("");
     const [duty, setDuty] = useState("");
     const [status, setStatus] = useState("");
+    const [routeRedirect, setRedirect] = useState(false); 
 
     const create = (event) => {
             event.preventDefault();   
@@ -69,6 +70,7 @@ const divStyle = {
             if(brewNo && beer && batchNo && brewDate && og && pg && abv && postConditionDate && postConditionVol && kegNo && bottleNo500 && bottleNo330 && duty && status){
                 fetch(url +"api/createbrew", options)
                 .then(res => {
+                    setRedirect(true);
                     return res.json();
                 }).catch(err => {
                     console.log(err)
@@ -78,6 +80,12 @@ const divStyle = {
             }else{
                 console.log("Invalid form format, will not be sent to database");
             }
+    }
+
+    // Redirect to brew page after creation
+    const redirect = routeRedirect;
+    if(redirect){
+         return <Redirect to="/brew" />  
     }
 
     return(
