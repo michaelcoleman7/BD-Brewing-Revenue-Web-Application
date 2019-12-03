@@ -46,10 +46,11 @@ return(
     <React.Fragment> 
       <div>
           <h1>Create a Brew</h1>
-          <Link to="/createbrew">create a control sheet</Link><br/>
-          <Link to="/" >Back</Link><br/><br/>
+          <Link to="/createbrew">Create a New Brew</Link><br/>
 
           {brewsArray}
+
+          <Link to="/" >Back to Main Menu</Link><br/><br/>
 
       </div>
     </React.Fragment>)
