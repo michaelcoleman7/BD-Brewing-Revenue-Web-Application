@@ -61,6 +61,7 @@ def createBrew():
     print(request.json, flush=True)
 
     # Request all information and store in variables
+    brewName = request.json.get("brewName")
     brewNo = request.json.get("brewNo")
     beer = request.json.get("beer")
     batchNo = request.json.get("batchNo")
@@ -77,10 +78,11 @@ def createBrew():
     status = request.json.get("status")
 
     # print variables to check if correct
-    print("Brew Number:" +brewNo + " Beer:" + beer + " batchNo:" + batchNo + " brewDate:" + brewDate + " og:" + og + " pg:" + pg + " abv:" + abv + " postConditionDate:" + postConditionDate + " postConditionVol:" + postConditionVol + " kegNo:" + kegNo + " bottleNo500:" + bottleNo500 + " bottleNo330:" + bottleNo330 + " duty:" + duty + " status:" + status)
+    print("Brew Name:" +brewName +"Brew Number:" +brewNo + " Beer:" + beer + " batchNo:" + batchNo + " brewDate:" + brewDate + " og:" + og + " pg:" + pg + " abv:" + abv + " postConditionDate:" + postConditionDate + " postConditionVol:" + postConditionVol + " kegNo:" + kegNo + " bottleNo500:" + bottleNo500 + " bottleNo330:" + bottleNo330 + " duty:" + duty + " status:" + status)
 
     # create json format of data to send to MongoDB
     brew = {
+        "brewName": brewName,
         "brewNo": brewNo,
         "beer": beer,
         "batchNo": batchNo,
@@ -94,8 +96,7 @@ def createBrew():
         "bottleNo500": bottleNo500,
         "bottleNo330": bottleNo330,
         "duty": duty,
-        "status": status,
-        "beer": beer
+        "status": status
     }
 
     # Insert the brew into the mongoDB in mlabs, adapted from - https://docs.mongodb.com/manual/reference/method/db.collection.insertOne/
@@ -109,6 +110,7 @@ def updateBrew(id):
     print(request.json, flush=True)
     
     # Request all information and store in variables
+    beerName = request.json.get("brewName")
     brewId= request.json.get("brewId")
     brewNo = request.json.get("brewNo")
     beer = request.json.get("beer")
@@ -128,6 +130,7 @@ def updateBrew(id):
 
     # create json format of data to send to MongoDB
     updatedBrew = {
+        "brewName": brewName,
         "brewNo": brewNo,
         "beer": beer,
         "batchNo": batchNo,
@@ -141,8 +144,7 @@ def updateBrew(id):
         "bottleNo500": bottleNo500,
         "bottleNo330": bottleNo330,
         "duty": duty,
-        "status": status,
-        "beer": beer
+        "status": status
     }
 
     # need to parse id so that mongo gets correct instance of id, otherwise will take it as invalid - {"_id": ObjectId(brewId)}
