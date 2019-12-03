@@ -14,11 +14,20 @@ const divStyle = {
     margin: '10px'
   };
 
+  const formStyle = {
+    width: '100%',
+    border: '5px',
+    background: '#f2f2f2',
+    padding: '20px',
+    margin: '10px'
+  };
+
 
 
   // react arrow function component to create a brew
   const CreateBrew = () => {
     // using react hooks to get data back - adapted from https://reactjs.org/docs/hooks-state.html
+    const [brewName, setBrewName] = useState("");
     const [brewNo, setBrewNo] = useState("");
     const [beer, setBeer] = useState("");
     const [batchNo, setBatchNo] = useState("");
@@ -41,6 +50,7 @@ const divStyle = {
 
             //brew values to be sent to server
             const brew = {
+                brewName: brewName,
                 brewNo: brewNo,
                 beer: beer,
                 batchNo: batchNo,
@@ -67,7 +77,7 @@ const divStyle = {
             }
 
             //if all data is valid, then post to server
-            if(brewNo && beer && batchNo && brewDate && og && pg && abv && postConditionDate && postConditionVol && kegNo && bottleNo500 && bottleNo330 && duty && status){
+            if(brewName && brewNo && beer && batchNo && brewDate && og && pg && abv && postConditionDate && postConditionVol && kegNo && bottleNo500 && bottleNo330 && duty && status){
                 fetch(url +"api/createbrew", options)
                 .then(res => {
                     setRedirect(true);
@@ -91,8 +101,11 @@ const divStyle = {
     return(
         // React Fragment is a way of sending back multiple elements - https://reactjs.org/docs/fragments.html
         <React.Fragment> 
-                <form onSubmit={create}>
+                <form style={formStyle} onSubmit={create}>
+                        <label>Brew Name</label>
+                        <input type="text" name="BrewName" placeholder="Enter Brew Name" onChange= {event => setBrewName(event.target.value)}/>
                     <div style={divStyle} className="float-left">
+
                         <label>Brew No.</label>
                         <input type="text" name="BrewNo" placeholder="Enter Brew Number" onChange= {event => setBrewNo(event.target.value)}/>
 
