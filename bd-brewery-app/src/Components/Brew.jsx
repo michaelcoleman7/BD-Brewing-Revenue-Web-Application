@@ -1,57 +1,48 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {Link} from 'react-router-dom';
+import Card from 'react-bootstrap/Card'
+import createImage from '../Images/Background3.jpg';
 
 //set the url to receive the data from
 const url = "http://127.0.0.1:5000/"
 
 const Brew = () => {
 
-  const [brews, setbrews] = useState([]);
-  const getBrews = () => {
-    fetch(url+"api/brew").then(res =>{
-      return res.json();
-    }).then(brews => {
-      console.log(brews);
-      setbrews(brews.data);
-    }).catch(err => {
-      console.log(err);
-    })
-  }
+  const divStyle = {
+    width: '18rem'
+  };
 
-  useEffect(() => {
-    getBrews();
-  }, [])
+  const divStyle2 = {
+    width: '18rem'
+  };
 
-  let brewsArray;
-  if(brews.length > 0){
-      brewsArray = <div>
-        {brews.map(brew => {
-          return(
-            <div key={brew._id}>
-              <Link to={"brew/"+brew._id}>
-                <p>Brew Number: {brew.brewNo} / Beer:{brew.beer}</p>
-              </Link>
-            </div>
-          )
-        })}
-      </div>
-  }else{
-    brewsArray = 
-    <div>
-      <p>No Brews exist in the database, please create a brew</p>
-    </div>
-  }
+  const header = {
+    color: 'white'
+  };
 
 return(
     <React.Fragment> 
-      <div>
-          <h1>Create a Brew</h1>
-          <Link to="/createbrew">Create a New Brew</Link><br/>
+      <h1 style={header}>Brew Management</h1>
+      <div class="d-flex justify-content-around">
+            <Card bg="primary" style={divStyle}>          
+              <Link to="/createbrew"> <Card.Img src={require("../Images/Background3.jpg")} height="300"/></Link>
+              <Card.Body>
+                <Card.Title>Create Brew</Card.Title>
+                <Card.Text>
+                  Create a new brew containing all necessary information needed.
+                </Card.Text>
+              </Card.Body>
+            </Card>
 
-          {brewsArray}
-
-          <Link to="/" >Back to Main Menu</Link><br/><br/>
-
+            <Card bg="success" style={divStyle2}>          
+              <Link to="/brew"> <Card.Img src={require("../Images/createbeer.jpg")} height="300"/></Link>
+              <Card.Body>
+                <Card.Title>View Brews</Card.Title>
+                <Card.Text>
+                  View a list of all the brews in the database.
+                </Card.Text>
+              </Card.Body>
+            </Card>
       </div>
     </React.Fragment>)
   }
