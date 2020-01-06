@@ -1,10 +1,17 @@
-import React, { Component } from 'react';
-import CalculationSheet from './CalculationSheet';
+import React from 'react';
+import '../App.css';
+import Brew from './Brew';
+import Tabs from 'react-bootstrap/Tabs';
+import Tab from 'react-bootstrap/Tab';
 
 class Home extends React.Component {
     render() {
       return <div>
-        <CalculationSheet name={"Brew Management"}></CalculationSheet>
+        <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example">
+          <Tab eventKey="home" title="Home">
+            <Brew/>
+          </Tab>
+        </Tabs>
     </div>
     }
   }
