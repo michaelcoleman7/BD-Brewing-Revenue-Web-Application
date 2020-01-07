@@ -8,7 +8,7 @@ class Home extends React.Component {
     render() {
       return <div>
         <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example">
-          <Tab eventKey="home" title="Home">
+          <Tab eventKey="Brew" title="Brew Managment">
             <Brew/>
           </Tab>
         </Tabs>
