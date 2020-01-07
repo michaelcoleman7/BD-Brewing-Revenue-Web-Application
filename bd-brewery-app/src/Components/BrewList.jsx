@@ -45,7 +45,7 @@ const BrewList = () => {
               <Link to={"brew/"+brew._id}>
                 <ListGroup>
                 <center>
-                    <ListGroup.Item style={listItem}>{brew.brewName}</ListGroup.Item>
+                    <ListGroup.Item style={listItem}>{brew.productName}</ListGroup.Item>
                 </center>
                 </ListGroup>
               </Link>

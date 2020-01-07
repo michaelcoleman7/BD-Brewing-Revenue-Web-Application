@@ -27,7 +27,7 @@ const divStyle = {
   // react arrow function component to create a brew
   const CreateBrew = () => {
     // using react hooks to get data back - adapted from https://reactjs.org/docs/hooks-state.html
-    const [brewName, setBrewName] = useState("");
+    const [productName, setProductName] = useState("");
     const [brewNo, setBrewNo] = useState("");
     const [beer, setBeer] = useState("");
     const [batchNo, setBatchNo] = useState("");
@@ -50,7 +50,7 @@ const divStyle = {
 
             //brew values to be sent to server
             const brew = {
-                brewName: brewName,
+                productName: productName,
                 brewNo: brewNo,
                 beer: beer,
                 batchNo: batchNo,
@@ -77,7 +77,7 @@ const divStyle = {
             }
 
             //if all data is valid, then post to server
-            if(brewName && brewNo && beer && batchNo && brewDate && og && pg && abv && postConditionDate && postConditionVol && kegNo && bottleNo500 && bottleNo330 && duty && status){
+            if(productName && brewNo && beer && batchNo && brewDate && og && pg && abv && postConditionDate && postConditionVol && kegNo && bottleNo500 && bottleNo330 && duty && status){
                 fetch(url +"api/createbrew", options)
                 .then(res => {
                     setRedirect(true);
@@ -102,8 +102,8 @@ const divStyle = {
         // React Fragment is a way of sending back multiple elements - https://reactjs.org/docs/fragments.html
         <React.Fragment> 
                 <form style={formStyle} onSubmit={create}>
-                        <label>Brew Name</label>
-                        <input type="text" name="BrewName" placeholder="Enter Brew Name" onChange= {event => setBrewName(event.target.value)}/>
+                        <label>Product Name</label>
+                        <input type="text" name="ProductName" placeholder="Enter Product Name" onChange= {event => setProductName(event.target.value)}/>
                     <div style={divStyle} className="float-left">
 
                         <label>Brew No.</label>

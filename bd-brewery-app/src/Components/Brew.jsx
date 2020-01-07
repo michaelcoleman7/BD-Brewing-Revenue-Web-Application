@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {Link} from 'react-router-dom';
 import Card from 'react-bootstrap/Card'
-import createImage from '../Images/Background3.jpg';
 
 //set the url to receive the data from
 const url = "http://127.0.0.1:5000/"

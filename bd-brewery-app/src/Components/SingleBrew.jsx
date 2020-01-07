@@ -26,7 +26,7 @@ const divStyle = {
   // react arrow function component to create a brew
   const SingleBrew = (props) => {
     // using react hooks to get data back - adapted from https://reactjs.org/docs/hooks-state.html
-    const [brewName, setBrewName] = useState("");
+    const [productName, setProductName] = useState("");
     const [brewId, setBrewId] = useState("");
     const [brew, setBrew] = useState("");
     const [changeBrew, setChangeBrew] = useState(false); 
@@ -65,7 +65,7 @@ const divStyle = {
             console.log("response "+res.data);
             let parsed = JSON.parse(res.data);
             setBrew(parsed);
-            setBrewName(parsed.brewName);
+            setProductName(parsed.productName);
             setBrewNo(parsed.brewNo);
             setBeer(parsed.beer);
             setBatchNo(parsed.batchNo);
@@ -94,7 +94,7 @@ const divStyle = {
             //brew values to be sent to server
             const brew = {
                 brewId: brewId,
-                brewName: brewName,
+                productName: productName,
                 brewNo: brewNo,
                 beer: beer,
                 batchNo: batchNo,
@@ -115,13 +115,13 @@ const divStyle = {
           const options = { 
             method: 'put',
             headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin' : '*'
             },
-               body: JSON.stringify(brew)
-          
+               body: JSON.stringify(brew)   
           }
           
-          fetch("https://cors-anywhere.herokuapp.com/"+url+"api/update/"+ brewId, options)
+          fetch(url+"api/update/"+ brewId, options)
           .then(res => {
               return res.json();
           }).then(res => {
@@ -168,8 +168,8 @@ const divStyle = {
         editForm =
             <React.Fragment>
                 <form style={formStyle} onSubmit={updateBrew}>
-                        <label>Brew Name</label>
-                        <input type="text" name="BrewName" placeholder="Enter Brew Name" onChange= {event => setBrewName(event.target.value)} defaultValue={brew.brewName}/>
+                        <label>Product Name</label>
+                        <input type="text" name="ProductName" placeholder="Enter Product Name" onChange= {event => setProductName(event.target.value)} defaultValue={brew.productName}/>
                     <div style={divStyle} className="float-left">
                         <label>Brew No.</label>
                         <input type="text" name="BrewNo" placeholder="Enter Brew Number" onChange= {event => setBrewNo(event.target.value)}  defaultValue={brew.brewNo}/>
@@ -224,9 +224,9 @@ const divStyle = {
     return(
         // React Fragment is a way of sending back multiple elements - https://reactjs.org/docs/fragments.html
         <React.Fragment> 
-            <center><Card style={{ width: '80%' }}>
+            <center><Card style={{ width: '40%' }}>
                 <Card.Body>
-                    <Card.Title>Brew Name: {brew.brewName}</Card.Title>
+                    <Card.Title>Product Name: {brew.productName}</Card.Title>
                     <Card.Text>
                         Brew No: {brew.brewNo}
                     </Card.Text>
