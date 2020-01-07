@@ -10,7 +10,7 @@ const url = "http://localhost:5000/"
 const divStyle = {
     width: '48%',
     border: '5px',
-    background: '#f2f2f2',
+    background: 'rgba(144, 84, 23, 0.5)',
     padding: '20px',
     margin: '10px'
   };
@@ -18,7 +18,7 @@ const divStyle = {
   const formStyle = {
     width: '100%',
     border: '5px',
-    background: '#f2f2f2',
+    background: 'rgba(144, 84, 23, 0.5)',
     padding: '20px',
     margin: '10px'
   };
