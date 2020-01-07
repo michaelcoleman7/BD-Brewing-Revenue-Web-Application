@@ -25,8 +25,14 @@ const BrewList = () => {
 
   const listItem = {
     width: '18rem',
-    width: '50%',
-    color: 'black'
+    width: '40%',
+    color: 'white',
+    marginTop: '10px',
+    fontFamily: 'Cursive',
+    fontSize: '20px',
+    borderStyle: 'solid',
+    borderColor: 'brown',
+    background: 'rgba(144, 84, 23, 0.5)'
   };
 
 
@@ -50,7 +56,7 @@ const BrewList = () => {
   }else{
     brewsArray = 
     <div>
-      <p>No Brews exist in the database, please create a brew</p>
+      <h1 style={{color: "white"}}>No Brews exist in the database, please create a brew</h1>
     </div>
   }
 
