@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {Navbar} from 'react-bootstrap'
 
 class NavBar extends React.Component {
@@ -6,7 +6,7 @@ class NavBar extends React.Component {
       return <div>
         <Navbar bg="light" variant="light">
             <Navbar.Brand>
-                <img src={require(".././Images/BlackDonkeyLogo.png")} width="300" height="50"/>
+                <img alt="" src={require(".././Images/BlackDonkeyLogo.png")} width="300" height="50"/>
             </Navbar.Brand>
         </Navbar>
     </div>

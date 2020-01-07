@@ -1,10 +1,10 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card'
 import { Redirect } from 'react-router';
 import '../Stylesheets/Form.css';
 
 //set the url to send the data to
-const url = "http://127.0.0.1:5000/"
+const url = "http://localhost:5000/"
 
 // Set some styling for div
 const divStyle = {
@@ -111,7 +111,7 @@ const divStyle = {
                 status: status
             }
 
-          console.log(brew)
+          //console.log(brew)
           const options = { 
             method: 'put',
             headers: {
@@ -121,10 +121,9 @@ const divStyle = {
           
           }
           
-          fetch(url+"api/update/"+ brewId, options)
+          fetch("https://cors-anywhere.herokuapp.com/"+url+"api/update/"+ brewId, options)
           .then(res => {
               return res.json();
-             
           }).then(res => {
               console.log(res)
                setRedirect(true);
@@ -229,8 +228,7 @@ const divStyle = {
                 <Card.Body>
                     <Card.Title>Brew Name: {brew.brewName}</Card.Title>
                     <Card.Text>
-                        <p>Brew No: {brew.brewNo}</p>
-                        <p>Brew Date: {brew.brewDate}</p>
+                        Brew No: {brew.brewNo}
                     </Card.Text>
                 </Card.Body>
             </Card></center>
