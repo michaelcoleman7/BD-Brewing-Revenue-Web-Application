@@ -45,7 +45,7 @@ def index():
     retrieval = collection.find({})
 
     for document in retrieval:
-        brews.append({"_id": JSONEncoder().encode(document["_id"]), "brewName":document["brewName"]})
+        brews.append({"_id": JSONEncoder().encode(document["_id"]), "productName":document["productName"]})
     return jsonify(data=brews)
 
 
@@ -54,7 +54,7 @@ def index():
 def brews(id):
     # Find one object from mongo using the object id
     cursor = collection.find_one({"_id":ObjectId(id)})
-    print(cursor, flush=True)
+    #print(cursor, flush=True)
 
     # Prevemt serializable error being thrown
     return jsonify(data=JSONEncoder().encode(cursor))
@@ -62,10 +62,10 @@ def brews(id):
 # Route to handle creation of a brew
 @createBrewRoute.route("/api/createbrew", methods=["POST"])
 def createBrew():
-    print(request.json, flush=True)
+    #print(request.json, flush=True)
 
     # Request all information and store in variables
-    brewName = request.json.get("brewName")
+    productName = request.json.get("productName")
     brewNo = request.json.get("brewNo")
     beer = request.json.get("beer")
     batchNo = request.json.get("batchNo")
@@ -82,11 +82,11 @@ def createBrew():
     status = request.json.get("status")
 
     # print variables to check if correct
-    print("Brew Name:" +brewName +"Brew Number:" +brewNo + " Beer:" + beer + " batchNo:" + batchNo + " brewDate:" + brewDate + " og:" + og + " pg:" + pg + " abv:" + abv + " postConditionDate:" + postConditionDate + " postConditionVol:" + postConditionVol + " kegNo:" + kegNo + " bottleNo500:" + bottleNo500 + " bottleNo330:" + bottleNo330 + " duty:" + duty + " status:" + status)
+    #print("Brew Name:" +productName +"Brew Number:" +brewNo + " Beer:" + beer + " batchNo:" + batchNo + " brewDate:" + brewDate + " og:" + og + " pg:" + pg + " abv:" + abv + " postConditionDate:" + postConditionDate + " postConditionVol:" + postConditionVol + " kegNo:" + kegNo + " bottleNo500:" + bottleNo500 + " bottleNo330:" + bottleNo330 + " duty:" + duty + " status:" + status)
 
     # create json format of data to send to MongoDB
     brew = {
-        "brewName": brewName,
+        "productName": productName,
         "brewNo": brewNo,
         "beer": beer,
         "batchNo": batchNo,
@@ -113,10 +113,11 @@ def createBrew():
 # Added cross origin to prevent blocking of requests
 #@cross_origin(origin='localhost',headers=['Content-Type','Authorization']) 
 def updateBrew(id):
+    print("Updated Info")
     print(request.json, flush=True)
     
     # Request all information and store in variables
-    beerName = request.json.get("brewName")
+    productName = request.json.get("productName")
     brewId= request.json.get("brewId")
     brewNo = request.json.get("brewNo")
     beer = request.json.get("beer")
@@ -136,7 +137,7 @@ def updateBrew(id):
 
     # create json format of data to send to MongoDB
     updatedBrew = {
-        "brewName": brewName,
+        "productName": productName,
         "brewNo": brewNo,
         "beer": beer,
         "batchNo": batchNo,
@@ -168,4 +169,4 @@ def delete(id):
     brewId = request.json.get("id")
     collection.remove({"_id": ObjectId(brewId)})
 
-    return jsonify(data= "brew delete successfully")    
+    return jsonify(data= "brew delete successfully") 
