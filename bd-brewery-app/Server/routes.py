@@ -1,10 +1,15 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, Flask
+from flask_cors import CORS, cross_origin
 import json
 import pymongo
 import os
 import sys
 from pymongo import MongoClient
 from bson import ObjectId
+
+#app = Flask(__name__)
+#CORS(app)
+#cors = CORS(app, resources={r"/*"})
 
 # class to manage MongoDB ObjectId - as returns "object of type ObjectId is not serializable" without encoder
 class JSONEncoder(json.JSONEncoder):
@@ -14,7 +19,6 @@ class JSONEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self,o)
 
 # Configure MongoDB with mlab connection
-
 # Set up connection with user and password of database 
 #- retrywrites needs to be set to default as not supported in enviornment - https://stackoverflow.com/questions/57836252/how-to-fix-retrywrites-in-mongo
 connection = "mongodb://bdbrewery:bdbrewery1@ds241968.mlab.com:41968/bd_brewery?retryWrites=false"
@@ -41,7 +45,7 @@ def index():
     retrieval = collection.find({})
 
     for document in retrieval:
-        brews.append({"_id": JSONEncoder().encode(document["_id"]), "brewNo":document["brewNo"], "beer":document["beer"]})
+        brews.append({"_id": JSONEncoder().encode(document["_id"]), "brewName":document["brewName"]})
     return jsonify(data=brews)
 
 
@@ -104,8 +108,10 @@ def createBrew():
 
     return jsonify(data="Brew created successfully")
 
-# Update a brew
+# Update a brew 
 @updateBrewRoute.route("/api/update/<id>", methods=["PUT"])
+# Added cross origin to prevent blocking of requests
+#@cross_origin(origin='localhost',headers=['Content-Type','Authorization']) 
 def updateBrew(id):
     print(request.json, flush=True)
     
@@ -150,7 +156,11 @@ def updateBrew(id):
     # need to parse id so that mongo gets correct instance of id, otherwise will take it as invalid - {"_id": ObjectId(brewId)}
     # Set the contents of the id in mongo to the updated data above - {"$set": updatedBrew}
     collection.update_one({"_id": ObjectId(brewId)}, {"$set": updatedBrew})
-    return jsonify(data = "update response")   
+
+    response = jsonify(data = "update response")
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+    #return jsonify(data = "update response")   
 
 @deleteBrewRoute.route("/api/delete/<id>", methods = ["DELETE"])
 def delete(id):
