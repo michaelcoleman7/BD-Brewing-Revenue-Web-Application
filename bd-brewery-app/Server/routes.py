@@ -32,11 +32,13 @@ indexBrewRoute = Blueprint("indexBrew", __name__)
 createBrewRoute = Blueprint("createBrew", __name__)
 updateBrewRoute = Blueprint("updateBrew", __name__)
 deleteBrewRoute = Blueprint("deleteBrew", __name__)
+brewRoute = Blueprint("brewSingle", __name__)
 
 indexInventoryRoute = Blueprint("indexInventory", __name__)
 createInventoryRoute = Blueprint("createInventory", __name__)
 updateInventoryRoute = Blueprint("updateInventory", __name__)
 deleteInventoryRoute = Blueprint("deleteInventory", __name__)
+inventoryRoute = Blueprint("inventorySingle", __name__)
 
 #routes 
 @indexBrewRoute.route("/api/brew")
@@ -51,8 +53,8 @@ def indexBrew():
 
 
 # Route to handle individual brews
-@indexBrewRoute.route("/api/brew/<id>", methods=["GET"])
-def brews(id):
+@brewRoute.route("/api/brew/<id>", methods=["GET"])
+def brewSingle(id):
     # Find one object from mongo using the object id
     cursor = brewCollection.find_one({"_id":ObjectId(id)})
     #print(cursor, flush=True)
@@ -110,7 +112,7 @@ def createBrew():
     return jsonify(data="Brew created successfully")
 
 # Update a brew 
-@updateBrewRoute.route("/api/update/<id>", methods=["PUT"])
+@updateBrewRoute.route("/api/updateBrew/<id>", methods=["PUT"])
 # Added cross origin to prevent blocking of requests
 #@cross_origin(origin='localhost',headers=['Content-Type','Authorization']) 
 def updateBrew(id):
@@ -164,7 +166,7 @@ def updateBrew(id):
     return response
     #return jsonify(data = "update response")   
 
-@deleteBrewRoute.route("/api/delete/<id>", methods = ["DELETE"])
+@deleteBrewRoute.route("/api/deleteBrew/<id>", methods = ["DELETE"])
 def delete(id):
     print(request.json, flush=True)
     brewId = request.json.get("id")
@@ -181,6 +183,16 @@ def indexInventory():
     for document in retrieval:
         inventories.append({"_id": JSONEncoder().encode(document["_id"]), "productName":document["productName"]})
     return jsonify(data=inventories)
+# Route to handle individual inventories
+@indexInventoryRoute.route("/api/inventory/<id>", methods=["GET"])
+def inventorySingle(id):
+    # Find one object from mongo using the object id
+    cursor = inventoryCollection.find_one({"_id":ObjectId(id)})
+    #print(cursor, flush=True)
+
+    # Prevemt serializable error being thrown
+    return jsonify(data=JSONEncoder().encode(cursor))
+
 # Route to handle creation of a Inventory
 @createInventoryRoute.route("/api/createinventory", methods=["POST"])
 def createInventory():
@@ -223,3 +235,58 @@ def createInventory():
     inventoryCollection.insert_one(inventory)
 
     return jsonify(data="inventory created successfully")
+# Update an Inventory 
+@updateInventoryRoute.route("/api/updateInventory/<id>", methods=["PUT"])
+# Added cross origin to prevent blocking of requests
+#@cross_origin(origin='localhost',headers=['Content-Type','Authorization']) 
+def updateInventory(id):
+    print("Updated Info")
+    print(request.json, flush=True)
+    
+    # Request all information and store in variables
+    productName = request.json.get("productName")
+    inventoryId= request.json.get("inventoryId")
+    totalLitres = request.json.get("totalLitres")
+    totalCasesSold500Month = request.json.get("totalCasesSold500Month")
+    remainingCases500 = request.json.get("remainingCases500")
+    totalCasesSold330Month = request.json.get("totalCasesSold330Month")
+    remainingCases330 = request.json.get("remainingCases330")
+    totalKegsSold = request.json.get("totalKegsSold")
+    remainingKegs = request.json.get("remainingKegs")
+    openingStockCases = request.json.get("openingStockCases")
+    openingStockKegs = request.json.get("openingStockKegs")
+    receiptsCases = request.json.get("receiptsCases")
+    receiptsKegs = request.json.get("receiptsKegs")
+
+    # create json format of data to send to MongoDB
+    updatedInventory = {
+        "productName": productName,
+        "totalLitres": totalLitres,
+        "totalCasesSold500Month": totalCasesSold500Month,
+        "remainingCases500": remainingCases500,
+        "totalCasesSold330Month": totalCasesSold330Month,
+        "remainingCases330": remainingCases330,
+        "totalKegsSold": totalKegsSold,
+        "remainingKegs": remainingKegs,
+        "openingStockCases": openingStockCases,
+        "openingStockKegs": openingStockKegs,
+        "receiptsCases": receiptsCases,
+        "receiptsKegs": receiptsKegs
+    }
+
+    # need to parse id so that mongo gets correct instance of id, otherwise will take it as invalid - {"_id": ObjectId(brewId)}
+    # Set the contents of the id in mongo to the updated data above - {"$set": updatedBrew}
+    inventoryCollection.update_one({"_id": ObjectId(inventoryId)}, {"$set": updatedInventory})
+
+    response = jsonify(data = "update response")
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+    #return jsonify(data = "update response")   
+
+@deleteInventoryRoute.route("/api/deleteInventory/<id>", methods = ["DELETE"])
+def delete(id):
+    print(request.json, flush=True)
+    inventoryId = request.json.get("id")
+    inventoryCollection.remove({"_id": ObjectId(inventoryId)})
+
+    return jsonify(data= "inventory delete successfully") 
