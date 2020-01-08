@@ -121,7 +121,7 @@ const divStyle = {
                body: JSON.stringify(brew)   
           }
           
-          fetch(url+"api/update/"+ brewId, options)
+          fetch(url+"api/updateBrew/"+ brewId, options)
           .then(res => {
               return res.json();
           }).then(res => {
@@ -145,7 +145,7 @@ const divStyle = {
             },
             body: JSON.stringify({id: brewId})
           } 
-          fetch(url+"api/delete/"+ brewId , options)
+          fetch(url+"api/deleteBrew/"+ brewId , options)
           .then(res => {
             return res.json()
            })
@@ -159,7 +159,7 @@ const divStyle = {
 
 
     const editItem = (brewId) => {
-        console.log(brewId)
+        console.log(brewId);
         setChangeBrew(!changeBrew);
     }
 
