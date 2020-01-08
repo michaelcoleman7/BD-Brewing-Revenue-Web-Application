@@ -32,16 +32,18 @@ inventoryCollection = db["inventory"]
 
 
 #Blueprints
-indexRoute = Blueprint("index", __name__)
+indexBrewRoute = Blueprint("indexBrew", __name__)
 createBrewRoute = Blueprint("createBrew", __name__)
 brewRoute = Blueprint("brew", __name__)
 updateBrewRoute = Blueprint("updateBrew", __name__)
 deleteBrewRoute = Blueprint("deleteBrew", __name__)
+
+indexInventoryRoute = Blueprint("indexInventory", __name__)
 createInventoryRoute = Blueprint("createInventory", __name__)
 
 #routes 
-@indexRoute.route("/api/brew")
-def index():
+@indexBrewRoute.route("/api/brew")
+def indexBrew():
     brews = []
 
     retrieval = brewCollection.find({})
@@ -52,7 +54,7 @@ def index():
 
 
 # Route to handle individual brews
-@indexRoute.route("/api/brew/<id>", methods=["GET"])
+@indexBrewRoute.route("/api/brew/<id>", methods=["GET"])
 def brews(id):
     # Find one object from mongo using the object id
     cursor = brewCollection.find_one({"_id":ObjectId(id)})
@@ -173,6 +175,15 @@ def delete(id):
 
     return jsonify(data= "brew delete successfully") 
 
+@indexInventoryRoute.route("/api/inventory")
+def indexInventory():
+    inventories = []
+
+    retrieval = inventoryCollection.find({})
+
+    for document in retrieval:
+        inventories.append({"_id": JSONEncoder().encode(document["_id"]), "productName":document["productName"]})
+    return jsonify(data=inventories)
 # Route to handle creation of a brew
 @createInventoryRoute.route("/api/createinventory", methods=["POST"])
 def createInventory():
