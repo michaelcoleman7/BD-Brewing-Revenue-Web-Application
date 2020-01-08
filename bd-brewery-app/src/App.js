@@ -8,6 +8,7 @@ import {BrowserRouter as Router , Route, Switch} from 'react-router-dom';
 import CreateBrew from './Components/CreateBrew';
 import SingleBrew from './Components/SingleBrew';
 import CreateInventory from './Components/CreateInventory';
+import InventoryList from './Components/InventoryList';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route exact path={"/brew/:id"} component={SingleBrew}/>
 
         <Route exact path={"/createinventory"} component={CreateInventory}/>
+        <Route exact path={"/inventory"} component={InventoryList}/>
       </Switch>
   </Router>
 
