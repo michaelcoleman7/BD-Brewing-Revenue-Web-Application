@@ -27,7 +27,8 @@ client = MongoClient(connection)
 # Connect to database by name
 db = client["bd_brewery"]
 # link to collection name in mlab
-collection = db["brew"]
+brewCollection = db["brew"]
+inventoryCollection = db["inventory"]
 
 
 #Blueprints
@@ -36,13 +37,14 @@ createBrewRoute = Blueprint("createBrew", __name__)
 brewRoute = Blueprint("brew", __name__)
 updateBrewRoute = Blueprint("updateBrew", __name__)
 deleteBrewRoute = Blueprint("deleteBrew", __name__)
+createInventoryRoute = Blueprint("createInventory", __name__)
 
 #routes 
 @indexRoute.route("/api/brew")
 def index():
     brews = []
 
-    retrieval = collection.find({})
+    retrieval = brewCollection.find({})
 
     for document in retrieval:
         brews.append({"_id": JSONEncoder().encode(document["_id"]), "productName":document["productName"]})
@@ -53,7 +55,7 @@ def index():
 @indexRoute.route("/api/brew/<id>", methods=["GET"])
 def brews(id):
     # Find one object from mongo using the object id
-    cursor = collection.find_one({"_id":ObjectId(id)})
+    cursor = brewCollection.find_one({"_id":ObjectId(id)})
     #print(cursor, flush=True)
 
     # Prevemt serializable error being thrown
@@ -104,7 +106,7 @@ def createBrew():
     }
 
     # Insert the brew into the mongoDB in mlabs, adapted from - https://docs.mongodb.com/manual/reference/method/db.collection.insertOne/
-    collection.insert_one(brew)
+    brewCollection.insert_one(brew)
 
     return jsonify(data="Brew created successfully")
 
@@ -156,7 +158,7 @@ def updateBrew(id):
 
     # need to parse id so that mongo gets correct instance of id, otherwise will take it as invalid - {"_id": ObjectId(brewId)}
     # Set the contents of the id in mongo to the updated data above - {"$set": updatedBrew}
-    collection.update_one({"_id": ObjectId(brewId)}, {"$set": updatedBrew})
+    brewCollection.update_one({"_id": ObjectId(brewId)}, {"$set": updatedBrew})
 
     response = jsonify(data = "update response")
     response.headers.add('Access-Control-Allow-Origin', '*')
@@ -167,6 +169,49 @@ def updateBrew(id):
 def delete(id):
     print(request.json, flush=True)
     brewId = request.json.get("id")
-    collection.remove({"_id": ObjectId(brewId)})
+    brewCollection.remove({"_id": ObjectId(brewId)})
 
     return jsonify(data= "brew delete successfully") 
+
+# Route to handle creation of a brew
+@createInventoryRoute.route("/api/createinventory", methods=["POST"])
+def createInventory():
+    #print(request.json, flush=True)
+
+    # Request all information and store in variables
+    productName = request.json.get("productName")
+    totalLitres = request.json.get("totalLitres")
+    totalCasesSold500Month = request.json.get("totalCasesSold500Month")
+    remainingCases500 = request.json.get("remainingCases500")
+    totalCasesSold330Month = request.json.get("totalCasesSold330Month")
+    remainingCases330 = request.json.get("remainingCases330")
+    totalKegsSold = request.json.get("totalKegsSold")
+    remainingKegs = request.json.get("remainingKegs")
+    openingStockCases = request.json.get("openingStockCases")
+    openingStockKegs = request.json.get("openingStockKegs")
+    receiptsCases = request.json.get("receiptsCases")
+    receiptsKegs = request.json.get("receiptsKegs")
+
+    # print variables to check if correct
+    #print("Brew Name:" +productName +"total litres:" +totalLitres + " totalCasesSold500Month:" + totalCasesSold500Month + " remainingCases500:" + remainingCases500 + "totalCasesSold330Month:" + totalCasesSold330Month + " remainingCases330:" + remainingCases330 + " totalKegsSold:" + totalKegsSold + " remainingKegs:" + remainingKegs + " openingStockCases:" + openingStockCases + " openingStockKegs:" + openingStockKegs + " receiptsCases:" + receiptsCases + " receiptsKegs:" + receiptsKegs)
+
+    # create json format of data to send to MongoDB
+    inventory = {
+        "productName": productName,
+        "totalLitres": totalLitres,
+        "totalCasesSold500Month": totalCasesSold500Month,
+        "remainingCases500": remainingCases500,
+        "totalCasesSold330Month": totalCasesSold330Month,
+        "remainingCases330": remainingCases330,
+        "totalKegsSold": totalKegsSold,
+        "remainingKegs": remainingKegs,
+        "openingStockCases": openingStockCases,
+        "openingStockKegs": openingStockKegs,
+        "receiptsCases": receiptsCases,
+        "receiptsKegs": receiptsKegs
+    }
+
+    # Insert the brew into the mongoDB in mlabs, adapted from - https://docs.mongodb.com/manual/reference/method/db.collection.insertOne/
+    inventoryCollection.insert_one(inventory)
+
+    return jsonify(data="inventory created successfully")
