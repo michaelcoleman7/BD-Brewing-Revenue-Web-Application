@@ -7,10 +7,6 @@ import sys
 from pymongo import MongoClient
 from bson import ObjectId
 
-#app = Flask(__name__)
-#CORS(app)
-#cors = CORS(app, resources={r"/*"})
-
 # class to manage MongoDB ObjectId - as returns "object of type ObjectId is not serializable" without encoder
 class JSONEncoder(json.JSONEncoder):
     def default(self, o):
@@ -34,12 +30,13 @@ inventoryCollection = db["inventory"]
 #Blueprints
 indexBrewRoute = Blueprint("indexBrew", __name__)
 createBrewRoute = Blueprint("createBrew", __name__)
-brewRoute = Blueprint("brew", __name__)
 updateBrewRoute = Blueprint("updateBrew", __name__)
 deleteBrewRoute = Blueprint("deleteBrew", __name__)
 
 indexInventoryRoute = Blueprint("indexInventory", __name__)
 createInventoryRoute = Blueprint("createInventory", __name__)
+updateInventoryRoute = Blueprint("updateInventory", __name__)
+deleteInventoryRoute = Blueprint("deleteInventory", __name__)
 
 #routes 
 @indexBrewRoute.route("/api/brew")
@@ -184,7 +181,7 @@ def indexInventory():
     for document in retrieval:
         inventories.append({"_id": JSONEncoder().encode(document["_id"]), "productName":document["productName"]})
     return jsonify(data=inventories)
-# Route to handle creation of a brew
+# Route to handle creation of a Inventory
 @createInventoryRoute.route("/api/createinventory", methods=["POST"])
 def createInventory():
     #print(request.json, flush=True)
@@ -204,7 +201,7 @@ def createInventory():
     receiptsKegs = request.json.get("receiptsKegs")
 
     # print variables to check if correct
-    #print("Brew Name:" +productName +"total litres:" +totalLitres + " totalCasesSold500Month:" + totalCasesSold500Month + " remainingCases500:" + remainingCases500 + "totalCasesSold330Month:" + totalCasesSold330Month + " remainingCases330:" + remainingCases330 + " totalKegsSold:" + totalKegsSold + " remainingKegs:" + remainingKegs + " openingStockCases:" + openingStockCases + " openingStockKegs:" + openingStockKegs + " receiptsCases:" + receiptsCases + " receiptsKegs:" + receiptsKegs)
+    #print("product Name:" +productName +"total litres:" +totalLitres + " totalCasesSold500Month:" + totalCasesSold500Month + " remainingCases500:" + remainingCases500 + "totalCasesSold330Month:" + totalCasesSold330Month + " remainingCases330:" + remainingCases330 + " totalKegsSold:" + totalKegsSold + " remainingKegs:" + remainingKegs + " openingStockCases:" + openingStockCases + " openingStockKegs:" + openingStockKegs + " receiptsCases:" + receiptsCases + " receiptsKegs:" + receiptsKegs)
 
     # create json format of data to send to MongoDB
     inventory = {
@@ -222,7 +219,7 @@ def createInventory():
         "receiptsKegs": receiptsKegs
     }
 
-    # Insert the brew into the mongoDB in mlabs, adapted from - https://docs.mongodb.com/manual/reference/method/db.collection.insertOne/
+    # Insert the Inventory into the mongoDB in mlabs, adapted from - https://docs.mongodb.com/manual/reference/method/db.collection.insertOne/
     inventoryCollection.insert_one(inventory)
 
     return jsonify(data="inventory created successfully")
