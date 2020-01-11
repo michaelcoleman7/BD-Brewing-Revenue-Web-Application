@@ -46,6 +46,10 @@ def indexBrew():
     brews = []
 
     retrieval = brewCollection.find({})
+    ss = brewCollection.find( { "productName": "Sheep Stealer" } )
+    print(ss)
+    for document in ss:
+        print("productName" + document["productName"])
 
     for document in retrieval:
         brews.append({"_id": JSONEncoder().encode(document["_id"]), "productName":document["productName"]})
