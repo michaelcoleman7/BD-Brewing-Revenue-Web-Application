@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Redirect } from 'react-router';
+import Alert from 'react-bootstrap/Alert';
 import '../Stylesheets/Form.css';
 
 //set the url to send the data to
@@ -44,6 +45,7 @@ const divStyle = {
     const [duty, setDuty] = useState("");
     const [status, setStatus] = useState("");
     const [routeRedirect, setRedirect] = useState(false); 
+    const [showAlert, setAlertShow] = useState(false);
 
     const create = (event) => {
             event.preventDefault();   
@@ -88,8 +90,22 @@ const divStyle = {
 
                 
             }else{
+                setAlertShow(!showAlert);
                 console.log("Invalid form format, will not be sent to database");
             }
+    }
+
+    let alertFormError;
+    if(showAlert){
+        alertFormError =
+            <React.Fragment>
+                <Alert variant="danger" onClose={() => setAlertShow(false)} dismissible>
+                    <Alert.Heading>Invalid Form Format!</Alert.Heading>
+                    <p>
+                        Please ensure all form fields are filled out. Also ensure numberical values are displayed for correct fields
+                    </p>
+                </Alert>
+            </React.Fragment>
     }
 
     // Redirect to brew page after creation
@@ -150,7 +166,9 @@ const divStyle = {
                         <input type="text" name="status" placeholder="Enter Status" onChange={event => setStatus(event.target.value)}/>
                     </div>
                     <input type="submit" value="Create Brew"/>
+                    {alertFormError}
                 </form>
+
         </React.Fragment>)
 }
     
