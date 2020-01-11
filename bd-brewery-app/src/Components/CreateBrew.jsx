@@ -80,15 +80,19 @@ const divStyle = {
 
             //if all data is valid, then post to server
             if(productName && brewNo && beer && batchNo && brewDate && og && pg && abv && postConditionDate && postConditionVol && kegNo && bottleNo500 && bottleNo330 && duty && status){
-                fetch(url +"api/createbrew", options)
-                .then(res => {
-                    setRedirect(true);
-                    return res.json();
-                }).catch(err => {
-                    console.log(err)
-                })
-
-                
+                if(isNaN(parseFloat(og).toFixed(5)) || isNaN(parseFloat(pg).toFixed(5)) || isNaN(parseInt(kegNo)) || isNaN(parseInt(bottleNo500)) || isNaN(parseInt(bottleNo330))){
+                    setAlertShow(!showAlert);
+                    console.log("Invalid form format, will not be sent to database");
+                }
+                else{
+                    fetch(url +"api/createbrew", options)
+                    .then(res => {
+                        setRedirect(true);
+                        return res.json();
+                    }).catch(err => {
+                        console.log(err)
+                    })
+                }               
             }else{
                 setAlertShow(!showAlert);
                 console.log("Invalid form format, will not be sent to database");
@@ -134,10 +138,10 @@ const divStyle = {
                         <label>Brew Date</label>
                         <input type="text" name="brewDate" placeholder="Enter Brew Date" onChange={event => setBrewDate(event.target.value)}/>
 
-                        <label>OG (Original Gravity)</label>
+                        <label>OG (Original Gravity) - Number required</label>
                         <input type="text" name="og" placeholder="Enter OG" onChange={event => setOG(event.target.value)}/>
 
-                        <label>PG (Present Gravity)</label>
+                        <label>PG (Present Gravity) - Number required</label>
                         <input type="text" name="pg" placeholder="Enter PG" onChange={event => setPG(event.target.value)}/>
 
                         <label>ABV</label>
@@ -150,13 +154,13 @@ const divStyle = {
                         <label>Post Conditioning Volume</label>
                         <input type="text" name="postConditionVol" placeholder="Enter Post Conditioning Volume" onChange={event => setPCV(event.target.value)}/>
 
-                        <label>Keg No</label>
+                        <label>Keg No - Number required</label>
                         <input type="text" name="kegNo" placeholder="Enter Keg Number" onChange={event => setKegNo(event.target.value)}/>
 
-                        <label>Bottle Number (500ml)</label>
+                        <label>Bottle Number (500ml) - Number required</label>
                         <input type="text" name="bottleNo500" placeholder="Enter Bottle Number (500ml)" onChange={event => setBottleNo500(event.target.value)}/>
 
-                        <label>Bottle Number (330ml)</label>
+                        <label>Bottle Number (330ml) - Number required</label>
                         <input type="text" name="bottleNo330" placeholder="Enter Bottle Number (330ml)" onChange={event => setBottleNo330(event.target.value)}/>
 
                         <label>Duty</label>
