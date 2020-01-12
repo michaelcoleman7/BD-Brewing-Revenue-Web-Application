@@ -28,7 +28,6 @@ const divStyle = {
   const CreateInventory = () => {
     // using react hooks to get data back - adapted from https://reactjs.org/docs/hooks-state.html
     const [productName, setProductName] = useState("");
-    const [totalLitres, setTotalLitres] = useState("");
     //const [totalCasesSold500, setTotalCasesSold500] = useState(""); - calculated with formula
     const [totalCasesSold500Month, setTotalCasesSold500Month] = useState("");
     const [remainingCases500, setRemainingCases500] = useState("");
@@ -53,7 +52,6 @@ const divStyle = {
             //brew values to be sent to server
             const inventory = {
                 productName: productName,
-                totalLitres: totalLitres,
                 totalCasesSold500Month: totalCasesSold500Month,
                 remainingCases500: remainingCases500,
                 totalCasesSold330Month: totalCasesSold330Month,
@@ -76,7 +74,7 @@ const divStyle = {
             }
 
             //if all data is valid, then post to server
-            if(productName && totalLitres && totalCasesSold500Month && remainingCases500 && totalCasesSold330Month && remainingCases330 && totalKegsSold && remainingKegs && openingStockCases && openingStockKegs && receiptsCases && receiptsKegs){
+            if(productName && totalCasesSold500Month && remainingCases500 && totalCasesSold330Month && remainingCases330 && totalKegsSold && remainingKegs && openingStockCases && openingStockKegs && receiptsCases && receiptsKegs){
                 fetch(url +"api/createinventory", options)
                 .then(res => {
                     setRedirect(true);
@@ -105,9 +103,6 @@ const divStyle = {
                         <input type="text" placeholder="Enter Product Name" onChange= {event => setProductName(event.target.value)}/>
                     <div style={divStyle} className="float-left">
 
-                        <label>Total Litres</label>
-                        <input type="text" placeholder="Enter Total Litres" onChange= {event => setTotalLitres(event.target.value)}/>
-
                         <label>500 Cases Sold</label>
                         <input type="text" placeholder="Enter 500 Cases Sold" onChange={event => setTotalCasesSold500Month(event.target.value)}/>
 
@@ -119,10 +114,11 @@ const divStyle = {
 
                         <label>Remaining 330 Cases</label>
                         <input type="text"  placeholder="Enter Remaining 330 Cases" onChange={event => setRemainingCases330(event.target.value)}/>
-                    </div>
-                    <div className="float-right" style={divStyle}>
+
                         <label>Total Kegs Sold</label>
                         <input type="text" placeholder="Enter Kegs Sold" onChange={event => setTotalKegsSold(event.target.value)}/>
+                        </div>
+                        <div className="float-right" style={divStyle}>
 
                         <label>Remaining Kegs</label>
                         <input type="text"placeholder="Enter Remaining Kegs" onChange={event => setRemainingKegs(event.target.value)}/>

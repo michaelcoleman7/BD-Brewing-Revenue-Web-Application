@@ -31,7 +31,6 @@ const divStyle = {
     const [inventory, setInventory] = useState("");
     const [changeInventory, setChangeInventory] = useState(false); 
 
-    const [totalLitres, setTotalLitres] = useState("");
     const [totalCasesSold500Month, setTotalCasesSold500Month] = useState("");
     const [remainingCases500, setRemainingCases500] = useState("");
     const [totalCasesSold330Month, setTotalCasesSold330Month] = useState("");
@@ -62,7 +61,6 @@ const divStyle = {
             let parsed = JSON.parse(res.data);
             setInventory(parsed);
             setProductName(parsed.productName);
-            setTotalLitres(parsed.totalLitres);
             setTotalCasesSold500Month(parsed.totalCasesSold500Month);
             setRemainingCases500(parsed.remainingCases500);
             setTotalCasesSold330Month(parsed.totalCasesSold330Month);
@@ -88,7 +86,6 @@ const divStyle = {
         const inventory = {
             inventoryId: inventoryId,
             productName: productName,
-            totalLitres: totalLitres,
             totalCasesSold500Month: totalCasesSold500Month,
             remainingCases500: remainingCases500,
             totalCasesSold330Month: totalCasesSold330Month,
@@ -162,9 +159,6 @@ const divStyle = {
                         <input type="text" placeholder="Enter Product Name" onChange= {event => setProductName(event.target.value)} defaultValue={inventory.productName}/>
                     <div style={divStyle} className="float-left">
 
-                        <label>Total Litres</label>
-                        <input type="text" placeholder="Enter Total Litres" onChange= {event => setTotalLitres(event.target.value)} defaultValue={inventory.totalLitres}/>
-
                         <label>500 Cases Sold</label>
                         <input type="text" placeholder="Enter 500 Cases Sold" onChange={event => setTotalCasesSold500Month(event.target.value)} defaultValue={inventory.totalCasesSold500Month}/>
 
@@ -176,11 +170,12 @@ const divStyle = {
 
                         <label>Remaining 330 Cases</label>
                         <input type="text"  placeholder="Enter Remaining 330 Cases" onChange={event => setRemainingCases330(event.target.value)} defaultValue={inventory.remainingCases330}/>
-                    </div>
-                    <div className="float-right" style={divStyle}>
+
                         <label>Total Kegs Sold</label>
                         <input type="text" placeholder="Enter Kegs Sold" onChange={event => setTotalKegsSold(event.target.value)} defaultValue={inventory.totalKegsSold}/>
 
+                    </div>
+                    <div className="float-right" style={divStyle}>
                         <label>Remaining Kegs</label>
                         <input type="text"placeholder="Enter Remaining Kegs" onChange={event => setRemainingKegs(event.target.value)} defaultValue={inventory.remainingKegs}/>
 
