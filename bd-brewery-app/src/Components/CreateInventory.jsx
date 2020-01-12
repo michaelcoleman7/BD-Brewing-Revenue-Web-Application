@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Redirect } from 'react-router';
+import Alert from 'react-bootstrap/Alert';
 import '../Stylesheets/Form.css';
 
 //set the url to send the data to
@@ -43,6 +44,7 @@ const divStyle = {
     const [receiptsKegs, setReceiptsKegs] = useState("");
     //For redirection after inventory is created
     const [routeRedirect, setRedirect] = useState(false); 
+    const [showAlert, setAlertShow] = useState(false);
 
     // -- more calculations to be done automatically
 
@@ -75,18 +77,38 @@ const divStyle = {
 
             //if all data is valid, then post to server
             if(productName && totalCasesSold500Month && remainingCases500 && totalCasesSold330Month && remainingCases330 && totalKegsSold && remainingKegs && openingStockCases && openingStockKegs && receiptsCases && receiptsKegs){
-                fetch(url +"api/createinventory", options)
-                .then(res => {
-                    setRedirect(true);
-                    return res.json();
-                }).catch(err => {
-                    console.log(err)
-                })
-
+                if(isNaN(parseInt(totalCasesSold500Month)) || isNaN(parseInt(remainingCases500)) || isNaN(parseInt(totalCasesSold330Month)) || isNaN(parseInt(remainingCases330)) || 
+                isNaN(parseInt(totalKegsSold)) || isNaN(parseInt(remainingKegs)) || isNaN(parseInt(openingStockCases)) || isNaN(parseInt(openingStockKegs)) || isNaN(parseInt(receiptsCases)) || isNaN(parseInt(receiptsKegs))){
+                    setAlertShow(!showAlert);
+                    console.log("Invalid form format, will not be sent to database");
+                }
+                else{
+                    fetch(url +"api/createinventory", options)
+                    .then(res => {
+                        setRedirect(true);
+                        return res.json();
+                    }).catch(err => {
+                        console.log(err)
+                    })
+                }  
                 
             }else{
+                setAlertShow(!showAlert);
                 console.log("Invalid form format, will not be sent to database");
             }
+    }
+
+    let alertFormError;
+    if(showAlert){
+        alertFormError =
+            <React.Fragment>
+                <Alert variant="danger" onClose={() => setAlertShow(false)} dismissible>
+                    <Alert.Heading>Invalid Form Format!</Alert.Heading>
+                    <p>
+                        Please ensure all form fields are filled out. Also ensure numberical values are displayed for correct fields
+                    </p>
+                </Alert>
+            </React.Fragment>
     }
 
     // Redirect to inventory page after creation
@@ -136,6 +158,7 @@ const divStyle = {
                         <input type="text" placeholder="Enter Receipts Kegs" onChange={event => setReceiptsKegs(event.target.value)}/>
                     </div>
                     <input type="submit" value="Create Inventory"/>
+                    {alertFormError}
                 </form>
         </React.Fragment>)
 }
