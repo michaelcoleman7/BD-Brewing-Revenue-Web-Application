@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card'
 import { Redirect } from 'react-router';
+import Alert from 'react-bootstrap/Alert';
 import '../Stylesheets/Form.css';
 
 //set the url to send the data to
@@ -47,6 +48,7 @@ const divStyle = {
     const [duty, setDuty] = useState("");
     const [status, setStatus] = useState("");
     const [routeRedirect, setRedirect] = useState(""); 
+    const [showAlert, setAlertShow] = useState(false);
 
     const getBrew = () => {
         let id = props.match.params.id;
@@ -120,16 +122,40 @@ const divStyle = {
             },
                body: JSON.stringify(brew)   
           }
-          
-          fetch(url+"api/updateBrew/"+ brewId, options)
-          .then(res => {
-              return res.json();
-          }).then(res => {
-              console.log(res)
-               setRedirect(true);
-          }).catch(err => {
-              console.log(err)
-          });
+                      //if all data is valid, then post to server
+                      if(productName && brewNo && beer && batchNo && brewDate && og && pg && abv && postConditionDate && postConditionVol && kegNo && bottleNo500 && bottleNo330 && duty && status){
+                        if(isNaN(parseFloat(og).toFixed(5)) || isNaN(parseFloat(pg).toFixed(5)) || isNaN(parseInt(kegNo)) || isNaN(parseInt(bottleNo500)) || isNaN(parseInt(bottleNo330))){
+                            setAlertShow(!showAlert);
+                            console.log("Invalid form format, will not be sent to database");
+                        }
+                        else{
+                            fetch(url+"api/updateBrew/"+ brewId, options)
+                            .then(res => {
+                                return res.json();
+                            }).then(res => {
+                                console.log(res)
+                                 setRedirect(true);
+                            }).catch(err => {
+                                console.log(err)
+                            });
+                        }               
+                    }else{
+                        setAlertShow(!showAlert);
+                        console.log("Invalid form format, will not be sent to database");
+                    }
+    }
+
+    let alertFormError;
+    if(showAlert){
+        alertFormError =
+            <React.Fragment>
+                <Alert variant="danger" onClose={() => setAlertShow(false)} dismissible>
+                    <Alert.Heading>Invalid Form Format!</Alert.Heading>
+                    <p>
+                        Please ensure all form fields are filled out. Also ensure numberical values are displayed for correct fields
+                    </p>
+                </Alert>
+            </React.Fragment>
     }
 
     const redirect = routeRedirect;
@@ -215,9 +241,8 @@ const divStyle = {
                         <input type="text" name="status" placeholder="Enter Status" onChange={event => setStatus(event.target.value)} defaultValue={brew.status}/>
                     </div>
                     <input type="submit" value="Update Brew"/>
-                </form>
-                
-                
+                    {alertFormError}
+                </form>  
             </React.Fragment>
     }
 
