@@ -39,13 +39,10 @@ const divStyle = {
     const [og, setOG] = useState("");
     const [pg, setPG] = useState("");
     //OG-PG is a also a variable, calculate using above values
-    const [abv, setABV] = useState("");
     const [postConditionDate, setPCD] = useState("");
-    const [postConditionVol, setPCV] = useState("");
     const [kegNo, setKegNo] = useState("");
     const [bottleNo500, setBottleNo500] = useState("");
     const [bottleNo330, setBottleNo330] = useState("");
-    const [duty, setDuty] = useState("");
     const [status, setStatus] = useState("");
     const [routeRedirect, setRedirect] = useState(""); 
     const [showAlert, setAlertShow] = useState(false);
@@ -74,13 +71,10 @@ const divStyle = {
             setBrewDate(parsed.brewDate);
             setOG(parsed.og);
             setPG(parsed.pg);
-            setABV(parsed.abv);
             setPCD(parsed.postConditionDate);
-            setPCV(parsed.postConditionVol);
             setKegNo(parsed.kegNo);
             setBottleNo500(parsed.bottleNo500);
             setBottleNo330(parsed.bottleNo330);
-            setDuty(parsed.duty);
             setStatus(parsed.status);
         }).catch(err => {
             console.log(err);
@@ -103,13 +97,10 @@ const divStyle = {
                 brewDate: brewDate,
                 og: og,
                 pg: pg,
-                abv: abv,
                 postConditionDate: postConditionDate,
-                postConditionVol: postConditionVol,
                 kegNo: kegNo,
                 bottleNo500: bottleNo500,
                 bottleNo330: bottleNo330,
-                duty: duty,
                 status: status
             }
 
@@ -123,7 +114,7 @@ const divStyle = {
                body: JSON.stringify(brew)   
           }
                       //if all data is valid, then post to server
-                      if(productName && brewNo && beer && batchNo && brewDate && og && pg && abv && postConditionDate && postConditionVol && kegNo && bottleNo500 && bottleNo330 && duty && status){
+                      if(productName && brewNo && beer && batchNo && brewDate && og && pg && postConditionDate && kegNo && bottleNo500 && bottleNo330 && status){
                         if(isNaN(parseFloat(og).toFixed(5)) || isNaN(parseFloat(pg).toFixed(5)) || isNaN(parseInt(kegNo)) || isNaN(parseInt(bottleNo500)) || isNaN(parseInt(bottleNo330))){
                             setAlertShow(!showAlert);
                             console.log("Invalid form format, will not be sent to database");
@@ -214,16 +205,10 @@ const divStyle = {
 
                         <label>PG (Present Gravity)</label>
                         <input type="text" name="pg" placeholder="Enter PG" onChange={event => setPG(event.target.value)} defaultValue={brew.pg}/>
-
-                        <label>ABV</label>
-                        <input type="text" name="abv" placeholder="Enter ABV" onChange={event => setABV(event.target.value)} defaultValue={brew.abv}/>
                     </div>
                     <div className="float-right" style={divStyle}>
                         <label>Post Conditioning Date</label>
                         <input type="text" name="postConditionDate" placeholder="Enter Post Conditioning Date" onChange={event => setPCD(event.target.value)} defaultValue={brew.postConditionDate}/>
-
-                        <label>Post Conditioning Volume</label>
-                        <input type="text" name="postConditionVol" placeholder="Enter Post Conditioning Volume" onChange={event => setPCV(event.target.value)} defaultValue={brew.postConditionVol}/>
 
                         <label>Keg No</label>
                         <input type="text" name="kegNo" placeholder="Enter Keg Number" onChange={event => setKegNo(event.target.value)} defaultValue={brew.kegNo}/>
@@ -233,9 +218,6 @@ const divStyle = {
 
                         <label>Bottle Number (330ml)</label>
                         <input type="text" name="bottleNo330" placeholder="Enter Bottle Number (330ml)" onChange={event => setBottleNo330(event.target.value)} defaultValue={brew.bottleNo330}/>
-
-                        <label>Duty</label>
-                        <input type="text" name="duty" placeholder="Enter Duty" onChange={event => setDuty(event.target.value)} defaultValue={brew.duty}/>
 
                         <label>Status</label>
                         <input type="text" name="status" placeholder="Enter Status" onChange={event => setStatus(event.target.value)} defaultValue={brew.status}/>

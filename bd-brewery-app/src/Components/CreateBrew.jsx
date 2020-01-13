@@ -36,13 +36,10 @@ const divStyle = {
     const [og, setOG] = useState("");
     const [pg, setPG] = useState("");
     //OG-PG is a also a variable, calculate using above values
-    const [abv, setABV] = useState("");
     const [postConditionDate, setPCD] = useState("");
-    const [postConditionVol, setPCV] = useState("");
     const [kegNo, setKegNo] = useState("");
     const [bottleNo500, setBottleNo500] = useState("");
     const [bottleNo330, setBottleNo330] = useState("");
-    const [duty, setDuty] = useState("");
     const [status, setStatus] = useState("");
     const [routeRedirect, setRedirect] = useState(false); 
     const [showAlert, setAlertShow] = useState(false);
@@ -59,13 +56,10 @@ const divStyle = {
                 brewDate: brewDate,
                 og: og,
                 pg: pg,
-                abv: abv,
                 postConditionDate: postConditionDate,
-                postConditionVol: postConditionVol,
                 kegNo: kegNo,
                 bottleNo500: bottleNo500,
                 bottleNo330: bottleNo330,
-                duty: duty,
                 status: status
             }
 
@@ -79,7 +73,7 @@ const divStyle = {
             }
 
             //if all data is valid, then post to server
-            if(productName && brewNo && beer && batchNo && brewDate && og && pg && abv && postConditionDate && postConditionVol && kegNo && bottleNo500 && bottleNo330 && duty && status){
+            if(productName && brewNo && beer && batchNo && brewDate && og && pg && postConditionDate && kegNo && bottleNo500 && bottleNo330 && status){
                 if(isNaN(parseFloat(og).toFixed(5)) || isNaN(parseFloat(pg).toFixed(5)) || isNaN(parseInt(kegNo)) || isNaN(parseInt(bottleNo500)) || isNaN(parseInt(bottleNo330))){
                     setAlertShow(!showAlert);
                     console.log("Invalid form format, will not be sent to database");
@@ -143,16 +137,10 @@ const divStyle = {
 
                         <label>PG (Present Gravity) - Number required</label>
                         <input type="text" name="pg" placeholder="Enter PG" onChange={event => setPG(event.target.value)}/>
-
-                        <label>ABV</label>
-                        <input type="text" name="abv" placeholder="Enter ABV" onChange={event => setABV(event.target.value)}/>
                     </div>
                     <div className="float-right" style={divStyle}>
                         <label>Post Conditioning Date</label>
                         <input type="text" name="postConditionDate" placeholder="Enter Post Conditioning Date" onChange={event => setPCD(event.target.value)}/>
-
-                        <label>Post Conditioning Volume</label>
-                        <input type="text" name="postConditionVol" placeholder="Enter Post Conditioning Volume" onChange={event => setPCV(event.target.value)}/>
 
                         <label>Keg No - Number required</label>
                         <input type="text" name="kegNo" placeholder="Enter Keg Number" onChange={event => setKegNo(event.target.value)}/>
@@ -162,9 +150,6 @@ const divStyle = {
 
                         <label>Bottle Number (330ml) - Number required</label>
                         <input type="text" name="bottleNo330" placeholder="Enter Bottle Number (330ml)" onChange={event => setBottleNo330(event.target.value)}/>
-
-                        <label>Duty</label>
-                        <input type="text" name="duty" placeholder="Enter Duty" onChange={event => setDuty(event.target.value)}/>
 
                         <label>Status</label>
                         <input type="text" name="status" placeholder="Enter Status" onChange={event => setStatus(event.target.value)}/>
