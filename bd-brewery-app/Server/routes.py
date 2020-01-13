@@ -85,7 +85,9 @@ def createBrew():
     bottleNo330 = request.json.get("bottleNo330")
     status = request.json.get("status")
 
-    abv=""
+    ogSubtractpg = float(og) - float(pg)
+    abv = calculateABV(ogSubtractpg)
+
     postConditionVol=""
     duty=""
 
@@ -139,7 +141,8 @@ def updateBrew(id):
     bottleNo330 = request.json.get("bottleNo330")
     status = request.json.get("status")
 
-    abv=""
+    ogSubtractpg = float(og) - float(pg)
+    abv = calculateABV(ogSubtractpg)
     postConditionVol=""
     duty=""
 
@@ -296,3 +299,35 @@ def delete(id):
     inventoryCollection.remove({"_id": ObjectId(inventoryId)})
 
     return jsonify(data= "inventory delete successfully") 
+
+
+
+
+def calculateABV(ogSubtractpg):
+    if (ogSubtractpg * 1000) < 6.9:
+        abv = ogSubtractpg * 0.125
+    elif (ogSubtractpg * 1000) < 10.4:
+        abv = ogSubtractpg * 0.126
+    elif (ogSubtractpg * 1000) < 17.2:
+        abv = ogSubtractpg * 0.127
+    elif (ogSubtractpg * 1000) < 26.1:
+        abv = ogSubtractpg * 0.128
+    elif (ogSubtractpg * 1000) < 36.0:
+        abv = ogSubtractpg * 0.129
+    elif (ogSubtractpg * 1000) < 46.5:
+        abv = ogSubtractpg * 0.13
+    elif (ogSubtractpg * 1000) < 57.1:
+        abv = ogSubtractpg * 0.131
+    elif (ogSubtractpg * 1000) < 67.9:
+        abv = ogSubtractpg * 0.132  
+    elif (ogSubtractpg * 1000) < 67.9:
+        abv = ogSubtractpg * 0.132    
+    elif (ogSubtractpg * 1000) < 67.9:
+        abv = ogSubtractpg * 0.132
+    else:
+        # Not givem anymore calculations, so set 0 if above specified values
+        abv = 0
+    # Calculate abv as a percentage by muliplying value by 1000
+    abv = abv * 1000
+    # Return abv rounded to 2 decimal places
+    return round(abv, 2)
