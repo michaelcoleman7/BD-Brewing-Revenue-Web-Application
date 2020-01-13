@@ -79,14 +79,15 @@ def createBrew():
     brewDate = request.json.get("brewDate")
     og = request.json.get("og")
     pg = request.json.get("pg")
-    abv = request.json.get("abv")
     postConditionDate = request.json.get("postConditionDate")
-    postConditionVol = request.json.get("postConditionVol")
     kegNo = request.json.get("kegNo")
     bottleNo500 = request.json.get("bottleNo500")
     bottleNo330 = request.json.get("bottleNo330")
-    duty = request.json.get("duty")
     status = request.json.get("status")
+
+    abv=""
+    postConditionVol=""
+    duty=""
 
     # print variables to check if correct
     #print("Brew Name:" +productName +"Brew Number:" +brewNo + " Beer:" + beer + " batchNo:" + batchNo + " brewDate:" + brewDate + " og:" + og + " pg:" + pg + " abv:" + abv + " postConditionDate:" + postConditionDate + " postConditionVol:" + postConditionVol + " kegNo:" + kegNo + " bottleNo500:" + bottleNo500 + " bottleNo330:" + bottleNo330 + " duty:" + duty + " status:" + status)
@@ -132,14 +133,15 @@ def updateBrew(id):
     brewDate = request.json.get("brewDate")
     og = request.json.get("og")
     pg = request.json.get("pg")
-    abv = request.json.get("abv")
     postConditionDate = request.json.get("postConditionDate")
-    postConditionVol = request.json.get("postConditionVol")
     kegNo = request.json.get("kegNo")
     bottleNo500 = request.json.get("bottleNo500")
     bottleNo330 = request.json.get("bottleNo330")
-    duty = request.json.get("duty")
     status = request.json.get("status")
+
+    abv=""
+    postConditionVol=""
+    duty=""
 
 
     # create json format of data to send to MongoDB
