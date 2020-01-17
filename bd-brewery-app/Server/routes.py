@@ -143,7 +143,7 @@ def updateBrew(id):
 
     ogSubtractpg = float(og) - float(pg)
     abv = calculateABV(ogSubtractpg)
-    postConditionVol=""
+    postConditionVol=calculatePCV(bottleNo330, bottleNo500, kegNo)
     duty=""
 
 
@@ -331,3 +331,11 @@ def calculateABV(ogSubtractpg):
     abv = abv * 1000
     # Return abv rounded to 2 decimal places
     return round(abv, 2)
+
+def calculatePCV(bottle330, bottle500, kegs):
+    bottleNum330 = int(bottle330)
+    bottleNum500 = int(bottle500)
+    kegNum = int(kegs)
+    postConditionVolume = (bottleNum330 * 7.92) + (bottleNum500 * 6) + (kegNum * 30)
+    print(postConditionVolume)
+    return round(postConditionVolume, 2)
