@@ -85,11 +85,9 @@ def createBrew():
     bottleNo330 = request.json.get("bottleNo330")
     status = request.json.get("status")
 
-    ogSubtractpg = float(og) - float(pg)
-    abv = calculateABV(ogSubtractpg)
-
-    postConditionVol=""
-    duty=""
+    abv = calculateABV(og, pg)
+    postConditionVol=calculatePCV(bottleNo330, bottleNo500, kegNo)
+    duty=calculateStatus(postConditionVol,abv)
 
     # print variables to check if correct
     #print("Brew Name:" +productName +"Brew Number:" +brewNo + " Beer:" + beer + " batchNo:" + batchNo + " brewDate:" + brewDate + " og:" + og + " pg:" + pg + " abv:" + abv + " postConditionDate:" + postConditionDate + " postConditionVol:" + postConditionVol + " kegNo:" + kegNo + " bottleNo500:" + bottleNo500 + " bottleNo330:" + bottleNo330 + " duty:" + duty + " status:" + status)
@@ -141,10 +139,9 @@ def updateBrew(id):
     bottleNo330 = request.json.get("bottleNo330")
     status = request.json.get("status")
 
-    ogSubtractpg = float(og) - float(pg)
-    abv = calculateABV(ogSubtractpg)
+    abv = calculateABV(og, pg)
     postConditionVol=calculatePCV(bottleNo330, bottleNo500, kegNo)
-    duty=""
+    duty=calculateStatus(postConditionVol,abv)
 
 
     # create json format of data to send to MongoDB
@@ -303,7 +300,8 @@ def delete(id):
 
 
 
-def calculateABV(ogSubtractpg):
+def calculateABV(og, pg):
+    ogSubtractpg = float(og) - float(pg)
     if (ogSubtractpg * 1000) < 6.9:
         abv = ogSubtractpg * 0.125
     elif (ogSubtractpg * 1000) < 10.4:
@@ -337,5 +335,8 @@ def calculatePCV(bottle330, bottle500, kegs):
     bottleNum500 = int(bottle500)
     kegNum = int(kegs)
     postConditionVolume = (bottleNum330 * 7.92) + (bottleNum500 * 6) + (kegNum * 30)
-    print(postConditionVolume)
     return round(postConditionVolume, 2)
+
+def calculateStatus(postConditionVolume , abv):
+    duty = (postConditionVolume/100 * abv * 22.5)/2
+    return round(duty, 2)
