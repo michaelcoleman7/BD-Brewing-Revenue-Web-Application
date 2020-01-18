@@ -47,9 +47,9 @@ def indexBrew():
 
     retrieval = brewCollection.find({})
     ss = brewCollection.find( { "productName": "Sheep Stealer" } )
-    print(ss)
-    for document in ss:
-        print("productName" + document["productName"])
+    #print(ss)
+    #for document in ss:
+        #print("productName" + document["productName"])
 
     for document in retrieval:
         brews.append({"_id": JSONEncoder().encode(document["_id"]), "productName":document["productName"]})
@@ -220,6 +220,16 @@ def createInventory():
 
     # print variables to check if correct
     #print("product Name:" +productName +"total litres:" +totalLitres + " totalCasesSold500Month:" + totalCasesSold500Month + " remainingCases500:" + remainingCases500 + "totalCasesSold330Month:" + totalCasesSold330Month + " remainingCases330:" + remainingCases330 + " totalKegsSold:" + totalKegsSold + " remainingKegs:" + remainingKegs + " openingStockCases:" + openingStockCases + " openingStockKegs:" + openingStockKegs + " receiptsCases:" + receiptsCases + " receiptsKegs:" + receiptsKegs)
+    brewDetails = brewCollection.find( { "productName": productName } )
+    for document in brewDetails:
+        print("productName Inventory" + document["productName"])
+        total500cases = document["bottleNo500"]
+        total330cases = document["bottleNo330"]
+        totalkegs = document["kegNo"]
+        totalCasesSold500 = int(total500cases) - int(remainingCases500)
+        totalCasesSold330 = int(total330cases) - int(remainingCases330)
+        totalKegsSold = int(totalkegs) - int(remainingKegs)
+        #print("totalCasesSold500: " + str(totalCasesSold500) + " remaining330: " + str(totalCasesSold330) + " remainingKegNo: " + str(totalKegsSold) )
 
     # create json format of data to send to MongoDB
     inventory = {
@@ -234,7 +244,10 @@ def createInventory():
         "openingStockCases": openingStockCases,
         "openingStockKegs": openingStockKegs,
         "receiptsCases": receiptsCases,
-        "receiptsKegs": receiptsKegs
+        "receiptsKegs": receiptsKegs,
+        "totalCasesSold500": totalCasesSold500,
+        "totalCasesSold330": totalCasesSold330,
+        "totalKegsSold": totalKegsSold
     }
 
     # Insert the Inventory into the mongoDB in mlabs, adapted from - https://docs.mongodb.com/manual/reference/method/db.collection.insertOne/
@@ -264,6 +277,17 @@ def updateInventory(id):
     receiptsCases = request.json.get("receiptsCases")
     receiptsKegs = request.json.get("receiptsKegs")
 
+    brewDetails = brewCollection.find( { "productName": productName } )
+    for document in brewDetails:
+        print("productName Inventory" + document["productName"])
+        total500cases = document["bottleNo500"]
+        total330cases = document["bottleNo330"]
+        totalkegs = document["kegNo"]
+        totalCasesSold500 = int(total500cases) - int(remainingCases500)
+        totalCasesSold330 = int(total330cases) - int(remainingCases330)
+        totalKegsSold = int(totalkegs) - int(remainingKegs)
+        #print("totalCasesSold500: " + str(totalCasesSold500) + " remaining330: " + str(totalCasesSold330) + " remainingKegNo: " + str(totalKegsSold) )
+
     # create json format of data to send to MongoDB
     updatedInventory = {
         "productName": productName,
@@ -277,7 +301,10 @@ def updateInventory(id):
         "openingStockCases": openingStockCases,
         "openingStockKegs": openingStockKegs,
         "receiptsCases": receiptsCases,
-        "receiptsKegs": receiptsKegs
+        "receiptsKegs": receiptsKegs,
+        "totalCasesSold500": totalCasesSold500,
+        "totalCasesSold330": totalCasesSold330,
+        "totalKegsSold": totalKegsSold
     }
 
     # need to parse id so that mongo gets correct instance of id, otherwise will take it as invalid - {"_id": ObjectId(brewId)}
@@ -296,7 +323,6 @@ def delete(id):
     inventoryCollection.remove({"_id": ObjectId(inventoryId)})
 
     return jsonify(data= "inventory delete successfully") 
-
 
 
 
