@@ -87,7 +87,7 @@ def createBrew():
 
     abv = calculateABV(og, pg)
     postConditionVol=calculatePCV(bottleNo330, bottleNo500, kegNo)
-    duty=calculateStatus(postConditionVol,abv)
+    duty=calculateDuty(postConditionVol,abv)
 
     # print variables to check if correct
     #print("Brew Name:" +productName +"Brew Number:" +brewNo + " Beer:" + beer + " batchNo:" + batchNo + " brewDate:" + brewDate + " og:" + og + " pg:" + pg + " abv:" + abv + " postConditionDate:" + postConditionDate + " postConditionVol:" + postConditionVol + " kegNo:" + kegNo + " bottleNo500:" + bottleNo500 + " bottleNo330:" + bottleNo330 + " duty:" + duty + " status:" + status)
@@ -141,7 +141,7 @@ def updateBrew(id):
 
     abv = calculateABV(og, pg)
     postConditionVol=calculatePCV(bottleNo330, bottleNo500, kegNo)
-    duty=calculateStatus(postConditionVol,abv)
+    duty=calculateDuty(postConditionVol,abv)
 
 
     # create json format of data to send to MongoDB
@@ -211,7 +211,7 @@ def createInventory():
     remainingCases500 = request.json.get("remainingCases500")
     totalCasesSold330Month = request.json.get("totalCasesSold330Month")
     remainingCases330 = request.json.get("remainingCases330")
-    totalKegsSold = request.json.get("totalKegsSold")
+    totalKegsSoldMonth = request.json.get("totalKegsSold")
     remainingKegs = request.json.get("remainingKegs")
     openingStockCases = request.json.get("openingStockCases")
     openingStockKegs = request.json.get("openingStockKegs")
@@ -231,6 +231,19 @@ def createInventory():
         totalKegsSold = int(totalkegs) - int(remainingKegs)
         #print("totalCasesSold500: " + str(totalCasesSold500) + " remaining330: " + str(totalCasesSold330) + " remainingKegNo: " + str(totalKegsSold) )
 
+        abv = document["abv"]
+        pcv = document["postConditionVol"]
+        receiptsAvg = float(pcv) * float(abv)
+        #print("receiptsAvg: " + str(receiptsAvg))
+
+        monthPCV = calculatePCV(totalCasesSold500Month ,totalCasesSold330Month, totalKegsSoldMonth )
+        soldAvgMonth = float(monthPCV) * float(abv)
+        #print("soldAvgMonth" + str(soldAvgMonth))
+
+        remainingPCV = calculatePCV(remainingCases500 ,remainingCases330, remainingKegs )
+        AvgRemaining= float(remainingPCV) * float(abv)
+        #print("AvgRemaining" + str(AvgRemaining))
+
     # create json format of data to send to MongoDB
     inventory = {
         "productName": productName,
@@ -239,7 +252,7 @@ def createInventory():
         "remainingCases500": remainingCases500,
         "totalCasesSold330Month": totalCasesSold330Month,
         "remainingCases330": remainingCases330,
-        "totalKegsSold": totalKegsSold,
+        "totalKegsSoldMonth": totalKegsSoldMonth,
         "remainingKegs": remainingKegs,
         "openingStockCases": openingStockCases,
         "openingStockKegs": openingStockKegs,
@@ -247,7 +260,10 @@ def createInventory():
         "receiptsKegs": receiptsKegs,
         "totalCasesSold500": totalCasesSold500,
         "totalCasesSold330": totalCasesSold330,
-        "totalKegsSold": totalKegsSold
+        "totalKegsSold": totalKegsSold,
+        "receiptsAvg": receiptsAvg,
+        "soldAvgMonth": soldAvgMonth,
+        "AvgRemaining": AvgRemaining
     }
 
     # Insert the Inventory into the mongoDB in mlabs, adapted from - https://docs.mongodb.com/manual/reference/method/db.collection.insertOne/
@@ -270,7 +286,7 @@ def updateInventory(id):
     remainingCases500 = request.json.get("remainingCases500")
     totalCasesSold330Month = request.json.get("totalCasesSold330Month")
     remainingCases330 = request.json.get("remainingCases330")
-    totalKegsSold = request.json.get("totalKegsSold")
+    totalKegsSoldMonth = request.json.get("totalKegsSold")
     remainingKegs = request.json.get("remainingKegs")
     openingStockCases = request.json.get("openingStockCases")
     openingStockKegs = request.json.get("openingStockKegs")
@@ -288,6 +304,19 @@ def updateInventory(id):
         totalKegsSold = int(totalkegs) - int(remainingKegs)
         #print("totalCasesSold500: " + str(totalCasesSold500) + " remaining330: " + str(totalCasesSold330) + " remainingKegNo: " + str(totalKegsSold) )
 
+        abv = document["abv"]
+        pcv = document["postConditionVol"]
+        receiptsAvg = float(pcv) * float(abv)
+        #print("receiptsAvg: " + str(receiptsAvg))
+
+        monthPCV = calculatePCV(totalCasesSold500Month ,totalCasesSold330Month, totalKegsSoldMonth )
+        soldAvgMonth = float(monthPCV) * float(abv)
+        #print("soldAvgMonth" + str(soldAvgMonth))
+
+        remainingPCV = calculatePCV(remainingCases500 ,remainingCases330, remainingKegs )
+        AvgRemaining= float(remainingPCV) * float(abv)
+        #print("AvgRemaining" + str(AvgRemaining))
+
     # create json format of data to send to MongoDB
     updatedInventory = {
         "productName": productName,
@@ -296,7 +325,7 @@ def updateInventory(id):
         "remainingCases500": remainingCases500,
         "totalCasesSold330Month": totalCasesSold330Month,
         "remainingCases330": remainingCases330,
-        "totalKegsSold": totalKegsSold,
+        "totalKegsSoldMonth": totalKegsSoldMonth,
         "remainingKegs": remainingKegs,
         "openingStockCases": openingStockCases,
         "openingStockKegs": openingStockKegs,
@@ -304,7 +333,10 @@ def updateInventory(id):
         "receiptsKegs": receiptsKegs,
         "totalCasesSold500": totalCasesSold500,
         "totalCasesSold330": totalCasesSold330,
-        "totalKegsSold": totalKegsSold
+        "totalKegsSold": totalKegsSold,
+        "receiptsAvg": receiptsAvg,
+        "soldAvgMonth": soldAvgMonth,
+        "AvgRemaining": AvgRemaining
     }
 
     # need to parse id so that mongo gets correct instance of id, otherwise will take it as invalid - {"_id": ObjectId(brewId)}
@@ -363,6 +395,6 @@ def calculatePCV(bottle330, bottle500, kegs):
     postConditionVolume = (bottleNum330 * 7.92) + (bottleNum500 * 6) + (kegNum * 30)
     return round(postConditionVolume, 2)
 
-def calculateStatus(postConditionVolume , abv):
+def calculateDuty(postConditionVolume , abv):
     duty = (postConditionVolume/100 * abv * 22.5)/2
     return round(duty, 2)
