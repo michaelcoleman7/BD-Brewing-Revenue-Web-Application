@@ -295,8 +295,8 @@ def updateInventory(id):
     openingStock330Cases = request.json.get("openingStock330Cases")
     openingStock500Cases = request.json.get("openingStock500Cases")
     openingStockKegs = request.json.get("openingStockKegs")
-    receiptsCases500 = request.json.get("receiptsCases500")
-    receiptsCases330 = request.json.get("receiptsCases330")
+    receiptsCases500 = request.json.get("receipts500Cases")
+    receiptsCases330 = request.json.get("receipts330Cases")
     receiptsKegs = request.json.get("receiptsKegs")
 
     brewDetails = brewCollection.find( { "productName": productName } )
@@ -323,10 +323,11 @@ def updateInventory(id):
         AvgRemaining= float(remainingPCV) * float(abv)
         #print("AvgRemaining" + str(AvgRemaining))
 
-
         # Deliveries calculations
-
-
+        deliveries330Cases = (int(openingStock330Cases) + int(receiptsCases330)) - int(remainingCases330)
+        deliveries500Cases = (int(openingStock500Cases) + int(receiptsCases500)) - int(remainingCases500)
+        deliveriesKegs = (int(openingStockKegs) + int(receiptsKegs)) - int(remainingKegs)
+        #print("deliveries330Cases "+str(deliveries330Cases)+" deliveries500Cases"+str(deliveries500Cases)+" deliveriesKegs"+str(deliveriesKegs))
 
     # create json format of data to send to MongoDB
     updatedInventory = {
