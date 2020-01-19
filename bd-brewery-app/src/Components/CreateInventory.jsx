@@ -40,7 +40,8 @@ const divStyle = {
     const [remainingKegs, setRemainingKegs] = useState("");
     const [openingStockCases, setOpeningStockCases] = useState("");
     const [openingStockKegs, setOpeningStockKegs] = useState("");
-    const [receiptsCases, setReceiptsCases] = useState("");
+    const [receipts330Cases, setReceipts330Cases] = useState("");
+    const [receipts500Cases, setReceipts500Cases] = useState("");
     const [receiptsKegs, setReceiptsKegs] = useState("");
     //For redirection after inventory is created
     const [routeRedirect, setRedirect] = useState(false); 
@@ -62,7 +63,8 @@ const divStyle = {
                 remainingKegs: remainingKegs,
                 openingStockCases: openingStockCases,
                 openingStockKegs: openingStockKegs,
-                receiptsCases: receiptsCases,
+                receipts330Cases: receipts330Cases,
+                receipts500Cases: receipts500Cases,
                 receiptsKegs: receiptsKegs
             }
 
@@ -76,9 +78,9 @@ const divStyle = {
             }
 
             //if all data is valid, then post to server
-            if(productName && totalCasesSold500Month && remainingCases500 && totalCasesSold330Month && remainingCases330 && totalKegsSold && remainingKegs && openingStockCases && openingStockKegs && receiptsCases && receiptsKegs){
+            if(productName && totalCasesSold500Month && remainingCases500 && totalCasesSold330Month && remainingCases330 && totalKegsSold && remainingKegs && openingStockCases && openingStockKegs && receipts330Cases && receipts500Cases && receiptsKegs){
                 if(isNaN(parseInt(totalCasesSold500Month)) || isNaN(parseInt(remainingCases500)) || isNaN(parseInt(totalCasesSold330Month)) || isNaN(parseInt(remainingCases330)) || 
-                isNaN(parseInt(totalKegsSold)) || isNaN(parseInt(remainingKegs)) || isNaN(parseInt(openingStockCases)) || isNaN(parseInt(openingStockKegs)) || isNaN(parseInt(receiptsCases)) || isNaN(parseInt(receiptsKegs))){
+                isNaN(parseInt(totalKegsSold)) || isNaN(parseInt(remainingKegs)) || isNaN(parseInt(openingStockCases)) || isNaN(parseInt(openingStockKegs)) || isNaN(parseInt(receipts330Cases)) || isNaN(parseInt(receipts500Cases)) || isNaN(parseInt(receiptsKegs))){
                     setAlertShow(!showAlert);
                     console.log("Invalid form format, will not be sent to database");
                 }
@@ -151,8 +153,11 @@ const divStyle = {
                         <label>Opening Stock Kegs</label>
                         <input type="text" placeholder="Enter Opening Stock Kegs" onChange={event => setOpeningStockKegs(event.target.value)}/>
 
-                        <label>Receipts Cases</label>
-                        <input type="text" placeholder="Enter Receipts Cases" onChange={event => setReceiptsCases(event.target.value)}/>
+                        <label>Receipts 500ml Cases</label>
+                        <input type="text" placeholder="Enter Receipts Cases" onChange={event => setReceipts500Cases(event.target.value)}/>
+
+                        <label>Receipts 330ml Cases</label>
+                        <input type="text" placeholder="Enter Receipts Cases" onChange={event => setReceipts330Cases(event.target.value)}/>
 
                         <label>Receipts Kegs</label>
                         <input type="text" placeholder="Enter Receipts Kegs" onChange={event => setReceiptsKegs(event.target.value)}/>

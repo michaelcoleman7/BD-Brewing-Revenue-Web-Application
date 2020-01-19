@@ -36,11 +36,12 @@ const divStyle = {
     const [remainingCases500, setRemainingCases500] = useState("");
     const [totalCasesSold330Month, setTotalCasesSold330Month] = useState("");
     const [remainingCases330, setRemainingCases330] = useState("");
-    const [totalKegsSold, setTotalKegsSold] = useState("");
+    const [totalKegsSoldMonth, setTotalKegsSoldMonth] = useState("");
     const [remainingKegs, setRemainingKegs] = useState("");
     const [openingStockCases, setOpeningStockCases] = useState("");
     const [openingStockKegs, setOpeningStockKegs] = useState("");
-    const [receiptsCases, setReceiptsCases] = useState("");
+    const [receipts330Cases, setReceipts330Cases] = useState("");
+    const [receipts500Cases, setReceipts500Cases] = useState("");
     const [receiptsKegs, setReceiptsKegs] = useState("");
     const [routeRedirect, setRedirect] = useState(""); 
     const [showAlert, setAlertShow] = useState(false);
@@ -67,11 +68,12 @@ const divStyle = {
             setRemainingCases500(parsed.remainingCases500);
             setTotalCasesSold330Month(parsed.totalCasesSold330Month);
             setRemainingCases330(parsed.remainingCases330);
-            setTotalKegsSold(parsed.totalKegsSold);
+            setTotalKegsSoldMonth(parsed.totalKegsSoldMonth);
             setRemainingKegs(parsed.remainingKegs);
             setOpeningStockCases(parsed.openingStockCases);
             setOpeningStockKegs(parsed.openingStockKegs);
-            setReceiptsCases(parsed.receiptsCases);
+            setReceipts500Cases(parsed.receipts500Cases);
+            setReceipts330Cases(parsed.receipts330Cases);
             setReceiptsKegs(parsed.receiptsKegs);
         }).catch(err => {
             console.log(err);
@@ -92,11 +94,12 @@ const divStyle = {
             remainingCases500: remainingCases500,
             totalCasesSold330Month: totalCasesSold330Month,
             remainingCases330: remainingCases330,
-            totalKegsSold: totalKegsSold,
+            totalKegsSoldMonth: totalKegsSoldMonth,
             remainingKegs: remainingKegs,
             openingStockCases: openingStockCases,
             openingStockKegs: openingStockKegs,
-            receiptsCases: receiptsCases,
+            receipts330Cases: receipts330Cases,
+            receipts500Cases: receipts500Cases,
             receiptsKegs: receiptsKegs
         }
 
@@ -111,9 +114,9 @@ const divStyle = {
           }
 
             //if all data is valid, then post to server
-            if(productName && totalCasesSold500Month && remainingCases500 && totalCasesSold330Month && remainingCases330 && totalKegsSold && remainingKegs && openingStockCases && openingStockKegs && receiptsCases && receiptsKegs){
+            if(productName && totalCasesSold500Month && remainingCases500 && totalCasesSold330Month && remainingCases330 && totalKegsSoldMonth && remainingKegs && openingStockCases && openingStockKegs && receipts330Cases && receipts500Cases && receiptsKegs){
                 if(isNaN(parseInt(totalCasesSold500Month)) || isNaN(parseInt(remainingCases500)) || isNaN(parseInt(totalCasesSold330Month)) || isNaN(parseInt(remainingCases330)) || 
-                isNaN(parseInt(totalKegsSold)) || isNaN(parseInt(remainingKegs)) || isNaN(parseInt(openingStockCases)) || isNaN(parseInt(openingStockKegs)) || isNaN(parseInt(receiptsCases)) || isNaN(parseInt(receiptsKegs))){
+                isNaN(parseInt(totalKegsSoldMonth)) || isNaN(parseInt(remainingKegs)) || isNaN(parseInt(openingStockCases)) || isNaN(parseInt(openingStockKegs)) || isNaN(parseInt(receipts330Cases)) || isNaN(parseInt(receipts500Cases)) || isNaN(parseInt(receiptsKegs))){
                     setAlertShow(!showAlert);
                     console.log("Invalid form format, will not be sent to database");
                 }
@@ -200,21 +203,23 @@ const divStyle = {
                         <input type="text"  placeholder="Enter Remaining 330 Cases" onChange={event => setRemainingCases330(event.target.value)} defaultValue={inventory.remainingCases330}/>
 
                         <label>Total Kegs Sold</label>
-                        <input type="text" placeholder="Enter Kegs Sold" onChange={event => setTotalKegsSold(event.target.value)} defaultValue={inventory.totalKegsSold}/>
+                        <input type="text" placeholder="Enter Kegs Sold" onChange={event => setTotalKegsSoldMonth(event.target.value)} defaultValue={inventory.totalKegsSoldMonth}/>
 
-                    </div>
-                    <div className="float-right" style={divStyle}>
                         <label>Remaining Kegs</label>
                         <input type="text"placeholder="Enter Remaining Kegs" onChange={event => setRemainingKegs(event.target.value)} defaultValue={inventory.remainingKegs}/>
-
+                    </div>
+                    <div className="float-right" style={divStyle}>
                         <label>Opening Stock Cases</label>
                         <input type="text" placeholder="Enter Opening Stock Cases" onChange={event => setOpeningStockCases(event.target.value)} defaultValue={inventory.openingStockCases}/>
 
                         <label>Opening Stock Kegs</label>
                         <input type="text" placeholder="Enter Opening Stock Kegs" onChange={event => setOpeningStockKegs(event.target.value)} defaultValue={inventory.openingStockKegs}/>
 
-                        <label>Receipts Cases</label>
-                        <input type="text" placeholder="Enter Receipts Cases" onChange={event => setReceiptsCases(event.target.value)} defaultValue={inventory.receiptsCases}/>
+                        <label>Receipts 500ml Cases</label>
+                        <input type="text" placeholder="Enter Receipts Cases" onChange={event => setReceipts330Cases(event.target.value)} defaultValue={inventory.receipts330Cases}/>
+
+                        <label>Receipts 330ml Cases</label>
+                        <input type="text" placeholder="Enter Receipts Cases" onChange={event => setReceipts500Cases(event.target.value)} defaultValue={inventory.receipts500Cases}/>
 
                         <label>Receipts Kegs</label>
                         <input type="text" placeholder="Enter Receipts Kegs" onChange={event => setReceiptsKegs(event.target.value)} defaultValue={inventory.receiptsKegs}/>
