@@ -38,7 +38,8 @@ const divStyle = {
     const [remainingCases330, setRemainingCases330] = useState("");
     const [totalKegsSoldMonth, setTotalKegsSoldMonth] = useState("");
     const [remainingKegs, setRemainingKegs] = useState("");
-    const [openingStockCases, setOpeningStockCases] = useState("");
+    const [openingStock330Cases, setOpeningStock330Cases] = useState("");
+    const [openingStock500Cases, setOpeningStock500Cases] = useState("");
     const [openingStockKegs, setOpeningStockKegs] = useState("");
     const [receipts330Cases, setReceipts330Cases] = useState("");
     const [receipts500Cases, setReceipts500Cases] = useState("");
@@ -70,7 +71,8 @@ const divStyle = {
             setRemainingCases330(parsed.remainingCases330);
             setTotalKegsSoldMonth(parsed.totalKegsSoldMonth);
             setRemainingKegs(parsed.remainingKegs);
-            setOpeningStockCases(parsed.openingStockCases);
+            setOpeningStock330Cases(parsed.openingStock330Cases);
+            setOpeningStock500Cases(parsed.openingStock500Cases);
             setOpeningStockKegs(parsed.openingStockKegs);
             setReceipts500Cases(parsed.receipts500Cases);
             setReceipts330Cases(parsed.receipts330Cases);
@@ -96,7 +98,8 @@ const divStyle = {
             remainingCases330: remainingCases330,
             totalKegsSoldMonth: totalKegsSoldMonth,
             remainingKegs: remainingKegs,
-            openingStockCases: openingStockCases,
+            openingStock330Cases: openingStock330Cases,
+            openingStock500Cases: openingStock500Cases,
             openingStockKegs: openingStockKegs,
             receipts330Cases: receipts330Cases,
             receipts500Cases: receipts500Cases,
@@ -114,9 +117,9 @@ const divStyle = {
           }
 
             //if all data is valid, then post to server
-            if(productName && totalCasesSold500Month && remainingCases500 && totalCasesSold330Month && remainingCases330 && totalKegsSoldMonth && remainingKegs && openingStockCases && openingStockKegs && receipts330Cases && receipts500Cases && receiptsKegs){
+            if(productName && totalCasesSold500Month && remainingCases500 && totalCasesSold330Month && remainingCases330 && totalKegsSoldMonth && remainingKegs && openingStock330Cases && openingStock500Cases && openingStockKegs && receipts330Cases && receipts500Cases && receiptsKegs){
                 if(isNaN(parseInt(totalCasesSold500Month)) || isNaN(parseInt(remainingCases500)) || isNaN(parseInt(totalCasesSold330Month)) || isNaN(parseInt(remainingCases330)) || 
-                isNaN(parseInt(totalKegsSoldMonth)) || isNaN(parseInt(remainingKegs)) || isNaN(parseInt(openingStockCases)) || isNaN(parseInt(openingStockKegs)) || isNaN(parseInt(receipts330Cases)) || isNaN(parseInt(receipts500Cases)) || isNaN(parseInt(receiptsKegs))){
+                isNaN(parseInt(totalKegsSoldMonth)) || isNaN(parseInt(remainingKegs)) || isNaN(parseInt(openingStock330Cases))|| isNaN(parseInt(openingStock500Cases))  || isNaN(parseInt(openingStockKegs)) || isNaN(parseInt(receipts330Cases)) || isNaN(parseInt(receipts500Cases)) || isNaN(parseInt(receiptsKegs))){
                     setAlertShow(!showAlert);
                     console.log("Invalid form format, will not be sent to database");
                 }
@@ -208,9 +211,12 @@ const divStyle = {
                         <label>Remaining Kegs</label>
                         <input type="text"placeholder="Enter Remaining Kegs" onChange={event => setRemainingKegs(event.target.value)} defaultValue={inventory.remainingKegs}/>
                     </div>
-                    <div className="float-right" style={divStyle}>
-                        <label>Opening Stock Cases</label>
-                        <input type="text" placeholder="Enter Opening Stock Cases" onChange={event => setOpeningStockCases(event.target.value)} defaultValue={inventory.openingStockCases}/>
+                    <div className="float-right" style={divStyle}>           
+                        <label>Opening Stock 500ml Cases</label>
+                        <input type="text" placeholder="Enter Opening Stock 500ml Cases" onChange={event => setOpeningStock500Cases(event.target.value)} defaultValue={inventory.openingStock500Cases}/>
+
+                        <label>Opening Stock 330ml Cases</label>
+                        <input type="text" placeholder="Enter Opening Stock 330ml Cases" onChange={event => setOpeningStock330Cases(event.target.value)} defaultValue={inventory.openingStock330Cases}/>
 
                         <label>Opening Stock Kegs</label>
                         <input type="text" placeholder="Enter Opening Stock Kegs" onChange={event => setOpeningStockKegs(event.target.value)} defaultValue={inventory.openingStockKegs}/>

@@ -213,7 +213,8 @@ def createInventory():
     remainingCases330 = request.json.get("remainingCases330")
     totalKegsSoldMonth = request.json.get("totalKegsSold")
     remainingKegs = request.json.get("remainingKegs")
-    openingStockCases = request.json.get("openingStockCases")
+    openingStock330Cases = request.json.get("openingStock330Cases")
+    openingStock500Cases = request.json.get("openingStock500Cases")
     openingStockKegs = request.json.get("openingStockKegs")
     receipts500Cases = request.json.get("receipts500Cases")
     receipts330Cases = request.json.get("receipts330Cases")
@@ -255,7 +256,8 @@ def createInventory():
         "remainingCases330": remainingCases330,
         "totalKegsSoldMonth": totalKegsSoldMonth,
         "remainingKegs": remainingKegs,
-        "openingStockCases": openingStockCases,
+        "openingStock330Cases": openingStock330Cases,
+        "openingStock500Cases": openingStock500Cases,
         "openingStockKegs": openingStockKegs,
         "receipts500Cases": receipts500Cases,
         "receipts330Cases": receipts330Cases,
@@ -290,7 +292,8 @@ def updateInventory(id):
     remainingCases330 = request.json.get("remainingCases330")
     totalKegsSoldMonth = request.json.get("totalKegsSoldMonth")
     remainingKegs = request.json.get("remainingKegs")
-    openingStockCases = request.json.get("openingStockCases")
+    openingStock330Cases = request.json.get("openingStock330Cases")
+    openingStock500Cases = request.json.get("openingStock500Cases")
     openingStockKegs = request.json.get("openingStockKegs")
     receiptsCases500 = request.json.get("receiptsCases500")
     receiptsCases330 = request.json.get("receiptsCases330")
@@ -324,6 +327,7 @@ def updateInventory(id):
         # Deliveries calculations
 
 
+
     # create json format of data to send to MongoDB
     updatedInventory = {
         "productName": productName,
@@ -334,7 +338,8 @@ def updateInventory(id):
         "remainingCases330": remainingCases330,
         "totalKegsSoldMonth": totalKegsSoldMonth,
         "remainingKegs": remainingKegs,
-        "openingStockCases": openingStockCases,
+        "openingStock330Cases": openingStock330Cases,
+        "openingStock500Cases": openingStock500Cases,
         "openingStockKegs": openingStockKegs,
         "receiptsCases500": receiptsCases500,
         "receiptsCases330": receiptsCases330,
