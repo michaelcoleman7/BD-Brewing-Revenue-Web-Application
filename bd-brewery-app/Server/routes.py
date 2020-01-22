@@ -121,8 +121,8 @@ def createBrew():
 # Added cross origin to prevent blocking of requests
 #@cross_origin(origin='localhost',headers=['Content-Type','Authorization']) 
 def updateBrew(id):
-    print("Updated Info")
-    print(request.json, flush=True)
+    #print("Updated Info")
+    #print(request.json, flush=True)
     
     # Request all information and store in variables
     productName = request.json.get("productName")
@@ -203,7 +203,12 @@ def inventorySingle(id):
 @createInventoryRoute.route("/api/createinventory", methods=["POST"])
 def createInventory():
     #print(request.json, flush=True)
-
+    totalCasesSold500 = ""
+    totalCasesSold330 = ""
+    totalKegsSold = ""
+    receiptsAvg = ""
+    soldAvgMonth = ""
+    AvgRemaining =""
     # Request all information and store in variables
     productName = request.json.get("productName")
     totalLitres = request.json.get("totalLitres")
@@ -246,6 +251,11 @@ def createInventory():
         AvgRemaining= float(remainingPCV) * float(abv)
         #print("AvgRemaining" + str(AvgRemaining))
 
+        # Deliveries calculations
+        deliveries330Cases = (int(openingStock330Cases) + int(receipts330Cases)) - int(remainingCases330)
+        deliveries500Cases = (int(openingStock500Cases) + int(receipts500Cases)) - int(remainingCases500)
+        deliveriesKegs = (int(openingStockKegs) + int(receiptsKegs)) - int(remainingKegs)
+
     # create json format of data to send to MongoDB
     inventory = {
         "productName": productName,
@@ -279,9 +289,14 @@ def createInventory():
 # Added cross origin to prevent blocking of requests
 #@cross_origin(origin='localhost',headers=['Content-Type','Authorization']) 
 def updateInventory(id):
-    print("Updated Info")
-    print(request.json, flush=True)
-    
+    #print("Updated Info")
+    #print(request.json, flush=True)
+    totalCasesSold500 = ""
+    totalCasesSold330 = ""
+    totalKegsSold = ""
+    receiptsAvg = ""
+    soldAvgMonth = ""
+    AvgRemaining =""
     # Request all information and store in variables
     productName = request.json.get("productName")
     inventoryId= request.json.get("inventoryId")
@@ -313,7 +328,7 @@ def updateInventory(id):
         abv = document["abv"]
         pcv = document["postConditionVol"]
         receiptsAvg = float(pcv) * float(abv)
-        print("receiptsAvg: " + str(receiptsAvg))
+        # print("receiptsAvg: " + str(receiptsAvg))
 
         monthPCV = calculatePCV(totalCasesSold500Month ,totalCasesSold330Month, totalKegsSoldMonth )
         soldAvgMonth = float(monthPCV) * float(abv)
@@ -327,7 +342,14 @@ def updateInventory(id):
         deliveries330Cases = (int(openingStock330Cases) + int(receiptsCases330)) - int(remainingCases330)
         deliveries500Cases = (int(openingStock500Cases) + int(receiptsCases500)) - int(remainingCases500)
         deliveriesKegs = (int(openingStockKegs) + int(receiptsKegs)) - int(remainingKegs)
-        #print("deliveries330Cases "+str(deliveries330Cases)+" deliveries500Cases"+str(deliveries500Cases)+" deliveriesKegs"+str(deliveriesKegs))
+        #print("deliveries330Cases "+str(deliveries330Cases)+" deliveries500Cases"+str(deliveries500Cases)+" deliveriesKegs"+str(deliveriesKegs))#
+
+        # Calculate HL
+        OS_HL = calculatePCV(openingStock500Cases ,openingStock330Cases, openingStockKegs ) / 100
+        receipts_HL = calculatePCV(receiptsCases330 ,receiptsCases500, receiptsKegs ) / 100
+        deliveries_HL = calculatePCV(deliveries500Cases ,deliveries330Cases, deliveriesKegs ) / 100
+        CS_HL = remainingPCV / 100
+
 
     # create json format of data to send to MongoDB
     updatedInventory = {
@@ -356,6 +378,8 @@ def updateInventory(id):
     # need to parse id so that mongo gets correct instance of id, otherwise will take it as invalid - {"_id": ObjectId(brewId)}
     # Set the contents of the id in mongo to the updated data above - {"$set": updatedBrew}
     inventoryCollection.update_one({"_id": ObjectId(inventoryId)}, {"$set": updatedInventory})
+
+    calculateTotalUnits()
 
     response = jsonify(data = "update response")
     response.headers.add('Access-Control-Allow-Origin', '*')
@@ -412,3 +436,18 @@ def calculatePCV(bottle330, bottle500, kegs):
 def calculateDuty(postConditionVolume , abv):
     duty = (postConditionVolume/100 * abv * 22.5)/2
     return round(duty, 2)
+
+def calculateTotalUnits():
+    retrieval = inventoryCollection.find({},{ "receiptsAvg": 1, "_id": 0 })
+
+    totalLitres = float(0.0)
+
+    for document in retrieval: 
+        s = document["receiptsAvg"]
+        print(type(s))
+        totalLitres += float(totalLitres) + float(s)
+
+    print(totalLitres)
+    
+
+
