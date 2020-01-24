@@ -25,6 +25,7 @@ db = client["bd_brewery"]
 # link to collection name in mlab
 brewCollection = db["brew"]
 inventoryCollection = db["inventory"]
+totalCollection = db["totals"]
 
 
 #Blueprints
@@ -375,11 +376,15 @@ def updateInventory(id):
         "AvgRemaining": AvgRemaining
     }
 
-    # need to parse id so that mongo gets correct instance of id, otherwise will take it as invalid - {"_id": ObjectId(brewId)}
-    # Set the contents of the id in mongo to the updated data above - {"$set": updatedBrew}
+    # need to parse id so that mongo gets correct instance of id, otherwise will take it as invalid - {"_id": ObjectId(inventoryId)}
+    # Set the contents of the id in mongo to the updated data above - {"$set": updatedInventory}
     inventoryCollection.update_one({"_id": ObjectId(inventoryId)}, {"$set": updatedInventory})
 
-    calculateTotalUnits()
+    totalsInventory = calculateTotalUnits()
+
+    inventoryCollection.update_one({"_id": ObjectId(inventoryId)}, {"$set":  {
+            'totalsInventory': totalsInventory
+        }})
 
     response = jsonify(data = "update response")
     response.headers.add('Access-Control-Allow-Origin', '*')
@@ -501,8 +506,49 @@ def calculateTotalUnits():
     totalInvKegsSoldTL = totalInvKegsSold * 6
     totalRemainingKegsTL = totalRemainingKegs * 6
 
+    # receiptsAvgNewPercentage =================================================== needs to be calculated - waiting on client email
+    
+    # Same as Receipts - %
+    soldMonthAvgNewPercentage = totalSoldMonthAvg / (totalMonthlyCases500SoldTL + totalMonthlyCases330SoldTL + totalMonthlyKegsSoldTL)
+    # Same as Receipts - %
+    remainsAvgNewPercentage = totalAvgRemaining / (totalRemainingCases500TL + totalRemainingCases330TL + totalRemainingKegsTL)
+    
     litresSold = total500CasesSoldTL + total330CasesSoldTL + totalInvKegsSoldTL
     HLSold = litresSold / 100
+
+    totalsInventory = {
+        "totalMonthlyCases500Sold": totalMonthlyCases500Sold,
+        "total500CasesSold": total500CasesSold,
+        "totalRemainingCases500": totalRemainingCases500,
+        "totalMonthlyCases330Sold": totalMonthlyCases330Sold,
+        "totalCasesSold330Month": totalCasesSold330Month,
+        "total330CasesSold": total330CasesSold,
+        "totalRemainingCases330": totalRemainingCases330,
+        "totalMonthlyKegsSold": totalMonthlyKegsSold,
+        "totalInvKegsSold": totalInvKegsSold,
+        "totalRemainingKegs": totalRemainingKegs,
+        "totalReceiptsAvg": totalReceiptsAvg,
+        "totalSoldMonthAvg": totalSoldMonthAvg,
+        "totalAvgRemaining": totalAvgRemaining,
+        "totalMonthlyCases500SoldTL": totalMonthlyCases500SoldTL,
+        "total500CasesSoldTL": total500CasesSoldTL,
+        "totalRemainingCases500TL": totalRemainingCases500TL,
+        "totalMonthlyCases330SoldTL": totalMonthlyCases330SoldTL,
+        "total330CasesSoldTL": total330CasesSoldTL,
+        "totalRemainingCases330TL": totalRemainingCases330TL,
+        "totalMonthlyKegsSoldTL": totalMonthlyKegsSoldTL,
+        "totalInvKegsSoldTL": totalInvKegsSoldTL,
+        "totalRemainingKegsTL": totalRemainingKegsTL,
+        #"receiptsAvgNewPercentage": receiptsAvgNewPercentage,
+        "soldMonthAvgNewPercentage": soldMonthAvgNewPercentage,
+        "remainsAvgNewPercentage": remainsAvgNewPercentage,
+        "litresSold": litresSold,
+        "HLSold": HLSold
+    }
+
+    return totalsInventory
+
+    
 
     print(totalReceiptsAvg)
     print(totalSoldMonthAvg)
