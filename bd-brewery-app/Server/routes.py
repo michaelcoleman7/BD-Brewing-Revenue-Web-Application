@@ -438,16 +438,75 @@ def calculateDuty(postConditionVolume , abv):
     return round(duty, 2)
 
 def calculateTotalUnits():
-    retrieval = inventoryCollection.find({},{ "receiptsAvg": 1, "_id": 0 })
-
-    totalLitres = float(0.0)
+    #retrieval = inventoryCollection.find({},{ "receiptsAvg": 1, "_id": 0 })
+    retrieval = inventoryCollection.find({})
+    totalReceiptsAvg = 0.0
+    totalSoldMonthAvg = 0.0
+    totalAvgRemaining = 0.0
+    totalMonthlyCases500Sold = 0.0
+    total500CasesSold = 0.0
+    totalRemainingCases500 = 0.0
+    totalMonthlyCases330Sold = 0.0
+    total330CasesSold = 0.0
+    totalRemainingCases330 = 0.0
+    totalMonthlyKegsSold = 0.0
+    totalInvKegsSold = 0.0
+    totalRemainingKegs = 0.0
 
     for document in retrieval: 
-        s = document["receiptsAvg"]
-        print(type(s))
-        totalLitres += float(totalLitres) + float(s)
+        #Total 500 Calculations
+        totalCasesSold500Month = document["totalCasesSold500Month"]
+        totalCasesSold500 = document["totalCasesSold500"]
+        remainingCases500 = document["remainingCases500"]
 
-    print(totalLitres)
+        totalMonthlyCases500Sold += totalMonthlyCases500Sold + float(totalCasesSold500Month)
+        total500CasesSold += total500CasesSold + float(total500CasesSold)
+        totalRemainingCases500 += totalRemainingCases500 + float(remainingCases500)
+
+        # Total 330 Calculations
+        totalCasesSold330Month = document["totalCasesSold330Month"]
+        totalCasesSold330 = document["totalCasesSold330"]
+        remainingCases330 = document["remainingCases330"]
+
+        totalMonthlyCases330Sold += totalMonthlyCases330Sold + float(totalCasesSold330Month)
+        total330CasesSold += total330CasesSold + float(total330CasesSold)
+        totalRemainingCases330 += totalRemainingCases330 + float(remainingCases330)
+
+        # Total Keg Calculations
+        totalKegsSoldMonth = document["totalKegsSoldMonth"]
+        totalKegsSold = document["totalKegsSold"]
+        remainingKegs = document["remainingKegs"]
+        
+        totalMonthlyKegsSold += totalMonthlyKegsSold + float(totalKegsSoldMonth)
+        totalInvKegsSold += totalInvKegsSold + float(totalKegsSold)
+        totalRemainingKegs += totalRemainingKegs + float(remainingKegs)
+
+
+
+        receiptsAvg = document["receiptsAvg"]
+        soldAvgMonth = document["soldAvgMonth"]
+        AvgRemaining = document["AvgRemaining"]
+
+        totalReceiptsAvg += totalReceiptsAvg + receiptsAvg
+        totalSoldMonthAvg += totalSoldMonthAvg + soldAvgMonth
+        totalAvgRemaining += totalAvgRemaining + AvgRemaining
+
+    totalMonthlyCases500SoldTL = totalMonthlyCases500Sold * 6
+    total500CasesSoldTL = total500CasesSold * 6
+    totalRemainingCases500TL = totalRemainingCases500 * 6
+    totalMonthlyCases330SoldTL = totalMonthlyCases330Sold * 6
+    total330CasesSoldTL = total330CasesSold * 6
+    totalRemainingCases330TL = totalRemainingCases330 * 6
+    totalMonthlyKegsSoldTL = totalMonthlyKegsSold * 6
+    totalInvKegsSoldTL = totalInvKegsSold * 6
+    totalRemainingKegsTL = totalRemainingKegs * 6
+
+    litresSold = total500CasesSoldTL + total330CasesSoldTL + totalInvKegsSoldTL
+    HLSold = litresSold / 100
+
+    print(totalReceiptsAvg)
+    print(totalSoldMonthAvg)
+    print(totalAvgRemaining)
     
 
 
