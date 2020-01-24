@@ -379,8 +379,8 @@ def updateInventory(id):
     # need to parse id so that mongo gets correct instance of id, otherwise will take it as invalid - {"_id": ObjectId(inventoryId)}
     # Set the contents of the id in mongo to the updated data above - {"$set": updatedInventory}
     inventoryCollection.update_one({"_id": ObjectId(inventoryId)}, {"$set": updatedInventory})
-
-    totalsInventory = calculateTotalUnits()
+    list = [OS_HL,receipts_HL,deliveries_HL,CS_HL]
+    totalsInventory = calculateTotalUnits(list)
 
     inventoryCollection.update_one({"_id": ObjectId(inventoryId)}, {"$set":  {
             'totalsInventory': totalsInventory
@@ -442,7 +442,7 @@ def calculateDuty(postConditionVolume , abv):
     duty = (postConditionVolume/100 * abv * 22.5)/2
     return round(duty, 2)
 
-def calculateTotalUnits():
+def calculateTotalUnits(list):
     #retrieval = inventoryCollection.find({},{ "receiptsAvg": 1, "_id": 0 })
     retrieval = inventoryCollection.find({})
     totalReceiptsAvg = 0.0
@@ -516,6 +516,11 @@ def calculateTotalUnits():
     litresSold = total500CasesSoldTL + total330CasesSoldTL + totalInvKegsSoldTL
     HLSold = litresSold / 100
 
+    # Still waiting to add HL percent for receiptsAvgNewPercentage -----------------------------------------------
+    Deliveries_HLPercent = list[2] * soldMonthAvgNewPercentage
+    CS_HLPercent = list[3] * remainsAvgNewPercentage
+
+
     totalsInventory = {
         "totalMonthlyCases500Sold": totalMonthlyCases500Sold,
         "total500CasesSold": total500CasesSold,
@@ -545,14 +550,9 @@ def calculateTotalUnits():
         "litresSold": litresSold,
         "HLSold": HLSold
     }
-
+    
     return totalsInventory
 
-    
-
-    print(totalReceiptsAvg)
-    print(totalSoldMonthAvg)
-    print(totalAvgRemaining)
     
 
 
