@@ -193,20 +193,20 @@ const divStyle = {
                         <input type="text" placeholder="Enter Product Name" onChange= {event => setProductName(event.target.value)} defaultValue={inventory.productName}/>
                     <div style={divStyle} className="float-left">
 
-                        <label>500 Cases Sold</label>
-                        <input type="text" placeholder="Enter 500 Cases Sold" onChange={event => setTotalCasesSold500Month(event.target.value)} defaultValue={inventory.totalCasesSold500Month}/>
+                        <label>500 Cases Sold this Month</label>
+                        <input type="text" placeholder="Enter 500 Cases Sold this Month" onChange={event => setTotalCasesSold500Month(event.target.value)} defaultValue={inventory.totalCasesSold500Month}/>
 
                         <label>Remaining 500 Cases</label>
                         <input type="text" placeholder="Enter Remaining 500 Cases" onChange={event => setRemainingCases500(event.target.value)} defaultValue={inventory.remainingCases500}/>
 
-                        <label>330 Cases Sold</label>
-                        <input type="text" placeholder="Enter 330 Cases Sold" onChange={event => setTotalCasesSold330Month(event.target.value)} defaultValue={inventory.totalCasesSold330Month}/>
+                        <label>330 Cases Sold this Month</label>
+                        <input type="text" placeholder="Enter 330 Cases Sold this Month" onChange={event => setTotalCasesSold330Month(event.target.value)} defaultValue={inventory.totalCasesSold330Month}/>
 
                         <label>Remaining 330 Cases</label>
                         <input type="text"  placeholder="Enter Remaining 330 Cases" onChange={event => setRemainingCases330(event.target.value)} defaultValue={inventory.remainingCases330}/>
 
-                        <label>Total Kegs Sold</label>
-                        <input type="text" placeholder="Enter Kegs Sold" onChange={event => setTotalKegsSoldMonth(event.target.value)} defaultValue={inventory.totalKegsSoldMonth}/>
+                        <label>Total Kegs Sold this Month</label>
+                        <input type="text" placeholder="Enter Kegs Sold this Month" onChange={event => setTotalKegsSoldMonth(event.target.value)} defaultValue={inventory.totalKegsSoldMonth}/>
 
                         <label>Remaining Kegs</label>
                         <input type="text"placeholder="Enter Remaining Kegs" onChange={event => setRemainingKegs(event.target.value)} defaultValue={inventory.remainingKegs}/>

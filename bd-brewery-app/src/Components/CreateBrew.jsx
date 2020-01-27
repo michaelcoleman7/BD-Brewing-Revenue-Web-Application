@@ -29,7 +29,6 @@ const divStyle = {
   const CreateBrew = () => {
     // using react hooks to get data back - adapted from https://reactjs.org/docs/hooks-state.html
     const [productName, setProductName] = useState("");
-    const [brewNo, setBrewNo] = useState("");
     const [beer, setBeer] = useState("");
     const [batchNo, setBatchNo] = useState("");
     const [brewDate, setBrewDate] = useState("");
@@ -50,7 +49,6 @@ const divStyle = {
             //brew values to be sent to server
             const brew = {
                 productName: productName,
-                brewNo: brewNo,
                 beer: beer,
                 batchNo: batchNo,
                 brewDate: brewDate,
@@ -73,7 +71,7 @@ const divStyle = {
             }
 
             //if all data is valid, then post to server
-            if(productName && brewNo && beer && batchNo && brewDate && og && pg && postConditionDate && kegNo && bottleNo500 && bottleNo330 && status){
+            if(productName && beer && batchNo && brewDate && og && pg && postConditionDate && kegNo && bottleNo500 && bottleNo330 && status){
                 if(isNaN(parseFloat(og).toFixed(5)) || isNaN(parseFloat(pg).toFixed(5)) || isNaN(parseInt(kegNo)) || isNaN(parseInt(bottleNo500)) || isNaN(parseInt(bottleNo330))){
                     setAlertShow(!showAlert);
                     console.log("Invalid form format, will not be sent to database");
@@ -119,9 +117,6 @@ const divStyle = {
                         <label>Product Name</label>
                         <input type="text" name="ProductName" placeholder="Enter Product Name" onChange= {event => setProductName(event.target.value)}/>
                     <div style={divStyle} className="float-left">
-
-                        <label>Brew No.</label>
-                        <input type="text" name="BrewNo" placeholder="Enter Brew Number" onChange= {event => setBrewNo(event.target.value)}/>
 
                         <label>Beer</label>
                         <input type="text" name="beer" placeholder="Enter Beer" onChange={event => setBeer(event.target.value)}/>

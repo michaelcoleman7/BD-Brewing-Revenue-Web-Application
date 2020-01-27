@@ -31,8 +31,6 @@ const divStyle = {
     const [brewId, setBrewId] = useState("");
     const [brew, setBrew] = useState("");
     const [changeBrew, setChangeBrew] = useState(false); 
-
-    const [brewNo, setBrewNo] = useState("");
     const [beer, setBeer] = useState("");
     const [batchNo, setBatchNo] = useState("");
     const [brewDate, setBrewDate] = useState("");
@@ -65,7 +63,6 @@ const divStyle = {
             let parsed = JSON.parse(res.data);
             setBrew(parsed);
             setProductName(parsed.productName);
-            setBrewNo(parsed.brewNo);
             setBeer(parsed.beer);
             setBatchNo(parsed.batchNo);
             setBrewDate(parsed.brewDate);
@@ -91,7 +88,6 @@ const divStyle = {
             const brew = {
                 brewId: brewId,
                 productName: productName,
-                brewNo: brewNo,
                 beer: beer,
                 batchNo: batchNo,
                 brewDate: brewDate,
@@ -114,7 +110,7 @@ const divStyle = {
                body: JSON.stringify(brew)   
           }
                       //if all data is valid, then post to server
-                      if(productName && brewNo && beer && batchNo && brewDate && og && pg && postConditionDate && kegNo && bottleNo500 && bottleNo330 && status){
+                      if(productName && beer && batchNo && brewDate && og && pg && postConditionDate && kegNo && bottleNo500 && bottleNo330 && status){
                         if(isNaN(parseFloat(og).toFixed(5)) || isNaN(parseFloat(pg).toFixed(5)) || isNaN(parseInt(kegNo)) || isNaN(parseInt(bottleNo500)) || isNaN(parseInt(bottleNo330))){
                             setAlertShow(!showAlert);
                             console.log("Invalid form format, will not be sent to database");
@@ -188,8 +184,6 @@ const divStyle = {
                         <label>Product Name</label>
                         <input type="text" name="ProductName" placeholder="Enter Product Name" onChange= {event => setProductName(event.target.value)} defaultValue={brew.productName}/>
                     <div style={divStyle} className="float-left">
-                        <label>Brew No.</label>
-                        <input type="text" name="BrewNo" placeholder="Enter Brew Number" onChange= {event => setBrewNo(event.target.value)}  defaultValue={brew.brewNo}/>
 
                         <label>Beer</label>
                         <input type="text" name="beer" placeholder="Enter Beer" onChange={event => setBeer(event.target.value)} defaultValue={brew.beer}/>

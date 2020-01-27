@@ -4,6 +4,7 @@ import Brew from './Brew';
 import Inventory from './Inventory';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
+import MapsComponent from './MapsComponent';
 
 class Home extends React.Component {
     render() {
@@ -16,6 +17,7 @@ class Home extends React.Component {
             <Inventory/>
           </Tab>
         </Tabs>
+        <MapsComponent></MapsComponent>
     </div>
     }
   }

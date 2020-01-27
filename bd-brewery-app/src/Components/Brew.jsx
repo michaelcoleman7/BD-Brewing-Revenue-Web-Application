@@ -22,7 +22,7 @@ const Brew = () => {
 return(
     <React.Fragment> 
       <h1 style={header}>Brew Management</h1>
-      <div class="d-flex justify-content-around">
+      <div className="d-flex justify-content-around">
             <Card bg="primary" style={divStyle}>          
               <Link to="/createbrew"> <Card.Img src={require("../Images/Background3.jpg")} height="300"/></Link>
               <Card.Body>
