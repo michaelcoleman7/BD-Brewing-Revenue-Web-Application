@@ -74,7 +74,6 @@ def createBrew():
 
     # Request all information and store in variables
     productName = request.json.get("productName")
-    brewNo = request.json.get("brewNo")
     beer = request.json.get("beer")
     batchNo = request.json.get("batchNo")
     brewDate = request.json.get("brewDate")
@@ -96,7 +95,6 @@ def createBrew():
     # create json format of data to send to MongoDB
     brew = {
         "productName": productName,
-        "brewNo": brewNo,
         "beer": beer,
         "batchNo": batchNo,
         "brewDate": brewDate,
@@ -128,7 +126,6 @@ def updateBrew(id):
     # Request all information and store in variables
     productName = request.json.get("productName")
     brewId= request.json.get("brewId")
-    brewNo = request.json.get("brewNo")
     beer = request.json.get("beer")
     batchNo = request.json.get("batchNo")
     brewDate = request.json.get("brewDate")
@@ -148,7 +145,6 @@ def updateBrew(id):
     # create json format of data to send to MongoDB
     updatedBrew = {
         "productName": productName,
-        "brewNo": brewNo,
         "beer": beer,
         "batchNo": batchNo,
         "brewDate": brewDate,
@@ -212,7 +208,6 @@ def createInventory():
     AvgRemaining =""
     # Request all information and store in variables
     productName = request.json.get("productName")
-    totalLitres = request.json.get("totalLitres")
     totalCasesSold500Month = request.json.get("totalCasesSold500Month")
     remainingCases500 = request.json.get("remainingCases500")
     totalCasesSold330Month = request.json.get("totalCasesSold330Month")
@@ -241,6 +236,7 @@ def createInventory():
 
         abv = document["abv"]
         pcv = document["postConditionVol"]
+        totalLitres = pcv
         receiptsAvg = float(pcv) * float(abv)
         #print("receiptsAvg: " + str(receiptsAvg))
 
@@ -328,7 +324,14 @@ def updateInventory(id):
 
         abv = document["abv"]
         pcv = document["postConditionVol"]
-        receiptsAvg = float(pcv) * float(abv)
+        totalLitres = pcv
+
+        packagedBatch = True
+
+        if packagedBatch:
+            receiptsAvg = float(pcv) * float(abv)
+        else:
+            receiptsAvg = 0
         # print("receiptsAvg: " + str(receiptsAvg))
 
         monthPCV = calculatePCV(totalCasesSold500Month ,totalCasesSold330Month, totalKegsSoldMonth )
@@ -457,6 +460,7 @@ def calculateTotalUnits(list):
     totalMonthlyKegsSold = 0.0
     totalInvKegsSold = 0.0
     totalRemainingKegs = 0.0
+    averageReceiptsDivisial = 0.0
 
     for document in retrieval: 
         #Total 500 Calculations
@@ -486,8 +490,6 @@ def calculateTotalUnits(list):
         totalInvKegsSold += totalInvKegsSold + float(totalKegsSold)
         totalRemainingKegs += totalRemainingKegs + float(remainingKegs)
 
-
-
         receiptsAvg = document["receiptsAvg"]
         soldAvgMonth = document["soldAvgMonth"]
         AvgRemaining = document["AvgRemaining"]
@@ -495,6 +497,13 @@ def calculateTotalUnits(list):
         totalReceiptsAvg += totalReceiptsAvg + receiptsAvg
         totalSoldMonthAvg += totalSoldMonthAvg + soldAvgMonth
         totalAvgRemaining += totalAvgRemaining + AvgRemaining
+
+        totalLitres = document["totalLitres"]
+        print(totalLitres)
+
+        #print(receiptsAvg)
+        if float(receiptsAvg) > 0.0:
+            averageReceiptsDivisial += averageReceiptsDivisial + float(totalLitres)
 
     totalMonthlyCases500SoldTL = totalMonthlyCases500Sold * 6
     total500CasesSoldTL = total500CasesSold * 6
@@ -506,7 +515,10 @@ def calculateTotalUnits(list):
     totalInvKegsSoldTL = totalInvKegsSold * 6
     totalRemainingKegsTL = totalRemainingKegs * 6
 
-    # receiptsAvgNewPercentage =================================================== needs to be calculated - waiting on client email
+    if averageReceiptsDivisial != 0:
+        receiptsAvgNewPercentage = totalReceiptsAvg / averageReceiptsDivisial
+        print(averageReceiptsDivisial)
+        print(receiptsAvgNewPercentage)
     
     # Same as Receipts - %
     soldMonthAvgNewPercentage = totalSoldMonthAvg / (totalMonthlyCases500SoldTL + totalMonthlyCases330SoldTL + totalMonthlyKegsSoldTL)
@@ -544,7 +556,7 @@ def calculateTotalUnits(list):
         "totalMonthlyKegsSoldTL": totalMonthlyKegsSoldTL,
         "totalInvKegsSoldTL": totalInvKegsSoldTL,
         "totalRemainingKegsTL": totalRemainingKegsTL,
-        #"receiptsAvgNewPercentage": receiptsAvgNewPercentage,
+        "receiptsAvgNewPercentage": receiptsAvgNewPercentage,
         "soldMonthAvgNewPercentage": soldMonthAvgNewPercentage,
         "remainsAvgNewPercentage": remainsAvgNewPercentage,
         "litresSold": litresSold,
@@ -553,6 +565,8 @@ def calculateTotalUnits(list):
     
     return totalsInventory
 
+def calculateStockReturn(deliveries):
+    return deliveries
     
 
 
