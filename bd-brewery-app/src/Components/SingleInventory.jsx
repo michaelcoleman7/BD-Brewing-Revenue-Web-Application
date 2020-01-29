@@ -27,7 +27,7 @@ const divStyle = {
   // react arrow function component to create a inventory
   const SingleInventory = (props) => {
     // using react hooks to get data back - adapted from https://reactjs.org/docs/hooks-state.html
-    const [productName, setProductName] = useState("");
+    const [batchNo, setBatchNo] = useState("");
     const [inventoryId, setInventoryId] = useState("");
     const [inventory, setInventory] = useState("");
     const [changeInventory, setChangeInventory] = useState(false); 
@@ -64,7 +64,7 @@ const divStyle = {
             console.log("response "+res.data);
             let parsed = JSON.parse(res.data);
             setInventory(parsed);
-            setProductName(parsed.productName);
+            setBatchNo(parsed.batchNo);
             setTotalCasesSold500Month(parsed.totalCasesSold500Month);
             setRemainingCases500(parsed.remainingCases500);
             setTotalCasesSold330Month(parsed.totalCasesSold330Month);
@@ -91,7 +91,7 @@ const divStyle = {
         //inventory values to be sent to server
         const inventory = {
             inventoryId: inventoryId,
-            productName: productName,
+            batchNo: batchNo,
             totalCasesSold500Month: totalCasesSold500Month,
             remainingCases500: remainingCases500,
             totalCasesSold330Month: totalCasesSold330Month,
@@ -117,7 +117,7 @@ const divStyle = {
           }
 
             //if all data is valid, then post to server
-            if(productName && totalCasesSold500Month && remainingCases500 && totalCasesSold330Month && remainingCases330 && totalKegsSoldMonth && remainingKegs && openingStock330Cases && openingStock500Cases && openingStockKegs && receipts330Cases && receipts500Cases && receiptsKegs){
+            if(batchNo && totalCasesSold500Month && remainingCases500 && totalCasesSold330Month && remainingCases330 && totalKegsSoldMonth && remainingKegs && openingStock330Cases && openingStock500Cases && openingStockKegs && receipts330Cases && receipts500Cases && receiptsKegs){
                 if(isNaN(parseInt(totalCasesSold500Month)) || isNaN(parseInt(remainingCases500)) || isNaN(parseInt(totalCasesSold330Month)) || isNaN(parseInt(remainingCases330)) || 
                 isNaN(parseInt(totalKegsSoldMonth)) || isNaN(parseInt(remainingKegs)) || isNaN(parseInt(openingStock330Cases))|| isNaN(parseInt(openingStock500Cases))  || isNaN(parseInt(openingStockKegs)) || isNaN(parseInt(receipts330Cases)) || isNaN(parseInt(receipts500Cases)) || isNaN(parseInt(receiptsKegs))){
                     setAlertShow(!showAlert);
@@ -189,8 +189,8 @@ const divStyle = {
         editForm =
             <React.Fragment>
                 <form style={formStyle} onSubmit={updateInventory}>
-                        <label>Product Name</label>
-                        <input type="text" placeholder="Enter Product Name" onChange= {event => setProductName(event.target.value)} defaultValue={inventory.productName}/>
+                        <label>Batch Number</label>
+                        <input type="text" placeholder="Enter Batch Number" onChange= {event => setBatchNo(event.target.value)} defaultValue={inventory.batchNo}/>
                     <div style={divStyle} className="float-left">
 
                         <label>500 Cases Sold this Month</label>
@@ -241,9 +241,9 @@ const divStyle = {
         <React.Fragment> 
             <center><Card style={{ width: '40%' }}>
                 <Card.Body>
-                    <Card.Title>Product Name: {inventory.productName}</Card.Title>
+                    <Card.Title>Batch Name: {inventory.batchNo}</Card.Title>
                     <Card.Text>
-                        Inventory track for {inventory.productName}
+                        Inventory track for {inventory.batchNo}
                     </Card.Text>
                 </Card.Body>
             </Card></center>

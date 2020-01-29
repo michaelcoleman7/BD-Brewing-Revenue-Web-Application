@@ -28,7 +28,7 @@ const divStyle = {
   // react arrow function component to create a brew
   const CreateInventory = () => {
     // using react hooks to get data back - adapted from https://reactjs.org/docs/hooks-state.html
-    const [productName, setProductName] = useState("");
+    const [batchNo, setBatchNo] = useState("");
     //const [totalCasesSold500, setTotalCasesSold500] = useState(""); - calculated with formula
     const [totalCasesSold500Month, setTotalCasesSold500Month] = useState("");
     const [remainingCases500, setRemainingCases500] = useState("");
@@ -55,7 +55,7 @@ const divStyle = {
 
             //brew values to be sent to server
             const inventory = {
-                productName: productName,
+                batchNo: batchNo,
                 totalCasesSold500Month: totalCasesSold500Month,
                 remainingCases500: remainingCases500,
                 totalCasesSold330Month: totalCasesSold330Month,
@@ -80,7 +80,7 @@ const divStyle = {
             }
 
             //if all data is valid, then post to server
-            if(productName && totalCasesSold500Month && remainingCases500 && totalCasesSold330Month && remainingCases330 && totalKegsSold && remainingKegs && openingStock330Cases && openingStock500Cases && openingStockKegs && receipts330Cases && receipts500Cases && receiptsKegs){
+            if(batchNo && totalCasesSold500Month && remainingCases500 && totalCasesSold330Month && remainingCases330 && totalKegsSold && remainingKegs && openingStock330Cases && openingStock500Cases && openingStockKegs && receipts330Cases && receipts500Cases && receiptsKegs){
                 if(isNaN(parseInt(totalCasesSold500Month)) || isNaN(parseInt(remainingCases500)) || isNaN(parseInt(totalCasesSold330Month)) || isNaN(parseInt(remainingCases330)) || 
                 isNaN(parseInt(totalKegsSold)) || isNaN(parseInt(remainingKegs)) || isNaN(parseInt(openingStock330Cases)) || isNaN(parseInt(openingStock500Cases)) || isNaN(parseInt(openingStockKegs)) || isNaN(parseInt(receipts330Cases)) || isNaN(parseInt(receipts500Cases)) || isNaN(parseInt(receiptsKegs))){
                     setAlertShow(!showAlert);
@@ -125,8 +125,8 @@ const divStyle = {
         // React Fragment is a way of sending back multiple elements - https://reactjs.org/docs/fragments.html
         <React.Fragment> 
                 <form style={formStyle} onSubmit={create}>
-                        <label>Product Name</label>
-                        <input type="text" placeholder="Enter Product Name" onChange= {event => setProductName(event.target.value)}/>
+                        <label>Batch Number</label>
+                        <input type="text" placeholder="Enter Batch Number" onChange= {event => setBatchNo(event.target.value)}/>
                     <div style={divStyle} className="float-left">
 
                         <label>500 Cases Sold this Month</label>

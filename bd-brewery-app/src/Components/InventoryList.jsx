@@ -45,7 +45,7 @@ const InventoryList = () => {
               <Link to={"inventory/"+inventory._id}>
                 <ListGroup>
                 <center>
-                    <ListGroup.Item style={listItem}>{inventory.productName}</ListGroup.Item>
+                    <ListGroup.Item style={listItem}>{inventory.batchNo}</ListGroup.Item>
                 </center>
                 </ListGroup>
               </Link>
