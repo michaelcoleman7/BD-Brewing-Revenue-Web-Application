@@ -188,7 +188,7 @@ def indexInventory():
     retrieval = inventoryCollection.find({})
 
     for document in retrieval:
-        inventories.append({"_id": JSONEncoder().encode(document["_id"]), "productName":document["productName"]})
+        inventories.append({"_id": JSONEncoder().encode(document["_id"]), "batchNo":document["batchNo"]})
     return jsonify(data=inventories)
 # Route to handle individual inventories
 @indexInventoryRoute.route("/api/inventory/<id>", methods=["GET"])
@@ -211,7 +211,7 @@ def createInventory():
     soldAvgMonth = ""
     AvgRemaining =""
     # Request all information and store in variables
-    productName = request.json.get("productName")
+    batchNo = request.json.get("batchNo")
     totalCasesSold500Month = request.json.get("totalCasesSold500Month")
     remainingCases500 = request.json.get("remainingCases500")
     totalCasesSold330Month = request.json.get("totalCasesSold330Month")
@@ -227,7 +227,7 @@ def createInventory():
 
     # print variables to check if correct
     #print("product Name:" +productName +"total litres:" +totalLitres + " totalCasesSold500Month:" + totalCasesSold500Month + " remainingCases500:" + remainingCases500 + "totalCasesSold330Month:" + totalCasesSold330Month + " remainingCases330:" + remainingCases330 + " totalKegsSold:" + totalKegsSold + " remainingKegs:" + remainingKegs + " openingStockCases:" + openingStockCases + " openingStockKegs:" + openingStockKegs + " receiptsCases:" + receiptsCases + " receiptsKegs:" + receiptsKegs)
-    brewDetails = brewCollection.find( { "productName": productName } )
+    brewDetails = brewCollection.find( { "batchNo": batchNo } )
     for document in brewDetails:
         print("productName Inventory" + document["productName"])
         total500cases = document["bottleNo500"]
@@ -241,8 +241,7 @@ def createInventory():
         abv = document["abv"]
         pcv = document["postConditionVol"]
         totalLitres = pcv
-        receiptsAvg = float(pcv) * float(abv)
-        #print("receiptsAvg: " + str(receiptsAvg))
+        receiptsAvg = round(float(pcv) * float(abv) , 2)
 
         monthPCV = calculatePCV(totalCasesSold500Month ,totalCasesSold330Month, totalKegsSoldMonth )
         soldAvgMonth = float(monthPCV) * float(abv)
@@ -259,7 +258,7 @@ def createInventory():
 
     # create json format of data to send to MongoDB
     inventory = {
-        "productName": productName,
+        "batchNo": batchNo,
         "totalLitres": totalLitres,
         "totalCasesSold500Month": totalCasesSold500Month,
         "remainingCases500": remainingCases500,
@@ -299,7 +298,7 @@ def updateInventory(id):
     soldAvgMonth = ""
     AvgRemaining =""
     # Request all information and store in variables
-    productName = request.json.get("productName")
+    batchNo = request.json.get("batchNo")
     inventoryId= request.json.get("inventoryId")
     totalLitres = request.json.get("totalLitres")
     totalCasesSold500Month = request.json.get("totalCasesSold500Month")
@@ -315,9 +314,9 @@ def updateInventory(id):
     receiptsCases330 = request.json.get("receipts330Cases")
     receiptsKegs = request.json.get("receiptsKegs")
 
-    brewDetails = brewCollection.find( { "productName": productName } )
+    brewDetails = brewCollection.find( { "batchNo": batchNo } )
     for document in brewDetails:
-        print("productName Inventory" + document["productName"])
+        print("batchNo brew" + document["batchNo"])
         total500cases = document["bottleNo500"]
         total330cases = document["bottleNo330"]
         totalkegs = document["kegNo"]
@@ -330,12 +329,13 @@ def updateInventory(id):
         pcv = document["postConditionVol"]
         totalLitres = pcv
 
-        packagedBatch = True
+        packagedBatch = document["packaged"]
 
         if packagedBatch:
-            receiptsAvg = float(pcv) * float(abv)
+            receiptsAvg = round(float(pcv) * float(abv) , 2)
+        
         else:
-            receiptsAvg = 0
+            receiptsAvg = 0.0
         # print("receiptsAvg: " + str(receiptsAvg))
 
         monthPCV = calculatePCV(totalCasesSold500Month ,totalCasesSold330Month, totalKegsSoldMonth )
@@ -361,7 +361,7 @@ def updateInventory(id):
 
     # create json format of data to send to MongoDB
     updatedInventory = {
-        "productName": productName,
+        "batchNo": batchNo,
         "totalLitres": totalLitres,
         "totalCasesSold500Month": totalCasesSold500Month,
         "remainingCases500": remainingCases500,
@@ -498,16 +498,16 @@ def calculateTotalUnits(list):
         soldAvgMonth = document["soldAvgMonth"]
         AvgRemaining = document["AvgRemaining"]
 
-        totalReceiptsAvg += totalReceiptsAvg + receiptsAvg
+        totalReceiptsAvg += receiptsAvg
+        #print("totalReceiptsAvg per inv "+ str(totalReceiptsAvg))
         totalSoldMonthAvg += totalSoldMonthAvg + soldAvgMonth
         totalAvgRemaining += totalAvgRemaining + AvgRemaining
 
         totalLitres = document["totalLitres"]
-        print(totalLitres)
 
-        #print(receiptsAvg)
+        print(receiptsAvg)
         if float(receiptsAvg) > 0.0:
-            averageReceiptsDivisial += averageReceiptsDivisial + float(totalLitres)
+            averageReceiptsDivisial += totalLitres
 
     totalMonthlyCases500SoldTL = totalMonthlyCases500Sold * 6
     total500CasesSoldTL = total500CasesSold * 6
@@ -519,10 +519,12 @@ def calculateTotalUnits(list):
     totalInvKegsSoldTL = totalInvKegsSold * 6
     totalRemainingKegsTL = totalRemainingKegs * 6
 
+    print("totalReceiptsAvg "+ str(totalReceiptsAvg))
+
     if averageReceiptsDivisial != 0:
-        receiptsAvgNewPercentage = totalReceiptsAvg / averageReceiptsDivisial
-        print(averageReceiptsDivisial)
-        print(receiptsAvgNewPercentage)
+        receiptsAvgNewPercentage = round(totalReceiptsAvg / averageReceiptsDivisial, 2)
+        print("averageReceiptsDivisial "+ str(averageReceiptsDivisial))
+        print("receiptsAvgNewPercentage "+ str(receiptsAvgNewPercentage))
     
     # Same as Receipts - %
     soldMonthAvgNewPercentage = totalSoldMonthAvg / (totalMonthlyCases500SoldTL + totalMonthlyCases330SoldTL + totalMonthlyKegsSoldTL)
