@@ -40,6 +40,7 @@ const divStyle = {
     const [bottleNo500, setBottleNo500] = useState("");
     const [bottleNo330, setBottleNo330] = useState("");
     const [status, setStatus] = useState("");
+    const [packaged, setPackaged] = useState("");
     const [routeRedirect, setRedirect] = useState(false); 
     const [showAlert, setAlertShow] = useState(false);
 
@@ -58,7 +59,8 @@ const divStyle = {
                 kegNo: kegNo,
                 bottleNo500: bottleNo500,
                 bottleNo330: bottleNo330,
-                status: status
+                status: status,
+                packaged: packaged
             }
 
             //options needed to send request to server
@@ -71,7 +73,7 @@ const divStyle = {
             }
 
             //if all data is valid, then post to server
-            if(productName && beer && batchNo && brewDate && og && pg && postConditionDate && kegNo && bottleNo500 && bottleNo330 && status){
+            if(productName && beer && batchNo && brewDate && og && pg && postConditionDate && kegNo && bottleNo500 && bottleNo330 && status && packaged){
                 if(isNaN(parseFloat(og).toFixed(5)) || isNaN(parseFloat(pg).toFixed(5)) || isNaN(parseInt(kegNo)) || isNaN(parseInt(bottleNo500)) || isNaN(parseInt(bottleNo330))){
                     setAlertShow(!showAlert);
                     console.log("Invalid form format, will not be sent to database");
@@ -132,6 +134,8 @@ const divStyle = {
 
                         <label>PG (Present Gravity) - Number required</label>
                         <input type="text" name="pg" placeholder="Enter PG" onChange={event => setPG(event.target.value)}/>
+
+                        <input type="radio" name="brewpackaged" value="true"  onChange={event => setPackaged(event.target.value)}/> Packaged
                     </div>
                     <div className="float-right" style={divStyle}>
                         <label>Post Conditioning Date</label>
@@ -148,6 +152,8 @@ const divStyle = {
 
                         <label>Status</label>
                         <input type="text" name="status" placeholder="Enter Status" onChange={event => setStatus(event.target.value)}/>
+
+                        <input type="radio" name="brewpackaged" value="false" onChange={event => setPackaged(event.target.value)}/> Unpackaged
                     </div>
                     <input type="submit" value="Create Brew"/>
                     {alertFormError}

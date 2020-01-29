@@ -42,8 +42,10 @@ const divStyle = {
     const [bottleNo500, setBottleNo500] = useState("");
     const [bottleNo330, setBottleNo330] = useState("");
     const [status, setStatus] = useState("");
+    const [packaged, setPackaged] = useState("");
     const [routeRedirect, setRedirect] = useState(""); 
     const [showAlert, setAlertShow] = useState(false);
+    
 
     const getBrew = () => {
         let id = props.match.params.id;
@@ -73,6 +75,7 @@ const divStyle = {
             setBottleNo500(parsed.bottleNo500);
             setBottleNo330(parsed.bottleNo330);
             setStatus(parsed.status);
+            setPackaged(parsed.packaged);
         }).catch(err => {
             console.log(err);
         })
@@ -97,7 +100,8 @@ const divStyle = {
                 kegNo: kegNo,
                 bottleNo500: bottleNo500,
                 bottleNo330: bottleNo330,
-                status: status
+                status: status,
+                packaged: packaged
             }
 
           //console.log(brew)
@@ -170,11 +174,11 @@ const divStyle = {
            })
     }
 
-
     const editItem = (brewId) => {
         console.log(brewId);
         setChangeBrew(!changeBrew);
     }
+
 
     let editForm;
     if(changeBrew){
@@ -199,6 +203,8 @@ const divStyle = {
 
                         <label>PG (Present Gravity)</label>
                         <input type="text" name="pg" placeholder="Enter PG" onChange={event => setPG(event.target.value)} defaultValue={brew.pg}/>
+
+                        <input type="checkbox" name="brewpackaged" value="true" checked = {packaged} onChange={(e) => setPackaged(!packaged)} /> Packaged <br/>
                     </div>
                     <div className="float-right" style={divStyle}>
                         <label>Post Conditioning Date</label>
