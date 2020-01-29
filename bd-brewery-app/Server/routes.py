@@ -84,6 +84,7 @@ def createBrew():
     bottleNo500 = request.json.get("bottleNo500")
     bottleNo330 = request.json.get("bottleNo330")
     status = request.json.get("status")
+    packaged = request.json.get("packaged")
 
     abv = calculateABV(og, pg)
     postConditionVol=calculatePCV(bottleNo330, bottleNo500, kegNo)
@@ -107,7 +108,8 @@ def createBrew():
         "bottleNo500": bottleNo500,
         "bottleNo330": bottleNo330,
         "duty": duty,
-        "status": status
+        "status": status,
+        "packaged": packaged
     }
 
     # Insert the brew into the mongoDB in mlabs, adapted from - https://docs.mongodb.com/manual/reference/method/db.collection.insertOne/
@@ -136,6 +138,7 @@ def updateBrew(id):
     bottleNo500 = request.json.get("bottleNo500")
     bottleNo330 = request.json.get("bottleNo330")
     status = request.json.get("status")
+    packaged = request.json.get("packaged")
 
     abv = calculateABV(og, pg)
     postConditionVol=calculatePCV(bottleNo330, bottleNo500, kegNo)
@@ -157,7 +160,8 @@ def updateBrew(id):
         "bottleNo500": bottleNo500,
         "bottleNo330": bottleNo330,
         "duty": duty,
-        "status": status
+        "status": status,
+        "packaged": packaged
     }
 
     # need to parse id so that mongo gets correct instance of id, otherwise will take it as invalid - {"_id": ObjectId(brewId)}
