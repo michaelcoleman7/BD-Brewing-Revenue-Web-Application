@@ -221,9 +221,6 @@ def createInventory():
     openingStock330Cases = request.json.get("openingStock330Cases")
     openingStock500Cases = request.json.get("openingStock500Cases")
     openingStockKegs = request.json.get("openingStockKegs")
-    receipts500Cases = request.json.get("receipts500Cases")
-    receipts330Cases = request.json.get("receipts330Cases")
-    receiptsKegs = request.json.get("receiptsKegs")
 
     calculationVariables = [batchNo, remainingCases500,remainingCases330, remainingKegs,totalCasesSold500Month,totalCasesSold330Month, totalKegsSoldMonth]
 
@@ -242,9 +239,6 @@ def createInventory():
         "openingStock330Cases": openingStock330Cases,
         "openingStock500Cases": openingStock500Cases,
         "openingStockKegs": openingStockKegs,
-        "receiptsCases500": receiptsCases500,
-        "receiptsCases330": receiptsCases330,
-        "receiptsKegs": receiptsKegs,
         "totalCasesSold500": invCalculations[0],
         "totalCasesSold330": invCalculations[1],
         "totalKegsSold": invCalculations[2],
@@ -277,9 +271,6 @@ def updateInventory(id):
     openingStock330Cases = request.json.get("openingStock330Cases")
     openingStock500Cases = request.json.get("openingStock500Cases")
     openingStockKegs = request.json.get("openingStockKegs")
-    receiptsCases500 = request.json.get("receipts500Cases")
-    receiptsCases330 = request.json.get("receipts330Cases")
-    receiptsKegs = request.json.get("receiptsKegs")
 
     calculationVariables = [batchNo, remainingCases500,remainingCases330, remainingKegs,totalCasesSold500Month,totalCasesSold330Month, totalKegsSoldMonth]
 
@@ -298,9 +289,6 @@ def updateInventory(id):
         "openingStock330Cases": openingStock330Cases,
         "openingStock500Cases": openingStock500Cases,
         "openingStockKegs": openingStockKegs,
-        "receiptsCases500": receiptsCases500,
-        "receiptsCases330": receiptsCases330,
-        "receiptsKegs": receiptsKegs,
         "totalCasesSold500": invCalculations[0],
         "totalCasesSold330": invCalculations[1],
         "totalKegsSold": invCalculations[2],
