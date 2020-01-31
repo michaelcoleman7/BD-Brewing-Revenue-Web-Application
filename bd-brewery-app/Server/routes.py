@@ -53,7 +53,7 @@ def indexBrew():
         #print("productName" + document["productName"])
 
     for document in retrieval:
-        brews.append({"_id": JSONEncoder().encode(document["_id"]), "productName":document["productName"]})
+        brews.append({"_id": JSONEncoder().encode(document["_id"]), "batchNo":document["batchNo"]})
     return jsonify(data=brews)
 
 
@@ -323,7 +323,6 @@ def updateInventory(id):
         totalCasesSold500 = int(total500cases) - int(remainingCases500)
         totalCasesSold330 = int(total330cases) - int(remainingCases330)
         totalKegsSold = int(totalkegs) - int(remainingKegs)
-        #print("totalCasesSold500: " + str(totalCasesSold500) + " remaining330: " + str(totalCasesSold330) + " remainingKegNo: " + str(totalKegsSold) )
 
         abv = document["abv"]
         pcv = document["postConditionVol"]
@@ -336,15 +335,12 @@ def updateInventory(id):
         
         else:
             receiptsAvg = 0.0
-        # print("receiptsAvg: " + str(receiptsAvg))
 
         monthPCV = calculatePCV(totalCasesSold500Month ,totalCasesSold330Month, totalKegsSoldMonth )
         soldAvgMonth = float(monthPCV) * float(abv)
-        #print("soldAvgMonth" + str(soldAvgMonth))
 
         remainingPCV = calculatePCV(remainingCases500 ,remainingCases330, remainingKegs )
         AvgRemaining= float(remainingPCV) * float(abv)
-        #print("AvgRemaining" + str(AvgRemaining))
 
         # Deliveries calculations
         deliveries330Cases = (int(openingStock330Cases) + int(receiptsCases330)) - int(remainingCases330)
@@ -465,6 +461,9 @@ def calculateTotalUnits(list):
     totalInvKegsSold = 0.0
     totalRemainingKegs = 0.0
     averageReceiptsDivisial = 0.0
+    totalReceiptsCases500 = 0.0
+    totalReceiptsCases330 = 0.0
+    totalReceiptsKegs = 0.0
 
     for document in retrieval: 
         #Total 500 Calculations
@@ -473,7 +472,7 @@ def calculateTotalUnits(list):
         remainingCases500 = document["remainingCases500"]
 
         totalMonthlyCases500Sold += totalMonthlyCases500Sold + float(totalCasesSold500Month)
-        total500CasesSold += total500CasesSold + float(total500CasesSold)
+        total500CasesSold += total500CasesSold + float(totalCasesSold500)
         totalRemainingCases500 += totalRemainingCases500 + float(remainingCases500)
 
         # Total 330 Calculations
@@ -508,6 +507,11 @@ def calculateTotalUnits(list):
         print(receiptsAvg)
         if float(receiptsAvg) > 0.0:
             averageReceiptsDivisial += totalLitres
+            brewDetails = brewCollection.find( { "batchNo": document["batchNo"] } )
+            for document in brewDetails:
+                totalReceiptsCases500 += float(document["bottleNo500"])
+                totalReceiptsCases330 += float(document["bottleNo330"])
+                totalReceiptsKegs += float(document["kegNo"])
 
     totalMonthlyCases500SoldTL = totalMonthlyCases500Sold * 6
     total500CasesSoldTL = total500CasesSold * 6
