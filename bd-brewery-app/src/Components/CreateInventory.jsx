@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router';
 import Alert from 'react-bootstrap/Alert';
 import '../Stylesheets/Form.css';
@@ -41,15 +41,29 @@ const divStyle = {
     const [openingStock330Cases, setOpeningStock330Cases] = useState("");
     const [openingStock500Cases, setOpeningStock500Cases] = useState("");
     const [openingStockKegs, setOpeningStockKegs] = useState("");
-    const [receipts330Cases, setReceipts330Cases] = useState("");
-    const [receipts500Cases, setReceipts500Cases] = useState("");
-    const [receiptsKegs, setReceiptsKegs] = useState("");
     //For redirection after inventory is created
     const [routeRedirect, setRedirect] = useState(false); 
     const [showAlert, setAlertShow] = useState(false);
 
     // -- more calculations to be done automatically
 
+    const [brews, setbrews] = useState([]);
+    const getBrews = () => {
+        fetch(url+"api/brew").then(res =>{
+          return res.json();
+        }).then(brews => {
+          console.log(brews);
+          setbrews(brews.data);
+        }).catch(err => {
+          console.log(err);
+        })
+      }
+    
+      useEffect(() => {
+        getBrews();
+      }, [])
+    
+    
     const create = (event) => {
             event.preventDefault();   
 
@@ -65,9 +79,6 @@ const divStyle = {
                 openingStock330Cases: openingStock330Cases,
                 openingStock500Cases: openingStock500Cases,
                 openingStockKegs: openingStockKegs,
-                receipts330Cases: receipts330Cases,
-                receipts500Cases: receipts500Cases,
-                receiptsKegs: receiptsKegs
             }
 
             //options needed to send request to server
@@ -80,9 +91,9 @@ const divStyle = {
             }
 
             //if all data is valid, then post to server
-            if(batchNo && totalCasesSold500Month && remainingCases500 && totalCasesSold330Month && remainingCases330 && totalKegsSold && remainingKegs && openingStock330Cases && openingStock500Cases && openingStockKegs && receipts330Cases && receipts500Cases && receiptsKegs){
+            if(batchNo && totalCasesSold500Month && remainingCases500 && totalCasesSold330Month && remainingCases330 && totalKegsSold && remainingKegs && openingStock330Cases && openingStock500Cases && openingStockKegs){
                 if(isNaN(parseInt(totalCasesSold500Month)) || isNaN(parseInt(remainingCases500)) || isNaN(parseInt(totalCasesSold330Month)) || isNaN(parseInt(remainingCases330)) || 
-                isNaN(parseInt(totalKegsSold)) || isNaN(parseInt(remainingKegs)) || isNaN(parseInt(openingStock330Cases)) || isNaN(parseInt(openingStock500Cases)) || isNaN(parseInt(openingStockKegs)) || isNaN(parseInt(receipts330Cases)) || isNaN(parseInt(receipts500Cases)) || isNaN(parseInt(receiptsKegs))){
+                isNaN(parseInt(totalKegsSold)) || isNaN(parseInt(remainingKegs)) || isNaN(parseInt(openingStock330Cases)) || isNaN(parseInt(openingStock500Cases)) || isNaN(parseInt(openingStockKegs))){
                     setAlertShow(!showAlert);
                     console.log("Invalid form format, will not be sent to database");
                 }
@@ -115,6 +126,10 @@ const divStyle = {
             </React.Fragment>
     }
 
+    const batchNosList = brews.map((brew) =>
+        <option>{brew.batchNo}</option>
+    );
+
     // Redirect to inventory page after creation
     const redirect = routeRedirect;
     if(redirect){
@@ -125,8 +140,11 @@ const divStyle = {
         // React Fragment is a way of sending back multiple elements - https://reactjs.org/docs/fragments.html
         <React.Fragment> 
                 <form style={formStyle} onSubmit={create}>
-                        <label>Batch Number</label>
-                        <input type="text" placeholder="Enter Batch Number" onChange= {event => setBatchNo(event.target.value)}/>
+                    <label>Batch Number</label>
+                    <select onChange={event => setBatchNo(event.target.value)}>
+                        <option>Select a Batch Number...</option>
+                        {batchNosList}
+                    </select>
                     <div style={divStyle} className="float-left">
 
                         <label>500 Cases Sold this Month</label>
@@ -156,15 +174,6 @@ const divStyle = {
 
                         <label>Opening Stock Kegs</label>
                         <input type="text" placeholder="Enter Opening Stock Kegs" onChange={event => setOpeningStockKegs(event.target.value)}/>
-
-                        <label>Receipts 500ml Cases</label>
-                        <input type="text" placeholder="Enter Receipts 500ml Cases" onChange={event => setReceipts500Cases(event.target.value)}/>
-
-                        <label>Receipts 330ml Cases</label>
-                        <input type="text" placeholder="Enter Receipts 330ml Cases" onChange={event => setReceipts330Cases(event.target.value)}/>
-
-                        <label>Receipts Kegs</label>
-                        <input type="text" placeholder="Enter Receipts Kegs" onChange={event => setReceiptsKegs(event.target.value)}/>
                     </div>
                     <input type="submit" value="Create Inventory"/>
                     {alertFormError}
