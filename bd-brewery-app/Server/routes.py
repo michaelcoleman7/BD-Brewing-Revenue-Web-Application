@@ -225,41 +225,14 @@ def createInventory():
     receipts330Cases = request.json.get("receipts330Cases")
     receiptsKegs = request.json.get("receiptsKegs")
 
-    # print variables to check if correct
-    #print("product Name:" +productName +"total litres:" +totalLitres + " totalCasesSold500Month:" + totalCasesSold500Month + " remainingCases500:" + remainingCases500 + "totalCasesSold330Month:" + totalCasesSold330Month + " remainingCases330:" + remainingCases330 + " totalKegsSold:" + totalKegsSold + " remainingKegs:" + remainingKegs + " openingStockCases:" + openingStockCases + " openingStockKegs:" + openingStockKegs + " receiptsCases:" + receiptsCases + " receiptsKegs:" + receiptsKegs)
-    brewDetails = brewCollection.find( { "batchNo": batchNo } )
-    for document in brewDetails:
-        print("productName Inventory" + document["productName"])
-        total500cases = document["bottleNo500"]
-        total330cases = document["bottleNo330"]
-        totalkegs = document["kegNo"]
-        totalCasesSold500 = int(total500cases) - int(remainingCases500)
-        totalCasesSold330 = int(total330cases) - int(remainingCases330)
-        totalKegsSold = int(totalkegs) - int(remainingKegs)
-        #print("totalCasesSold500: " + str(totalCasesSold500) + " remaining330: " + str(totalCasesSold330) + " remainingKegNo: " + str(totalKegsSold) )
+    calculationVariables = [batchNo, remainingCases500,remainingCases330, remainingKegs,totalCasesSold500Month,totalCasesSold330Month, totalKegsSoldMonth]
 
-        abv = document["abv"]
-        pcv = document["postConditionVol"]
-        totalLitres = pcv
-        receiptsAvg = round(float(pcv) * float(abv) , 2)
-
-        monthPCV = calculatePCV(totalCasesSold500Month ,totalCasesSold330Month, totalKegsSoldMonth )
-        soldAvgMonth = float(monthPCV) * float(abv)
-        #print("soldAvgMonth" + str(soldAvgMonth))
-
-        remainingPCV = calculatePCV(remainingCases500 ,remainingCases330, remainingKegs )
-        AvgRemaining= float(remainingPCV) * float(abv)
-        #print("AvgRemaining" + str(AvgRemaining))
-
-        # Deliveries calculations
-        deliveries330Cases = (int(openingStock330Cases) + int(receipts330Cases)) - int(remainingCases330)
-        deliveries500Cases = (int(openingStock500Cases) + int(receipts500Cases)) - int(remainingCases500)
-        deliveriesKegs = (int(openingStockKegs) + int(receiptsKegs)) - int(remainingKegs)
+    invCalculations = inventoryCalculations(calculationVariables)
 
     # create json format of data to send to MongoDB
     inventory = {
         "batchNo": batchNo,
-        "totalLitres": totalLitres,
+        "totalLitres": invCalculations[7],
         "totalCasesSold500Month": totalCasesSold500Month,
         "remainingCases500": remainingCases500,
         "totalCasesSold330Month": totalCasesSold330Month,
@@ -269,15 +242,16 @@ def createInventory():
         "openingStock330Cases": openingStock330Cases,
         "openingStock500Cases": openingStock500Cases,
         "openingStockKegs": openingStockKegs,
-        "receipts500Cases": receipts500Cases,
-        "receipts330Cases": receipts330Cases,
+        "receiptsCases500": receiptsCases500,
+        "receiptsCases330": receiptsCases330,
         "receiptsKegs": receiptsKegs,
-        "totalCasesSold500": totalCasesSold500,
-        "totalCasesSold330": totalCasesSold330,
-        "totalKegsSold": totalKegsSold,
-        "receiptsAvg": receiptsAvg,
-        "soldAvgMonth": soldAvgMonth,
-        "AvgRemaining": AvgRemaining
+        "totalCasesSold500": invCalculations[0],
+        "totalCasesSold330": invCalculations[1],
+        "totalKegsSold": invCalculations[2],
+        "remainingPCV": invCalculations[3],
+        "receiptsAvg": invCalculations[4],
+        "soldAvgMonth": invCalculations[5],
+        "AvgRemaining": invCalculations[6]
     }
 
     # Insert the Inventory into the mongoDB in mlabs, adapted from - https://docs.mongodb.com/manual/reference/method/db.collection.insertOne/
@@ -291,16 +265,9 @@ def createInventory():
 def updateInventory(id):
     #print("Updated Info")
     #print(request.json, flush=True)
-    totalCasesSold500 = ""
-    totalCasesSold330 = ""
-    totalKegsSold = ""
-    receiptsAvg = ""
-    soldAvgMonth = ""
-    AvgRemaining =""
     # Request all information and store in variables
     batchNo = request.json.get("batchNo")
     inventoryId= request.json.get("inventoryId")
-    totalLitres = request.json.get("totalLitres")
     totalCasesSold500Month = request.json.get("totalCasesSold500Month")
     remainingCases500 = request.json.get("remainingCases500")
     totalCasesSold330Month = request.json.get("totalCasesSold330Month")
@@ -314,51 +281,14 @@ def updateInventory(id):
     receiptsCases330 = request.json.get("receipts330Cases")
     receiptsKegs = request.json.get("receiptsKegs")
 
-    brewDetails = brewCollection.find( { "batchNo": batchNo } )
-    for document in brewDetails:
-        print("batchNo brew" + document["batchNo"])
-        total500cases = document["bottleNo500"]
-        total330cases = document["bottleNo330"]
-        totalkegs = document["kegNo"]
-        totalCasesSold500 = int(total500cases) - int(remainingCases500)
-        totalCasesSold330 = int(total330cases) - int(remainingCases330)
-        totalKegsSold = int(totalkegs) - int(remainingKegs)
+    calculationVariables = [batchNo, remainingCases500,remainingCases330, remainingKegs,totalCasesSold500Month,totalCasesSold330Month, totalKegsSoldMonth]
 
-        abv = document["abv"]
-        pcv = document["postConditionVol"]
-        totalLitres = pcv
-
-        packagedBatch = document["packaged"]
-
-        if packagedBatch:
-            receiptsAvg = round(float(pcv) * float(abv) , 2)
-        
-        else:
-            receiptsAvg = 0.0
-
-        monthPCV = calculatePCV(totalCasesSold500Month ,totalCasesSold330Month, totalKegsSoldMonth )
-        soldAvgMonth = float(monthPCV) * float(abv)
-
-        remainingPCV = calculatePCV(remainingCases500 ,remainingCases330, remainingKegs )
-        AvgRemaining= float(remainingPCV) * float(abv)
-
-        # Deliveries calculations
-        deliveries330Cases = (int(openingStock330Cases) + int(receiptsCases330)) - int(remainingCases330)
-        deliveries500Cases = (int(openingStock500Cases) + int(receiptsCases500)) - int(remainingCases500)
-        deliveriesKegs = (int(openingStockKegs) + int(receiptsKegs)) - int(remainingKegs)
-        #print("deliveries330Cases "+str(deliveries330Cases)+" deliveries500Cases"+str(deliveries500Cases)+" deliveriesKegs"+str(deliveriesKegs))#
-
-        # Calculate HL
-        OS_HL = calculatePCV(openingStock500Cases ,openingStock330Cases, openingStockKegs ) / 100
-        receipts_HL = calculatePCV(receiptsCases330 ,receiptsCases500, receiptsKegs ) / 100
-        deliveries_HL = calculatePCV(deliveries500Cases ,deliveries330Cases, deliveriesKegs ) / 100
-        CS_HL = remainingPCV / 100
-
+    invCalculations = inventoryCalculations(calculationVariables)
 
     # create json format of data to send to MongoDB
     updatedInventory = {
         "batchNo": batchNo,
-        "totalLitres": totalLitres,
+        "totalLitres": invCalculations[7],
         "totalCasesSold500Month": totalCasesSold500Month,
         "remainingCases500": remainingCases500,
         "totalCasesSold330Month": totalCasesSold330Month,
@@ -371,19 +301,19 @@ def updateInventory(id):
         "receiptsCases500": receiptsCases500,
         "receiptsCases330": receiptsCases330,
         "receiptsKegs": receiptsKegs,
-        "totalCasesSold500": totalCasesSold500,
-        "totalCasesSold330": totalCasesSold330,
-        "totalKegsSold": totalKegsSold,
-        "receiptsAvg": receiptsAvg,
-        "soldAvgMonth": soldAvgMonth,
-        "AvgRemaining": AvgRemaining
+        "totalCasesSold500": invCalculations[0],
+        "totalCasesSold330": invCalculations[1],
+        "totalKegsSold": invCalculations[2],
+        "remainingPCV": invCalculations[3],
+        "receiptsAvg": invCalculations[4],
+        "soldAvgMonth": invCalculations[5],
+        "AvgRemaining": invCalculations[6]
     }
 
     # need to parse id so that mongo gets correct instance of id, otherwise will take it as invalid - {"_id": ObjectId(inventoryId)}
     # Set the contents of the id in mongo to the updated data above - {"$set": updatedInventory}
     inventoryCollection.update_one({"_id": ObjectId(inventoryId)}, {"$set": updatedInventory})
-    list = [OS_HL,receipts_HL,deliveries_HL,CS_HL]
-    totalsInventory = calculateTotalUnits(list)
+    totalsInventory = calculateTotalUnits()
 
     inventoryCollection.update_one({"_id": ObjectId(inventoryId)}, {"$set":  {
             'totalsInventory': totalsInventory
@@ -445,7 +375,7 @@ def calculateDuty(postConditionVolume , abv):
     duty = (postConditionVolume/100 * abv * 22.5)/2
     return round(duty, 2)
 
-def calculateTotalUnits(list):
+def calculateTotalUnits():
     #retrieval = inventoryCollection.find({},{ "receiptsAvg": 1, "_id": 0 })
     retrieval = inventoryCollection.find({})
     totalReceiptsAvg = 0.0
@@ -504,6 +434,18 @@ def calculateTotalUnits(list):
 
         totalLitres = document["totalLitres"]
 
+        # Deliveries calculations
+        deliveries330Cases = (int(document["openingStock330Cases"]) + totalReceiptsCases330) - int(document["remainingCases330"])
+        deliveries500Cases = (int(document["openingStock500Cases"]) + totalReceiptsCases500) - int(document["remainingCases500"])
+        deliveriesKegs = (int(document["openingStockKegs"]) + totalReceiptsKegs) - int(document["remainingKegs"])
+        #print("deliveries330Cases "+str(deliveries330Cases)+" deliveries500Cases"+str(deliveries500Cases)+" deliveriesKegs"+str(deliveriesKegs))#
+
+        # Calculate HL for Opening Stock, Receipts, Deliveries and Closing Stock
+        OS_HL = calculatePCV(document["openingStock330Cases"] ,document["openingStock500Cases"], document["openingStockKegs"] ) / 100
+        receipts_HL = calculatePCV(totalReceiptsCases330 ,totalReceiptsCases500, totalReceiptsKegs ) / 100
+        deliveries_HL = calculatePCV(deliveries500Cases ,deliveries330Cases, deliveriesKegs ) / 100
+        CS_HL = float(document["remainingPCV"]) / 100
+
         print(receiptsAvg)
         if float(receiptsAvg) > 0.0:
             averageReceiptsDivisial += totalLitres
@@ -538,9 +480,9 @@ def calculateTotalUnits(list):
     litresSold = total500CasesSoldTL + total330CasesSoldTL + totalInvKegsSoldTL
     HLSold = litresSold / 100
 
-    # Still waiting to add HL percent for receiptsAvgNewPercentage -----------------------------------------------
-    Deliveries_HLPercent = list[2] * soldMonthAvgNewPercentage
-    CS_HLPercent = list[3] * remainsAvgNewPercentage
+    receipts_HLPercent  = receipts_HL * receiptsAvgNewPercentage
+    Deliveries_HLPercent = deliveries_HL * soldMonthAvgNewPercentage
+    CS_HLPercent = CS_HL * remainsAvgNewPercentage
 
 
     totalsInventory = {
@@ -574,6 +516,47 @@ def calculateTotalUnits(list):
     }
     
     return totalsInventory
+
+def inventoryCalculations(calculationVariables):
+    brewDetails = brewCollection.find( { "batchNo": calculationVariables[0] } )
+    for document in brewDetails:
+        print("batchNo brew" + document["batchNo"])
+        total500cases = document["bottleNo500"]
+        total330cases = document["bottleNo330"]
+        totalkegs = document["kegNo"]
+        totalCasesSold500 = int(total500cases) - int(calculationVariables[1])
+        totalCasesSold330 = int(total330cases) - int(calculationVariables[2])
+        totalKegsSold = int(totalkegs) - int(calculationVariables[3])
+
+        abv = document["abv"]
+        pcv = document["postConditionVol"]
+        totalLitres = pcv
+
+        packagedBatch = document["packaged"]
+
+        if packagedBatch:
+            receiptsAvg = round(float(pcv) * float(abv) , 2)
+        
+        else:
+            receiptsAvg = 0.0
+
+        monthPCV = calculatePCV(calculationVariables[4] ,calculationVariables[5], calculationVariables[6] )
+        soldAvgMonth = float(monthPCV) * float(abv)
+
+        remainingPCV = calculatePCV(calculationVariables[1] ,calculationVariables[2], calculationVariables[3] )
+        AvgRemaining= float(remainingPCV) * float(abv)
+    # create json format of data to send to MongoDB
+    invCalculations = [
+        totalCasesSold500,
+        totalCasesSold330,
+        totalKegsSold,
+        remainingPCV,
+        receiptsAvg,
+        soldAvgMonth,
+        AvgRemaining,
+        totalLitres
+    ]
+    return invCalculations
 
 def calculateStockReturn(deliveries):
     return deliveries
