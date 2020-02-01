@@ -150,8 +150,9 @@ const divStyle = {
     }
 
     const redirect = routeRedirect;
+    let redirectRoute = "/brewlist/"+ beer
     if(redirect){
-         return <Redirect to="/brew" />  
+         return <Redirect to={redirectRoute} />  
     }
 
     const deleteItem = (brewId) => {

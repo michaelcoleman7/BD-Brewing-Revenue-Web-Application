@@ -10,6 +10,7 @@ import SingleBrew from './Components/SingleBrew';
 import CreateInventory from './Components/CreateInventory';
 import InventoryList from './Components/InventoryList';
 import SingleInventory from './Components/SingleInventory';
+import BrewSeparator from './Components/BrewSeparator';
 
 function App() {
   return (
@@ -19,9 +20,10 @@ function App() {
       <Switch>
         <Route path="/" exact component={Home}/>
 
-        <Route exact path={"/brew"} component={BrewList}/>
+        <Route exact path={"/brewlist/:beer"} component={BrewList}/>
         <Route exact path={"/createbrew"} component={CreateBrew}/>
         <Route exact path={"/brew/:id"} component={SingleBrew}/>
+        <Route exact path={"/brew"} component={BrewSeparator}/>
 
         <Route exact path={"/createinventory"} component={CreateInventory}/>
         <Route exact path={"/inventory"} component={InventoryList}/>

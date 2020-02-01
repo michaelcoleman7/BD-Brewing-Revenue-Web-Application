@@ -6,6 +6,7 @@ import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import MapsComponent from './MapsComponent';
 import StockReturn from './StockReturn';
+import BrewSeparator from './BrewSeparator';
 
 class Home extends React.Component {
     render() {
