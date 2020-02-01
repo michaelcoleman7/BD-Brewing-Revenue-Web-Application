@@ -5,14 +5,14 @@ import ListGroup from 'react-bootstrap/ListGroup'
 //set the url to receive the data from
 const url = "http://127.0.0.1:5000/"
 
-const BrewList = () => {
-
+const BrewList = (props) => {
   const [brews, setbrews] = useState([]);
   const getBrews = () => {
+    //console.log(props.match.params.beer)
     fetch(url+"api/brew").then(res =>{
       return res.json();
     }).then(brews => {
-      console.log(brews);
+      //console.log(brews);
       setbrews(brews.data);
     }).catch(err => {
       console.log(err);
@@ -35,22 +35,39 @@ const BrewList = () => {
     background: 'rgba(144, 84, 23, 0.5)'
   };
 
+  let beerlist = []
+  for (var i = 0; i < brews.length; i++) {
+    console.log(brews[i].batchNo);
+      if(brews[i].beer == props.match.params.beer){
+        beerlist.push(brews[i]);
+        //console.log("added");
+      }
+      else{
+        //console.log(brews[i].batchNo);
+      }
+  }
 
+  console.log(beerlist);
+  for (var i = 0; i < beerlist.length; i++) {
+    console.log("dd "+ beerlist[i]);
+}
   let brewsArray;
-  if(brews.length > 0){
+  let counter = 0;
+  if(beerlist.length > 0){
       brewsArray = <div>
-        {brews.map(brew => {
+        {beerlist.map(brew => {
           return(
-            <div key={brew._id}>
-              <Link to={"brew/"+brew._id}>
+            <div key={counter}>
+              <Link to={"../brew/"+brew._id}>
                 <ListGroup>
                 <center>
-                    <ListGroup.Item style={listItem}>{brew.productName}</ListGroup.Item>
+                    <ListGroup.Item style={listItem}>{brew.batchNo}</ListGroup.Item>
                 </center>
                 </ListGroup>
               </Link>
             </div>
           )
+          counter++;
         })}
       </div>
   }else{
