@@ -53,7 +53,7 @@ def indexBrew():
         #print("productName" + document["productName"])
 
     for document in retrieval:
-        brews.append({"_id": JSONEncoder().encode(document["_id"]), "batchNo":document["batchNo"]})
+        brews.append({"_id": JSONEncoder().encode(document["_id"]), "batchNo":document["batchNo"], "beer":document["beer"]})
     return jsonify(data=brews)
 
 
@@ -188,7 +188,7 @@ def indexInventory():
     retrieval = inventoryCollection.find({})
 
     for document in retrieval:
-        inventories.append({"_id": JSONEncoder().encode(document["_id"]), "batchNo":document["batchNo"]})
+        inventories.append({"_id": JSONEncoder().encode(document["_id"]), "batchNo":document["batchNo"], "beer":document["beer"]})
     return jsonify(data=inventories)
 # Route to handle individual inventories
 @indexInventoryRoute.route("/api/inventory/<id>", methods=["GET"])
