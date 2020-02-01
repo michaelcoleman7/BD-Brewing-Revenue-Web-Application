@@ -11,10 +11,6 @@ const Inventory = () => {
     width: '18rem'
   };
 
-  const divStyle2 = {
-    width: '18rem'
-  };
-
   const header = {
     color: 'white'
   };
@@ -33,7 +29,7 @@ return(
               </Card.Body>
             </Card>
 
-            <Card bg="success" style={divStyle2}>          
+            <Card bg="success" style={divStyle}>          
               <Link to="/inventory"> <Card.Img src={require("../Images/BeerPour.PNG")} height="300"/></Link>
               <Card.Body>
                 <Card.Title>View Inventorys</Card.Title>

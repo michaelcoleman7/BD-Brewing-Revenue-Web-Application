@@ -5,10 +5,10 @@ import Card from 'react-bootstrap/Card'
 //set the url to receive the data from
 const url = "http://127.0.0.1:5000/"
 
-const Brew = () => {
+const StockReturn = () => {
 
   const divStyle = {
-    width: '18rem'
+    width: '25rem'
   };
 
   const header = {
@@ -17,24 +17,24 @@ const Brew = () => {
 
 return(
     <React.Fragment> 
-      <h1 style={header}>Brew Management</h1>
-      <div className="d-flex justify-content-around">
+      <h1 style={header}>Stock Returns</h1>
+      <div class="d-flex justify-content-around">
             <Card bg="primary" style={divStyle}>          
-              <Link to="/createbrew"> <Card.Img src={require("../Images/Background3.jpg")} height="300"/></Link>
+              <Link to="/createstockreturn"> <Card.Img src={require("../Images/stein.PNG")} height="300"/></Link>
               <Card.Body>
-                <Card.Title>Create Brew</Card.Title>
+                <Card.Title>Create Stock Return</Card.Title>
                 <Card.Text>
-                  Create a new brew containing all necessary information needed.
+                  Create a new Stock return based on an existing Inventory.
                 </Card.Text>
               </Card.Body>
             </Card>
 
             <Card bg="success" style={divStyle}>          
-              <Link to="/brew"> <Card.Img src={require("../Images/createbeer.jpg")} height="300"/></Link>
+              <Link to="/stockreturn"> <Card.Img src={require("../Images/Cheers.PNG")} height="300"/></Link>
               <Card.Body>
-                <Card.Title>View Brews</Card.Title>
+                <Card.Title>View Stock Returns</Card.Title>
                 <Card.Text>
-                  View a list of all the brews in the database.
+                  View all existing Stock Returns.
                 </Card.Text>
               </Card.Body>
             </Card>
@@ -42,4 +42,4 @@ return(
     </React.Fragment>)
   }
 
-export default Brew;
+export default StockReturn;

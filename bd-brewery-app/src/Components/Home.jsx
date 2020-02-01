@@ -5,6 +5,7 @@ import Inventory from './Inventory';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import MapsComponent from './MapsComponent';
+import StockReturn from './StockReturn';
 
 class Home extends React.Component {
     render() {
@@ -16,8 +17,10 @@ class Home extends React.Component {
           <Tab eventKey="Inventory" title="Inventory Managment">
             <Inventory/>
           </Tab>
+          <Tab eventKey="StockReturn" title="Stock Returns">
+            <StockReturn/>
+          </Tab>
         </Tabs>
-        <MapsComponent></MapsComponent>
     </div>
     }
   }
