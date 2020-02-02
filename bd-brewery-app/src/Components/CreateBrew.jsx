@@ -73,7 +73,7 @@ const divStyle = {
             }
 
             //if all data is valid, then post to server
-            if(productName && beer && batchNo && brewDate && og && pg && postConditionDate && kegNo && bottleNo500 && bottleNo330 && status && packaged){
+            if( beer && batchNo && brewDate && og && pg && postConditionDate && kegNo && bottleNo500 && bottleNo330 && status && packaged){
                 if(isNaN(parseFloat(og).toFixed(5)) || isNaN(parseFloat(pg).toFixed(5)) || isNaN(parseInt(kegNo)) || isNaN(parseInt(bottleNo500)) || isNaN(parseInt(bottleNo330))){
                     setAlertShow(!showAlert);
                     console.log("Invalid form format, will not be sent to database");
@@ -116,15 +116,12 @@ const divStyle = {
         // React Fragment is a way of sending back multiple elements - https://reactjs.org/docs/fragments.html
         <React.Fragment> 
                 <form style={formStyle} onSubmit={create}>
-                        <label>Product Name</label>
-                        <input type="text" name="ProductName" placeholder="Enter Product Name" onChange= {event => setProductName(event.target.value)}/>
+                        <label>Batch No</label>
+                        <input type="text" name="batchNo" placeholder="Enter Batch Number" onChange={event => setBatchNo(event.target.value)}/>
                     <div style={divStyle} className="float-left">
 
                         <label>Beer</label>
                         <input type="text" name="beer" placeholder="Enter Beer" onChange={event => setBeer(event.target.value)}/>
-
-                        <label>Batch No</label>
-                        <input type="text" name="batchNo" placeholder="Enter Batch Number" onChange={event => setBatchNo(event.target.value)}/>
 
                         <label>Brew Date</label>
                         <input type="text" name="brewDate" placeholder="Enter Brew Date" onChange={event => setBrewDate(event.target.value)}/>
