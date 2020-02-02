@@ -27,7 +27,6 @@ const divStyle = {
   // react arrow function component to create a brew
   const SingleBrew = (props) => {
     // using react hooks to get data back - adapted from https://reactjs.org/docs/hooks-state.html
-    const [productName, setProductName] = useState("");
     const [brewId, setBrewId] = useState("");
     const [brew, setBrew] = useState("");
     const [changeBrew, setChangeBrew] = useState(false); 
@@ -64,7 +63,6 @@ const divStyle = {
             console.log("response "+res.data);
             let parsed = JSON.parse(res.data);
             setBrew(parsed);
-            setProductName(parsed.productName);
             setBeer(parsed.beer);
             setBatchNo(parsed.batchNo);
             setBrewDate(parsed.brewDate);
@@ -90,7 +88,6 @@ const divStyle = {
             //brew values to be sent to server
             const brew = {
                 brewId: brewId,
-                productName: productName,
                 beer: beer,
                 batchNo: batchNo,
                 brewDate: brewDate,
@@ -114,7 +111,7 @@ const divStyle = {
                body: JSON.stringify(brew)   
           }
                       //if all data is valid, then post to server
-                      if(productName && beer && batchNo && brewDate && og && pg && postConditionDate && kegNo && bottleNo500 && bottleNo330 && status){
+                      if(beer && batchNo && brewDate && og && pg && postConditionDate && kegNo && bottleNo500 && bottleNo330 && status){
                         if(isNaN(parseFloat(og).toFixed(5)) || isNaN(parseFloat(pg).toFixed(5)) || isNaN(parseInt(kegNo)) || isNaN(parseInt(bottleNo500)) || isNaN(parseInt(bottleNo330))){
                             setAlertShow(!showAlert);
                             console.log("Invalid form format, will not be sent to database");
@@ -186,15 +183,13 @@ const divStyle = {
         editForm =
             <React.Fragment>
                 <form style={formStyle} onSubmit={updateBrew}>
-                        <label>Product Name</label>
-                        <input type="text" name="ProductName" placeholder="Enter Product Name" onChange= {event => setProductName(event.target.value)} defaultValue={brew.productName}/>
+                        <label>Batch No</label>
+                        <input type="text" name="batchNo" placeholder="Enter Batch Number" onChange={event => setBatchNo(event.target.value)} defaultValue={brew.batchNo}/>
+                    
                     <div style={divStyle} className="float-left">
 
                         <label>Beer</label>
                         <input type="text" name="beer" placeholder="Enter Beer" onChange={event => setBeer(event.target.value)} defaultValue={brew.beer}/>
-
-                        <label>Batch No</label>
-                        <input type="text" name="batchNo" placeholder="Enter Batch Number" onChange={event => setBatchNo(event.target.value)} defaultValue={brew.batchNo}/>
 
                         <label>Brew Date</label>
                         <input type="text" name="brewDate" placeholder="Enter Brew Date" onChange={event => setBrewDate(event.target.value)} defaultValue={brew.brewDate}/>
@@ -234,9 +229,9 @@ const divStyle = {
         <React.Fragment> 
             <center><Card style={{ width: '40%' }}>
                 <Card.Body>
-                    <Card.Title>Product Name: {brew.productName}</Card.Title>
+                    <Card.Title>Batch Number: {brew.batchNo}</Card.Title>
                     <Card.Text>
-                        Brew No: {brew.brewNo}
+                        Brew No: {brew.batchNo}
                     </Card.Text>
                 </Card.Body>
             </Card></center>

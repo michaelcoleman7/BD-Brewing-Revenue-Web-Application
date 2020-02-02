@@ -46,11 +46,7 @@ const BrewList = (props) => {
         //console.log(brews[i].batchNo);
       }
   }
-
-  console.log(beerlist);
-  for (var i = 0; i < beerlist.length; i++) {
-    console.log("dd "+ beerlist[i]);
-}
+  
   let brewsArray;
   let counter = 0;
   if(beerlist.length > 0){
