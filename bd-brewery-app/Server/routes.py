@@ -47,10 +47,6 @@ def indexBrew():
     brews = []
 
     retrieval = brewCollection.find({})
-    ss = brewCollection.find( { "productName": "Sheep Stealer" } )
-    #print(ss)
-    #for document in ss:
-        #print("productName" + document["productName"])
 
     for document in retrieval:
         brews.append({"_id": JSONEncoder().encode(document["_id"]), "batchNo":document["batchNo"], "beer":document["beer"]})
@@ -73,7 +69,6 @@ def createBrew():
     #print(request.json, flush=True)
 
     # Request all information and store in variables
-    productName = request.json.get("productName")
     beer = request.json.get("beer")
     batchNo = request.json.get("batchNo")
     brewDate = request.json.get("brewDate")
@@ -91,11 +86,10 @@ def createBrew():
     duty=calculateDuty(postConditionVol,abv)
 
     # print variables to check if correct
-    #print("Brew Name:" +productName +"Brew Number:" +brewNo + " Beer:" + beer + " batchNo:" + batchNo + " brewDate:" + brewDate + " og:" + og + " pg:" + pg + " abv:" + abv + " postConditionDate:" + postConditionDate + " postConditionVol:" + postConditionVol + " kegNo:" + kegNo + " bottleNo500:" + bottleNo500 + " bottleNo330:" + bottleNo330 + " duty:" + duty + " status:" + status)
+    #print("Brew Name:" +"Brew Number:" +brewNo + " Beer:" + beer + " batchNo:" + batchNo + " brewDate:" + brewDate + " og:" + og + " pg:" + pg + " abv:" + abv + " postConditionDate:" + postConditionDate + " postConditionVol:" + postConditionVol + " kegNo:" + kegNo + " bottleNo500:" + bottleNo500 + " bottleNo330:" + bottleNo330 + " duty:" + duty + " status:" + status)
 
     # create json format of data to send to MongoDB
     brew = {
-        "productName": productName,
         "beer": beer,
         "batchNo": batchNo,
         "brewDate": brewDate,
@@ -126,7 +120,6 @@ def updateBrew(id):
     #print(request.json, flush=True)
     
     # Request all information and store in variables
-    productName = request.json.get("productName")
     brewId= request.json.get("brewId")
     beer = request.json.get("beer")
     batchNo = request.json.get("batchNo")
@@ -147,7 +140,6 @@ def updateBrew(id):
 
     # create json format of data to send to MongoDB
     updatedBrew = {
-        "productName": productName,
         "beer": beer,
         "batchNo": batchNo,
         "brewDate": brewDate,
@@ -188,7 +180,7 @@ def indexInventory():
     retrieval = inventoryCollection.find({})
 
     for document in retrieval:
-        inventories.append({"_id": JSONEncoder().encode(document["_id"]), "batchNo":document["batchNo"], "beer":document["beer"]})
+        inventories.append({"_id": JSONEncoder().encode(document["_id"]), "batchNo":document["batchNo"]})
     return jsonify(data=inventories)
 # Route to handle individual inventories
 @indexInventoryRoute.route("/api/inventory/<id>", methods=["GET"])
@@ -203,15 +195,9 @@ def inventorySingle(id):
 # Route to handle creation of a Inventory
 @createInventoryRoute.route("/api/createinventory", methods=["POST"])
 def createInventory():
-    #print(request.json, flush=True)
-    totalCasesSold500 = ""
-    totalCasesSold330 = ""
-    totalKegsSold = ""
-    receiptsAvg = ""
-    soldAvgMonth = ""
-    AvgRemaining =""
     # Request all information and store in variables
     batchNo = request.json.get("batchNo")
+    beer = request.json.get("beer")
     totalCasesSold500Month = request.json.get("totalCasesSold500Month")
     remainingCases500 = request.json.get("remainingCases500")
     totalCasesSold330Month = request.json.get("totalCasesSold330Month")
@@ -229,6 +215,7 @@ def createInventory():
     # create json format of data to send to MongoDB
     inventory = {
         "batchNo": batchNo,
+        "beer": beer,
         "totalLitres": invCalculations[7],
         "totalCasesSold500Month": totalCasesSold500Month,
         "remainingCases500": remainingCases500,
@@ -261,6 +248,7 @@ def updateInventory(id):
     #print(request.json, flush=True)
     # Request all information and store in variables
     batchNo = request.json.get("batchNo")
+    beer = request.json.get("beer")
     inventoryId= request.json.get("inventoryId")
     totalCasesSold500Month = request.json.get("totalCasesSold500Month")
     remainingCases500 = request.json.get("remainingCases500")
@@ -279,6 +267,7 @@ def updateInventory(id):
     # create json format of data to send to MongoDB
     updatedInventory = {
         "batchNo": batchNo,
+        "beer": beer,
         "totalLitres": invCalculations[7],
         "totalCasesSold500Month": totalCasesSold500Month,
         "remainingCases500": remainingCases500,
