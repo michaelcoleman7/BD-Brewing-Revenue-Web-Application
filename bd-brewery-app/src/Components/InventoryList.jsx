@@ -5,7 +5,7 @@ import ListGroup from 'react-bootstrap/ListGroup'
 //set the url to receive the data from
 const url = "http://127.0.0.1:5000/"
 
-const InventoryList = () => {
+const InventoryList = (props) => {
 
   const [inventories, setinventories] = useState([]);
   const getInventories = () => {
@@ -35,14 +35,21 @@ const InventoryList = () => {
     background: 'rgba(144, 84, 23, 0.5)'
   };
 
+  let inventoryList = []
+  for (var i = 0; i < inventories.length; i++) {
+      if(inventories[i].beer == props.match.params.beer){
+        inventoryList.push(inventories[i]);
+      }
+  }
+
 
   let inventoriesArray;
   if(inventories.length > 0){
       inventoriesArray = <div>
-        {inventories.map(inventory => {
+        {inventoryList.map(inventory => {
           return(
             <div key={inventory._id}>
-              <Link to={"inventory/"+inventory._id}>
+              <Link to={"../inventory/"+inventory._id}>
                 <ListGroup>
                 <center>
                     <ListGroup.Item style={listItem}>{inventory.batchNo}</ListGroup.Item>

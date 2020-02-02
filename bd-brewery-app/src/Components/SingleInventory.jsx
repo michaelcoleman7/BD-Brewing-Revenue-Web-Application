@@ -146,10 +146,10 @@ const divStyle = {
             console.log("Invalid form format, will not be sent to database");
         }
     }
-
+    let redirectRoute = "/inventorylist/"+ beer
     const redirect = routeRedirect;
     if(redirect){
-         return <Redirect to="/inventory" />  
+         return <Redirect to={redirectRoute} />  
     }
 
     const deleteItem = (inventoryId) => {
