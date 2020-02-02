@@ -11,6 +11,7 @@ import CreateInventory from './Components/CreateInventory';
 import InventoryList from './Components/InventoryList';
 import SingleInventory from './Components/SingleInventory';
 import BrewSeparator from './Components/BrewSeparator';
+import InventorySeparator from './Components/InventorySeparator';
 
 function App() {
   return (
@@ -26,7 +27,8 @@ function App() {
         <Route exact path={"/brew"} component={BrewSeparator}/>
 
         <Route exact path={"/createinventory"} component={CreateInventory}/>
-        <Route exact path={"/inventory"} component={InventoryList}/>
+        <Route exact path={"/inventorylist/:beer"} component={InventoryList}/>
+        <Route exact path={"/inventory"} component={InventorySeparator}/>
         <Route exact path={"/inventory/:id"} component={SingleInventory}/>
       </Switch>
   </Router>
