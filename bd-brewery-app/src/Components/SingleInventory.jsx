@@ -28,6 +28,7 @@ const divStyle = {
   const SingleInventory = (props) => {
     // using react hooks to get data back - adapted from https://reactjs.org/docs/hooks-state.html
     const [batchNo, setBatchNo] = useState("");
+    const [beer, setBeer] = useState("");
     const [inventoryId, setInventoryId] = useState("");
     const [inventory, setInventory] = useState("");
     const [changeInventory, setChangeInventory] = useState(false); 
@@ -44,22 +45,6 @@ const divStyle = {
     const [routeRedirect, setRedirect] = useState(""); 
     const [showAlert, setAlertShow] = useState(false);
 
-    const [brews, setbrews] = useState([]);
-    const getBrews = () => {
-        fetch(url+"api/brew").then(res =>{
-          return res.json();
-        }).then(brews => {
-          console.log(brews);
-          setbrews(brews.data);
-        }).catch(err => {
-          console.log(err);
-        })
-      }
-    
-      useEffect(() => {
-        getBrews();
-      }, [])
-
     const getInventory = () => {
         let id = props.match.params.id;
 
@@ -69,12 +54,11 @@ const divStyle = {
         let quotationlessId = id.replace(/['"]+/g, "");     
 
         setInventoryId(quotationlessId);
-        console.log("quotationlessId "+quotationlessId);
 
         fetch(url+"api/inventory/"+quotationlessId).then(res => {
             return res.json();
         }).then(res => {
-            console.log("response "+res.data);
+            //console.log("response "+res.data);
             let parsed = JSON.parse(res.data);
             setInventory(parsed);
             setBatchNo(parsed.batchNo);
@@ -96,12 +80,28 @@ const divStyle = {
         getInventory();
     },[]);
 
+    const [brews, setbrews] = useState([]);
+    const getBrews = () => {
+        fetch(url+"api/brew").then(res =>{
+          return res.json();
+        }).then(brews => {
+          setbrews(brews.data);
+        }).catch(err => {
+          console.log(err);
+        })
+      }
+    
+      useEffect(() => {
+        getBrews();
+      }, [])
+
     const updateInventory = (e) => {
         e.preventDefault();
         //inventory values to be sent to server
         const inventory = {
             inventoryId: inventoryId,
             batchNo: batchNo,
+            beer: beer,
             totalCasesSold500Month: totalCasesSold500Month,
             remainingCases500: remainingCases500,
             totalCasesSold330Month: totalCasesSold330Month,
@@ -165,7 +165,6 @@ const divStyle = {
             return res.json()
            })
            .then(res => {
-               console.log(res);
                setRedirect(true);
            }).catch(err => {
                console.log(err)
@@ -189,11 +188,31 @@ const divStyle = {
     const editItem = (inventoryId) => {
         console.log(inventoryId)
         setChangeInventory(!changeInventory);
+        setBeersInfo();
     }
 
     const batchNosList = brews.map((brew) =>
         <option>{brew.batchNo}</option>
     );
+
+    const setUpBrewInfo = (event) => {
+        setBatchNo(event.target.value)
+        for (var i = 0; i < brews.length; i++) {
+            if(brews[i].batchNo == event.target.value ){
+                setBeer(brews[i].beer);
+            }
+        }   
+    }
+
+    const setBeersInfo = () =>{
+        for (var i = 0; i < brews.length; i++) {
+            if(brews[i].batchNo == batchNo ){
+                setBeer(brews[i].beer);
+            }
+        }   
+    }
+    
+
 
     let editForm;
     if(changeInventory){
@@ -201,7 +220,7 @@ const divStyle = {
             <React.Fragment>
                 <form style={formStyle} onSubmit={updateInventory}>
                         <label>Batch Number</label>
-                    <select onChange={event => setBatchNo(event.target.value)}>
+                    <select onChange={event => setUpBrewInfo(event)}>
                         <option>{inventory.batchNo}</option>
                         {batchNosList}
                     </select>

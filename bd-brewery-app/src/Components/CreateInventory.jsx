@@ -29,6 +29,7 @@ const divStyle = {
   const CreateInventory = () => {
     // using react hooks to get data back - adapted from https://reactjs.org/docs/hooks-state.html
     const [batchNo, setBatchNo] = useState("");
+    const [beer, setBeer] = useState("");
     //const [totalCasesSold500, setTotalCasesSold500] = useState(""); - calculated with formula
     const [totalCasesSold500Month, setTotalCasesSold500Month] = useState("");
     const [remainingCases500, setRemainingCases500] = useState("");
@@ -70,6 +71,7 @@ const divStyle = {
             //brew values to be sent to server
             const inventory = {
                 batchNo: batchNo,
+                beer: beer,
                 totalCasesSold500Month: totalCasesSold500Month,
                 remainingCases500: remainingCases500,
                 totalCasesSold330Month: totalCasesSold330Month,
@@ -130,6 +132,17 @@ const divStyle = {
         <option>{brew.batchNo}</option>
     );
 
+    const setUpBrewInfo = (event) => {
+        setBatchNo(event.target.value)
+        for (var i = 0; i < brews.length; i++) {
+            //console.log("dd "+ beerlist[i]);
+            if(brews[i].batchNo == event.target.value ){
+                console.log(brews[i].beer)
+                setBeer(brews[i].beer);
+            }
+        }   
+    }
+
     // Redirect to inventory page after creation
     const redirect = routeRedirect;
     if(redirect){
@@ -141,7 +154,7 @@ const divStyle = {
         <React.Fragment> 
                 <form style={formStyle} onSubmit={create}>
                     <label>Batch Number</label>
-                    <select onChange={event => setBatchNo(event.target.value)}>
+                    <select onChange={event => setUpBrewInfo(event)}>
                         <option>Select a Batch Number...</option>
                         {batchNosList}
                     </select>
