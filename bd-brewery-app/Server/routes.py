@@ -42,6 +42,9 @@ updateInventoryRoute = Blueprint("updateInventory", __name__)
 deleteInventoryRoute = Blueprint("deleteInventory", __name__)
 inventoryRoute = Blueprint("inventorySingle", __name__)
 
+indexStockReturnRoute = Blueprint("indexStockReturn", __name__)
+createStockReturnRoute = Blueprint("createStockReturn", __name__)
+
 #routes 
 @indexBrewRoute.route("/api/brew")
 def indexBrew():
@@ -291,11 +294,6 @@ def updateInventory(id):
     # need to parse id so that mongo gets correct instance of id, otherwise will take it as invalid - {"_id": ObjectId(inventoryId)}
     # Set the contents of the id in mongo to the updated data above - {"$set": updatedInventory}
     inventoryCollection.update_one({"_id": ObjectId(inventoryId)}, {"$set": updatedInventory})
-    totalsInventory = calculations.calculateTotalUnits(brewCollection,inventoryCollection)
-
-    inventoryCollection.update_one({"_id": ObjectId(inventoryId)}, {"$set":  {
-            'totalsInventory': totalsInventory
-        }})
 
     response = jsonify(data = "update response")
     response.headers.add('Access-Control-Allow-Origin', '*')
@@ -310,6 +308,41 @@ def delete(id):
 
     return jsonify(data= "inventory delete successfully") 
 
+@indexStockReturnRoute.route("/api/stockreturn")
+def indexStockReturn():
+    stockReturn = []
+
+    retrieval = totalCollection.find({})
+
+    for document in retrieval:
+        stockReturn.append({"_id": JSONEncoder().encode(document["_id"]), "beer":document["beer"]})
+    return jsonify(data=stockReturn)
+
+# Route to handle creation of a stock return
+@createStockReturnRoute.route("/api/createstockreturn", methods=["POST"])
+def createBrew():
+    # Request all information and store in variables
+    beer = request.json.get("beer")
+    otherBreweryCheck = request.json.get("otherBreweryCheck")
+    otherCountryCheck = request.json.get("otherCountryCheck")
+
+    print("beer: "+ beer)
+    print("otherBreweryCheck: "+ str(otherBreweryCheck))
+    print("otherCountryCheck: "+ str(otherCountryCheck))
+
+    totalsInventory = calculations.calculateTotalUnits(brewCollection,inventoryCollection, beer)
+
+    totalCalculations = {
+        "beer": beer,
+        "totalsInventory": totalsInventory,
+    }
+
+    totalCollection.insert_one(totalCalculations)
+
+    # Insert the brew into the mongoDB in mlabs, adapted from - https://docs.mongodb.com/manual/reference/method/db.collection.insertOne/
+    # brewCollection.insert_one(brew)
+
+    return jsonify(data="Brew created successfully")
     
 
 
