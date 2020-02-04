@@ -44,6 +44,7 @@ inventoryRoute = Blueprint("inventorySingle", __name__)
 
 indexStockReturnRoute = Blueprint("indexStockReturn", __name__)
 createStockReturnRoute = Blueprint("createStockReturn", __name__)
+stockReturnRoute = Blueprint("stockReturnSingle", __name__)
 
 #routes 
 @indexBrewRoute.route("/api/brew")
@@ -211,6 +212,8 @@ def createInventory():
     openingStock330Cases = request.json.get("openingStock330Cases")
     openingStock500Cases = request.json.get("openingStock500Cases")
     openingStockKegs = request.json.get("openingStockKegs")
+    openingStockPercentage = request.json.get("openingStockPercentage")
+    print(openingStockPercentage)
 
     calculationVariables = [batchNo, remainingCases500,remainingCases330, remainingKegs,totalCasesSold500Month,totalCasesSold330Month, totalKegsSoldMonth]
 
@@ -230,6 +233,7 @@ def createInventory():
         "openingStock330Cases": openingStock330Cases,
         "openingStock500Cases": openingStock500Cases,
         "openingStockKegs": openingStockKegs,
+        "openingStockPercentage": openingStockPercentage,
         "totalCasesSold500": invCalculations[0],
         "totalCasesSold330": invCalculations[1],
         "totalKegsSold": invCalculations[2],
@@ -263,6 +267,8 @@ def updateInventory(id):
     openingStock330Cases = request.json.get("openingStock330Cases")
     openingStock500Cases = request.json.get("openingStock500Cases")
     openingStockKegs = request.json.get("openingStockKegs")
+    openingStockPercentage = request.json.get("openingStockPercentage")
+    print(openingStockPercentage)
 
     calculationVariables = [batchNo, remainingCases500,remainingCases330, remainingKegs,totalCasesSold500Month,totalCasesSold330Month, totalKegsSoldMonth]
 
@@ -282,6 +288,7 @@ def updateInventory(id):
         "openingStock330Cases": openingStock330Cases,
         "openingStock500Cases": openingStock500Cases,
         "openingStockKegs": openingStockKegs,
+        "openingStockPercentage": openingStockPercentage,
         "totalCasesSold500": invCalculations[0],
         "totalCasesSold330": invCalculations[1],
         "totalKegsSold": invCalculations[2],
@@ -317,6 +324,15 @@ def indexStockReturn():
     for document in retrieval:
         stockReturn.append({"_id": JSONEncoder().encode(document["_id"]), "beer":document["beer"]})
     return jsonify(data=stockReturn)
+# Route to handle individual stock returns
+@indexStockReturnRoute.route("/api/stockreturn/<id>", methods=["GET"])
+def stockReturnSingle(id):
+    # Find one object from mongo using the object id
+    cursor = totalCollection.find_one({"_id":ObjectId(id)})
+    #print(cursor, flush=True)
+
+    # Prevemt serializable error being thrown
+    return jsonify(data=JSONEncoder().encode(cursor))
 
 # Route to handle creation of a stock return
 @createStockReturnRoute.route("/api/createstockreturn", methods=["POST"])

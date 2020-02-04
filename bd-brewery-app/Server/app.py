@@ -2,7 +2,7 @@ from flask import Flask
 
 # Routes
 from flask_cors import CORS
-from routes import indexBrewRoute, createBrewRoute, updateBrewRoute, deleteBrewRoute, brewRoute, indexInventoryRoute, createInventoryRoute, updateInventoryRoute, deleteInventoryRoute, inventoryRoute,indexStockReturnRoute,createStockReturnRoute
+from routes import indexBrewRoute, createBrewRoute, updateBrewRoute, deleteBrewRoute, brewRoute, indexInventoryRoute, createInventoryRoute, updateInventoryRoute, deleteInventoryRoute, inventoryRoute,indexStockReturnRoute,createStockReturnRoute,stockReturnRoute
 
 app = Flask(__name__)
 CORS(app)
@@ -24,7 +24,7 @@ app.register_blueprint(inventoryRoute)
 
 app.register_blueprint(indexStockReturnRoute)
 app.register_blueprint(createStockReturnRoute)
-
+app.register_blueprint(stockReturnRoute)
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -38,6 +38,47 @@ def calculatePCV(bottle330, bottle500, kegs):
 def calculateDuty(postConditionVolume , abv):
     duty = (postConditionVolume/100 * abv * 22.5)/2
     return round(duty, 2)
+    
+def inventoryCalculations(brewCollection, calculationVariables):
+    brewDetails = brewCollection.find( { "batchNo": calculationVariables[0] } )
+    for document in brewDetails:
+        print("batchNo brew" + document["batchNo"])
+        total500cases = document["bottleNo500"]
+        total330cases = document["bottleNo330"]
+        totalkegs = document["kegNo"]
+        totalCasesSold500 = int(total500cases) - int(calculationVariables[1])
+        totalCasesSold330 = int(total330cases) - int(calculationVariables[2])
+        totalKegsSold = int(totalkegs) - int(calculationVariables[3])
+
+        abv = document["abv"]
+        pcv = document["postConditionVol"]
+        totalLitres = pcv
+
+        packagedBatch = document["packaged"]
+
+        if packagedBatch:
+            receiptsAvg = round(float(pcv) * float(abv) , 2)
+        
+        else:
+            receiptsAvg = 0.0
+
+        monthPCV = calculatePCV(calculationVariables[4] ,calculationVariables[5], calculationVariables[6] )
+        soldAvgMonth = float(monthPCV) * float(abv)
+
+        remainingPCV = calculatePCV(calculationVariables[1] ,calculationVariables[2], calculationVariables[3] )
+        AvgRemaining= float(remainingPCV) * float(abv)
+    # create json format of data to send to MongoDB
+    invCalculations = [
+        totalCasesSold500,
+        totalCasesSold330,
+        totalKegsSold,
+        remainingPCV,
+        receiptsAvg,
+        soldAvgMonth,
+        AvgRemaining,
+        totalLitres
+    ]
+    return invCalculations
 
 def calculateTotalUnits(brewCollection,inventoryCollection, beer):
     #retrieval = inventoryCollection.find({},{ "receiptsAvg": 1, "_id": 0 })
@@ -182,47 +223,6 @@ def calculateTotalUnits(brewCollection,inventoryCollection, beer):
     }
     
     return totalsInventory
-
-def inventoryCalculations(brewCollection, calculationVariables):
-    brewDetails = brewCollection.find( { "batchNo": calculationVariables[0] } )
-    for document in brewDetails:
-        print("batchNo brew" + document["batchNo"])
-        total500cases = document["bottleNo500"]
-        total330cases = document["bottleNo330"]
-        totalkegs = document["kegNo"]
-        totalCasesSold500 = int(total500cases) - int(calculationVariables[1])
-        totalCasesSold330 = int(total330cases) - int(calculationVariables[2])
-        totalKegsSold = int(totalkegs) - int(calculationVariables[3])
-
-        abv = document["abv"]
-        pcv = document["postConditionVol"]
-        totalLitres = pcv
-
-        packagedBatch = document["packaged"]
-
-        if packagedBatch:
-            receiptsAvg = round(float(pcv) * float(abv) , 2)
-        
-        else:
-            receiptsAvg = 0.0
-
-        monthPCV = calculatePCV(calculationVariables[4] ,calculationVariables[5], calculationVariables[6] )
-        soldAvgMonth = float(monthPCV) * float(abv)
-
-        remainingPCV = calculatePCV(calculationVariables[1] ,calculationVariables[2], calculationVariables[3] )
-        AvgRemaining= float(remainingPCV) * float(abv)
-    # create json format of data to send to MongoDB
-    invCalculations = [
-        totalCasesSold500,
-        totalCasesSold330,
-        totalKegsSold,
-        remainingPCV,
-        receiptsAvg,
-        soldAvgMonth,
-        AvgRemaining,
-        totalLitres
-    ]
-    return invCalculations
 
 def calculateStockReturn(deliveries):
     return deliveries
