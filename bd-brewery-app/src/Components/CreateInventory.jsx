@@ -42,6 +42,7 @@ const divStyle = {
     const [openingStock330Cases, setOpeningStock330Cases] = useState("");
     const [openingStock500Cases, setOpeningStock500Cases] = useState("");
     const [openingStockKegs, setOpeningStockKegs] = useState("");
+    const [openingStockPercentage, setOpeningStockPercentage] = useState("");
     //For redirection after inventory is created
     const [routeRedirect, setRedirect] = useState(false); 
     const [showAlert, setAlertShow] = useState(false);
@@ -81,6 +82,7 @@ const divStyle = {
                 openingStock330Cases: openingStock330Cases,
                 openingStock500Cases: openingStock500Cases,
                 openingStockKegs: openingStockKegs,
+                openingStockPercentage: openingStockPercentage
             }
 
             //options needed to send request to server
@@ -93,9 +95,9 @@ const divStyle = {
             }
 
             //if all data is valid, then post to server
-            if(batchNo && totalCasesSold500Month && remainingCases500 && totalCasesSold330Month && remainingCases330 && totalKegsSold && remainingKegs && openingStock330Cases && openingStock500Cases && openingStockKegs){
+            if(batchNo && totalCasesSold500Month && remainingCases500 && totalCasesSold330Month && remainingCases330 && totalKegsSold && remainingKegs && openingStock330Cases && openingStock500Cases && openingStockKegs && openingStockPercentage){
                 if(isNaN(parseInt(totalCasesSold500Month)) || isNaN(parseInt(remainingCases500)) || isNaN(parseInt(totalCasesSold330Month)) || isNaN(parseInt(remainingCases330)) || 
-                isNaN(parseInt(totalKegsSold)) || isNaN(parseInt(remainingKegs)) || isNaN(parseInt(openingStock330Cases)) || isNaN(parseInt(openingStock500Cases)) || isNaN(parseInt(openingStockKegs))){
+                isNaN(parseInt(totalKegsSold)) || isNaN(parseInt(remainingKegs)) || isNaN(parseInt(openingStock330Cases)) || isNaN(parseInt(openingStock500Cases)) || isNaN(parseInt(openingStockKegs)) || isNaN(parseInt(openingStockPercentage))){
                     setAlertShow(!showAlert);
                     console.log("Invalid form format, will not be sent to database");
                 }
@@ -174,11 +176,11 @@ const divStyle = {
 
                         <label>Total Kegs Sold this Month</label>
                         <input type="text" placeholder="Enter Kegs Sold this Month" onChange={event => setTotalKegsSold(event.target.value)}/>
-
-                        <label>Remaining Kegs</label>
-                        <input type="text"placeholder="Enter Remaining Kegs" onChange={event => setRemainingKegs(event.target.value)}/>
                     </div>
                     <div className="float-right" style={divStyle}>
+                        <label>Remaining Kegs</label>
+                        <input type="text"placeholder="Enter Remaining Kegs" onChange={event => setRemainingKegs(event.target.value)}/>
+
                         <label>Opening Stock 500ml Cases</label>
                         <input type="text" placeholder="Enter Opening Stock 500ml Cases" onChange={event => setOpeningStock330Cases(event.target.value)}/>
 
@@ -187,6 +189,9 @@ const divStyle = {
 
                         <label>Opening Stock Kegs</label>
                         <input type="text" placeholder="Enter Opening Stock Kegs" onChange={event => setOpeningStockKegs(event.target.value)}/>
+
+                        <label>Opening Stock Percentage</label>
+                        <input type="text" placeholder="Enter Opening Stock Percentage" onChange={event => setOpeningStockPercentage(event.target.value)}/>
                     </div>
                     <input type="submit" value="Create Inventory"/>
                     {alertFormError}

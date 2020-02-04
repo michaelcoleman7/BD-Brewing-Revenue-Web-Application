@@ -42,6 +42,7 @@ const divStyle = {
     const [openingStock330Cases, setOpeningStock330Cases] = useState("");
     const [openingStock500Cases, setOpeningStock500Cases] = useState("");
     const [openingStockKegs, setOpeningStockKegs] = useState("");
+    const [openingStockPercentage, setOpeningStockPercentage] = useState("");
     const [routeRedirect, setRedirect] = useState(""); 
     const [showAlert, setAlertShow] = useState(false);
 
@@ -71,6 +72,7 @@ const divStyle = {
             setOpeningStock330Cases(parsed.openingStock330Cases);
             setOpeningStock500Cases(parsed.openingStock500Cases);
             setOpeningStockKegs(parsed.openingStockKegs);
+            setOpeningStockPercentage(parsed.openingStockPercentage);
         }).catch(err => {
             console.log(err);
         })
@@ -110,7 +112,8 @@ const divStyle = {
             remainingKegs: remainingKegs,
             openingStock330Cases: openingStock330Cases,
             openingStock500Cases: openingStock500Cases,
-            openingStockKegs: openingStockKegs
+            openingStockKegs: openingStockKegs,
+            openingStockPercentage: openingStockPercentage
         }
 
           //console.log(inventory)
@@ -124,9 +127,9 @@ const divStyle = {
           }
 
             //if all data is valid, then post to server
-            if(batchNo && totalCasesSold500Month && remainingCases500 && totalCasesSold330Month && remainingCases330 && totalKegsSoldMonth && remainingKegs && openingStock330Cases && openingStock500Cases && openingStockKegs){
+            if(batchNo && totalCasesSold500Month && remainingCases500 && totalCasesSold330Month && remainingCases330 && totalKegsSoldMonth && remainingKegs && openingStock330Cases && openingStock500Cases && openingStockKegs && openingStockPercentage){
                 if(isNaN(parseInt(totalCasesSold500Month)) || isNaN(parseInt(remainingCases500)) || isNaN(parseInt(totalCasesSold330Month)) || isNaN(parseInt(remainingCases330)) || 
-                isNaN(parseInt(totalKegsSoldMonth)) || isNaN(parseInt(remainingKegs)) || isNaN(parseInt(openingStock330Cases))|| isNaN(parseInt(openingStock500Cases))  || isNaN(parseInt(openingStockKegs))){
+                isNaN(parseInt(totalKegsSoldMonth)) || isNaN(parseInt(remainingKegs)) || isNaN(parseInt(openingStock330Cases))|| isNaN(parseInt(openingStock500Cases))  || isNaN(parseInt(openingStockKegs))|| isNaN(parseInt(openingStockPercentage))){
                     setAlertShow(!showAlert);
                     console.log("Invalid form format, will not be sent to database");
                 }
@@ -240,11 +243,11 @@ const divStyle = {
 
                         <label>Total Kegs Sold this Month</label>
                         <input type="text" placeholder="Enter Kegs Sold this Month" onChange={event => setTotalKegsSoldMonth(event.target.value)} defaultValue={inventory.totalKegsSoldMonth}/>
-
-                        <label>Remaining Kegs</label>
-                        <input type="text"placeholder="Enter Remaining Kegs" onChange={event => setRemainingKegs(event.target.value)} defaultValue={inventory.remainingKegs}/>
                     </div>
-                    <div className="float-right" style={divStyle}>           
+                    <div className="float-right" style={divStyle}>
+                        <label>Remaining Kegs</label>
+                        <input type="text"placeholder="Enter Remaining Kegs" onChange={event => setRemainingKegs(event.target.value)} defaultValue={inventory.remainingKegs}/>           
+                        
                         <label>Opening Stock 500ml Cases</label>
                         <input type="text" placeholder="Enter Opening Stock 500ml Cases" onChange={event => setOpeningStock500Cases(event.target.value)} defaultValue={inventory.openingStock500Cases}/>
 
@@ -253,6 +256,9 @@ const divStyle = {
 
                         <label>Opening Stock Kegs</label>
                         <input type="text" placeholder="Enter Opening Stock Kegs" onChange={event => setOpeningStockKegs(event.target.value)} defaultValue={inventory.openingStockKegs}/>
+
+                        <label>Opening Stock Percentage</label>
+                        <input type="text" placeholder="Enter Opening Stock Percentage" onChange={event => setOpeningStockPercentage(event.target.value)} defaultValue={inventory.openingStockPercentage}/>
                     </div>
                     <input type="submit" value="Update Inventory"/>
                     {alertFormError}
