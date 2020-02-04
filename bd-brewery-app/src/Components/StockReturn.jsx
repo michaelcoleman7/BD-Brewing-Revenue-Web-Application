@@ -32,7 +32,7 @@ return(
               </Card.Body>
             </Card>
             <Card bg="success" style={divStyle}>          
-              <Link to="/stockreturn"> <Card.Img src={require("../Images/Cheers.PNG")} height="300"/></Link>
+              <Link to="/stockreturnlist"> <Card.Img src={require("../Images/Cheers.PNG")} height="300"/></Link>
               <Card.Body>
                 <Card.Title>View Stock Returns</Card.Title>
                 <Card.Text>

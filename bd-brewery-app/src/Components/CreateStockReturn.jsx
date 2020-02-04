@@ -11,6 +11,8 @@ const CreateStockReturn = () => {
   const [inventories, setinventories] = useState([]);
   const [beer, setBeer] = useState([]);
   const [hiddenVal, setHiddenVal] = useState([]);
+  const [otherBreweryCheck, setOtherBreweryCheck] = useState([]);
+  const [otherCountryCheck, setOtherCountryCheck] = useState([]);
   const [routeRedirect, setRedirect] = useState(""); 
 
   const getInventories = () => {
@@ -18,7 +20,11 @@ const CreateStockReturn = () => {
       return res.json();
     }).then(inventories => {
       setinventories(inventories.data);
+      //set initial values for data
+      setBeer(null);
       setHiddenVal(true);
+      setOtherBreweryCheck(false);
+      setOtherCountryCheck(false);
     }).catch(err => {
       console.log(err);
     })
@@ -52,7 +58,39 @@ const beersList = inventorylist.map((beer) =>
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const handleConfirm = () => {
+  const handleConfirm = (event) => {
+    event.preventDefault();   
+
+    //brew values to be sent to server
+    const stockreturn = {
+        beer: beer,
+        otherBreweryCheck: otherBreweryCheck,
+        otherCountryCheck: otherCountryCheck
+    }
+
+    //options needed to send request to server
+    const options = {
+        method: "post",
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(stockreturn)
+    }
+
+    //if all data is valid, then post to server
+
+    if(beer){
+      fetch(url +"api/createstockreturn", options)
+      .then(res => {
+          setRedirect(true);
+          return res.json();
+      }).catch(err => {
+          console.log(err)
+      })    
+    }else{
+        //setAlertShow(!showAlert);
+        console.log("Invalid form format, will not be sent to database");
+    }
     setShow(false);
     setRedirect(true);  
   }
@@ -62,8 +100,23 @@ const beersList = inventorylist.map((beer) =>
     }
     else{
       setHiddenVal(true);
+      setOtherBreweryCheck(false);
+      setOtherCountryCheck(false);
     }
   }
+
+  const swapRadios = (event) => {
+    if(otherBreweryCheck){
+      setOtherCountryCheck(true);
+      setOtherBreweryCheck(false);
+    }
+    else{
+      setOtherBreweryCheck(true);
+      setOtherCountryCheck(false);
+    }
+  }
+
+
 
   const textStyle = {
     display: "inline-block"
@@ -81,8 +134,8 @@ const beersList = inventorylist.map((beer) =>
           {beersList}
         </select><br/>
         <input type="checkbox" id="import" name="import" onChange={importChecked}></input> External Brewery import<br/>
-        <input type="radio" hidden={hiddenVal} name="import"></input>&nbsp;<p style={textStyle} hidden={hiddenVal}>Other Brewery</p> &nbsp;
-        <input type="radio"  hidden={hiddenVal} name="import"></input>&nbsp;<p style={textStyle} hidden={hiddenVal}>Imported from Abroad</p>
+        <input type="radio" hidden={hiddenVal} name="import" checked={otherBreweryCheck} onChange={event =>swapRadios(event)}></input>&nbsp;<p style={textStyle} hidden={hiddenVal}>Other Brewery</p> &nbsp;
+        <input type="radio"  hidden={hiddenVal} name="import" checked={otherCountryCheck} onChange={event =>swapRadios(event)}></input>&nbsp;<p style={textStyle} hidden={hiddenVal}>Imported from Abroad</p>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
@@ -96,7 +149,7 @@ const beersList = inventorylist.map((beer) =>
     </div>
   
   const redirect = routeRedirect;
-  let redirectRoute = "/createstockreturn"+ beer
+  let redirectRoute = "/stockreturnlist"
   if(redirect){
        return <Redirect to={redirectRoute} />  
   }
