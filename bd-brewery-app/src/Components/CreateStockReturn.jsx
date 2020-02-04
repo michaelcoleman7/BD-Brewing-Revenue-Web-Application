@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {Link} from 'react-router-dom';
 import { Redirect } from 'react-router';
-import Card from 'react-bootstrap/Card';
 import {Modal,Button} from 'react-bootstrap';
 
 
@@ -12,6 +10,7 @@ const CreateStockReturn = () => {
 
   const [inventories, setinventories] = useState([]);
   const [beer, setBeer] = useState([]);
+  const [hiddenVal, setHiddenVal] = useState([]);
   const [routeRedirect, setRedirect] = useState(""); 
 
   const getInventories = () => {
@@ -19,6 +18,7 @@ const CreateStockReturn = () => {
       return res.json();
     }).then(inventories => {
       setinventories(inventories.data);
+      setHiddenVal(true);
     }).catch(err => {
       console.log(err);
     })
@@ -56,10 +56,17 @@ const beersList = inventorylist.map((beer) =>
     setShow(false);
     setRedirect(true);  
   }
+  const importChecked = () => {
+    if(hiddenVal){
+      setHiddenVal(false);
+    }
+    else{
+      setHiddenVal(true);
+    }
+  }
 
-  let otherText = "Other Brewery";
   const textStyle = {
-      float: "left"
+    display: "inline-block"
   };
 
   let modal =       
@@ -73,9 +80,9 @@ const beersList = inventorylist.map((beer) =>
           <option>Select a Batch Number...</option>
           {beersList}
         </select><br/>
-        <input type="checkbox" id="import" name="import"></input> External Brewery import<br/>
-        <input type="radio" hidden="true" id="import" name="importBrewery"></input>Other Brewery &nbsp;
-        <input type="radio"  hidden="true" id="import" name="importCountry"></input>Imported from Abroad
+        <input type="checkbox" id="import" name="import" onChange={importChecked}></input> External Brewery import<br/>
+        <input type="radio" hidden={hiddenVal} name="import"></input>&nbsp;<p style={textStyle} hidden={hiddenVal}>Other Brewery</p> &nbsp;
+        <input type="radio"  hidden={hiddenVal} name="import"></input>&nbsp;<p style={textStyle} hidden={hiddenVal}>Imported from Abroad</p>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
