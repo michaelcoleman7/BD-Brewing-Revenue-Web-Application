@@ -38,7 +38,7 @@ def calculatePCV(bottle330, bottle500, kegs):
 def calculateDuty(postConditionVolume , abv):
     duty = (postConditionVolume/100 * abv * 22.5)/2
     return round(duty, 2)
-    
+
 def inventoryCalculations(brewCollection, calculationVariables):
     brewDetails = brewCollection.find( { "batchNo": calculationVariables[0] } )
     for document in brewDetails:
@@ -100,6 +100,7 @@ def calculateTotalUnits(brewCollection,inventoryCollection, beer):
     totalReceiptsCases330 = 0.0
     totalReceiptsKegs = 0.0
     receiptsAvgNewPercentage = 0.0
+    openingStockPercentage = 0.0
 
     for document in retrieval: 
         if document["beer"] == beer:
@@ -147,6 +148,7 @@ def calculateTotalUnits(brewCollection,inventoryCollection, beer):
             deliveriesKegs = (int(document["openingStockKegs"]) + totalReceiptsKegs) - int(document["remainingKegs"])
             #print("deliveries330Cases "+str(deliveries330Cases)+" deliveries500Cases"+str(deliveries500Cases)+" deliveriesKegs"+str(deliveriesKegs))#
 
+            openingStockPercentage = document["openingStockPercentage"]
             # Calculate HL for Opening Stock, Receipts, Deliveries and Closing Stock
             OS_HL = calculatePCV(document["openingStock330Cases"] ,document["openingStock500Cases"], document["openingStockKegs"] ) / 100
             receipts_HL = calculatePCV(totalReceiptsCases330 ,totalReceiptsCases500, totalReceiptsKegs ) / 100
@@ -179,14 +181,15 @@ def calculateTotalUnits(brewCollection,inventoryCollection, beer):
         print("averageReceiptsDivisial "+ str(averageReceiptsDivisial))
         print("receiptsAvgNewPercentage "+ str(receiptsAvgNewPercentage))
     
-    # Same as Receipts - %
+    # Calculate monthly sold average %
     soldMonthAvgNewPercentage = totalSoldMonthAvg / (totalMonthlyCases500SoldTL + totalMonthlyCases330SoldTL + totalMonthlyKegsSoldTL)
-    # Same as Receipts - %
+    # Calculate remaining average new %
     remainsAvgNewPercentage = totalAvgRemaining / (totalRemainingCases500TL + totalRemainingCases330TL + totalRemainingKegsTL)
     
     litresSold = total500CasesSoldTL + total330CasesSoldTL + totalInvKegsSoldTL
     HLSold = litresSold / 100
 
+    OS_HLPercent = OS_HL * openingStockPercentage
     receipts_HLPercent  = receipts_HL * receiptsAvgNewPercentage
     Deliveries_HLPercent = deliveries_HL * soldMonthAvgNewPercentage
     CS_HLPercent = CS_HL * remainsAvgNewPercentage
