@@ -142,19 +142,6 @@ def calculateTotalUnits(brewCollection,inventoryCollection, beer):
 
             totalLitres = document["totalLitres"]
 
-            # Deliveries calculations
-            deliveries330Cases = (int(document["openingStock330Cases"]) + totalReceiptsCases330) - int(document["remainingCases330"])
-            deliveries500Cases = (int(document["openingStock500Cases"]) + totalReceiptsCases500) - int(document["remainingCases500"])
-            deliveriesKegs = (int(document["openingStockKegs"]) + totalReceiptsKegs) - int(document["remainingKegs"])
-            #print("deliveries330Cases "+str(deliveries330Cases)+" deliveries500Cases"+str(deliveries500Cases)+" deliveriesKegs"+str(deliveriesKegs))#
-
-            openingStockPercentage = document["openingStockPercentage"]
-            # Calculate HL for Opening Stock, Receipts, Deliveries and Closing Stock
-            OS_HL = calculatePCV(document["openingStock330Cases"] ,document["openingStock500Cases"], document["openingStockKegs"] ) / 100
-            receipts_HL = calculatePCV(totalReceiptsCases330 ,totalReceiptsCases500, totalReceiptsKegs ) / 100
-            deliveries_HL = calculatePCV(deliveries500Cases ,deliveries330Cases, deliveriesKegs ) / 100
-            CS_HL = float(document["remainingPCV"]) / 100
-
             print(receiptsAvg)
             if float(receiptsAvg) > 0.0:
                 averageReceiptsDivisial += totalLitres
@@ -163,6 +150,30 @@ def calculateTotalUnits(brewCollection,inventoryCollection, beer):
                     totalReceiptsCases500 += float(document["bottleNo500"])
                     totalReceiptsCases330 += float(document["bottleNo330"])
                     totalReceiptsKegs += float(document["kegNo"])
+            
+            # Opening stock initialisations
+            openingStock330Cases = document["openingStock330Cases"]
+            openingStock500Cases = document["openingStock500Cases"]
+            openingStockKegs = document["openingStockKegs"]
+            openingStockPercentage = document["openingStockPercentage"]
+
+            # Remianing stock initialisations
+            remainingCases330 = document["openingStock330Cases"]
+            remainingCases500 = document["openingStock500Cases"]
+            remainingKegs = document["openingStockKegs"]
+
+
+            # Deliveries calculations
+            deliveries330Cases = (int(openingStock330Cases) + totalReceiptsCases330) - int(document["remainingCases330"])
+            deliveries500Cases = (int(openingStock500Cases) + totalReceiptsCases500) - int(document["remainingCases500"])
+            deliveriesKegs = (int(openingStockKegs) + totalReceiptsKegs) - int(document["remainingKegs"])
+            #print("deliveries330Cases "+str(deliveries330Cases)+" deliveries500Cases"+str(deliveries500Cases)+" deliveriesKegs"+str(deliveriesKegs))#
+
+            # Calculate HL for Opening Stock, Receipts, Deliveries and Closing Stock
+            OS_HL = calculatePCV(openingStock330Cases ,openingStock500Cases, openingStockKegs ) / 100
+            receipts_HL = calculatePCV(totalReceiptsCases330 ,totalReceiptsCases500, totalReceiptsKegs ) / 100
+            deliveries_HL = calculatePCV(deliveries500Cases ,deliveries330Cases, deliveriesKegs ) / 100
+            CS_HL = float(document["remainingPCV"]) / 100
 
     totalMonthlyCases500SoldTL = totalMonthlyCases500Sold * 6
     total500CasesSoldTL = total500CasesSold * 6
@@ -223,6 +234,33 @@ def calculateTotalUnits(brewCollection,inventoryCollection, beer):
         "remainsAvgNewPercentage": remainsAvgNewPercentage,
         "litresSold": litresSold,
         "HLSold": HLSold
+    }
+
+    stockReturnInfoInventory = {
+        "openingStock330Cases": openingStock330Cases,
+        "openingStock500Cases": openingStock500Cases,
+        "openingStockKegs": openingStockKegs,
+        "recieptsCases330": totalReceiptsCases330,
+        "recieptsCases500": totalReceiptsCases500,
+        "recieptsKegs": totalReceiptsKegs,
+        "deliveries330Cases": deliveries330Cases,
+        "deliveries500Cases": deliveries500Cases,
+        "deliveriesKegs": deliveriesKegs,
+        "closingStockCases330": remainingCases330,
+        "closingStockCases500": remainingCases500,
+        "closingStockKegs": remainingKegs,
+        "OS_HL": OS_HL,
+        "receipts_HL": receipts_HL,
+        "deliveries_HL": deliveries_HL,
+        "CS_HL": CS_HL,
+        "openingStockPercentage": openingStockPercentage
+        "receiptsPercentage": receiptsAvgNewPercentage,
+        "deliveriesPercentage": soldMonthAvgNewPercentage,
+        "ClosingStockPercentage": remainsAvgNewPercentage,
+        "OS_HLPercent": OS_HLPercent,
+        "receipts_HLPercent": receipts_HLPercent,
+        "Deliveries_HLPercent": Deliveries_HLPercent,
+        "CS_HLPercent": CS_HLPercent
     }
     
     return totalsInventory
