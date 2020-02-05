@@ -246,6 +246,17 @@ def createInventory():
     # Insert the Inventory into the mongoDB in mlabs, adapted from - https://docs.mongodb.com/manual/reference/method/db.collection.insertOne/
     inventoryCollection.insert_one(inventory)
 
+    totalsInventory = calculations.calculateTotalUnits(brewCollection,inventoryCollection, beer, True)
+
+    brewRetrieval = brewCollection.find({})
+    for document in brewRetrieval:
+        if batchNo == document["batchNo"]:
+            id = document["_id"]
+
+    inventoryCollection.update_one({"_id": ObjectId(id)}, {"$set":  {
+        'totalsInventory': totalsInventory
+    }})
+
     return jsonify(data="inventory created successfully")
 # Update an Inventory 
 @updateInventoryRoute.route("/api/updateInventory/<id>", methods=["PUT"])
@@ -302,6 +313,12 @@ def updateInventory(id):
     # Set the contents of the id in mongo to the updated data above - {"$set": updatedInventory}
     inventoryCollection.update_one({"_id": ObjectId(inventoryId)}, {"$set": updatedInventory})
 
+    totalsInventory = calculations.calculateTotalUnits(brewCollection,inventoryCollection, beer, True)
+
+    inventoryCollection.update_one({"_id": ObjectId(inventoryId)}, {"$set":  {
+        'totalsInventory': totalsInventory
+    }})
+
     response = jsonify(data = "update response")
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
@@ -336,7 +353,7 @@ def stockReturnSingle(id):
 
 # Route to handle creation of a stock return
 @createStockReturnRoute.route("/api/createstockreturn", methods=["POST"])
-def createBrew():
+def createStockReturn():
     # Request all information and store in variables
     beer = request.json.get("beer")
     otherBreweryCheck = request.json.get("otherBreweryCheck")
@@ -346,11 +363,11 @@ def createBrew():
     print("otherBreweryCheck: "+ str(otherBreweryCheck))
     print("otherCountryCheck: "+ str(otherCountryCheck))
 
-    totalsInventory = calculations.calculateTotalUnits(brewCollection,inventoryCollection, beer)
+    totalsInventory = calculations.calculateTotalUnits(brewCollection,inventoryCollection, beer, False)
 
     totalCalculations = {
         "beer": beer,
-        "totalsInventory": totalsInventory,
+        "totalsInventory": totalsInventory
     }
 
     totalCollection.insert_one(totalCalculations)
