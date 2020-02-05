@@ -80,7 +80,7 @@ def inventoryCalculations(brewCollection, calculationVariables):
     ]
     return invCalculations
 
-def calculateTotalUnits(brewCollection,inventoryCollection, beer):
+def calculateTotalUnits(brewCollection,inventoryCollection, beer, stockReturn):
     #retrieval = inventoryCollection.find({},{ "receiptsAvg": 1, "_id": 0 })
     retrieval = inventoryCollection.find({})
     totalReceiptsAvg = 0.0
@@ -200,7 +200,7 @@ def calculateTotalUnits(brewCollection,inventoryCollection, beer):
     litresSold = total500CasesSoldTL + total330CasesSoldTL + totalInvKegsSoldTL
     HLSold = litresSold / 100
 
-    OS_HLPercent = OS_HL * openingStockPercentage
+    OS_HLPercent = OS_HL * float(openingStockPercentage)
     receipts_HLPercent  = receipts_HL * receiptsAvgNewPercentage
     Deliveries_HLPercent = deliveries_HL * soldMonthAvgNewPercentage
     CS_HLPercent = CS_HL * remainsAvgNewPercentage
@@ -253,7 +253,7 @@ def calculateTotalUnits(brewCollection,inventoryCollection, beer):
         "receipts_HL": receipts_HL,
         "deliveries_HL": deliveries_HL,
         "CS_HL": CS_HL,
-        "openingStockPercentage": openingStockPercentage
+        "openingStockPercentage": openingStockPercentage,
         "receiptsPercentage": receiptsAvgNewPercentage,
         "deliveriesPercentage": soldMonthAvgNewPercentage,
         "ClosingStockPercentage": remainsAvgNewPercentage,
@@ -262,8 +262,10 @@ def calculateTotalUnits(brewCollection,inventoryCollection, beer):
         "Deliveries_HLPercent": Deliveries_HLPercent,
         "CS_HLPercent": CS_HLPercent
     }
-    
-    return totalsInventory
+    if stockReturn:
+        return stockReturnInfoInventory
+    else:
+        return totalsInventory
 
 def calculateStockReturn(deliveries):
     return deliveries
