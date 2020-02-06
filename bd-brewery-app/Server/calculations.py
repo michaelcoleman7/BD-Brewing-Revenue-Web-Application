@@ -146,10 +146,10 @@ def calculateTotalUnits(brewCollection,inventoryCollection, beer, stockReturn):
             if float(receiptsAvg) > 0.0:
                 averageReceiptsDivisial += totalLitres
                 brewDetails = brewCollection.find({"batchNo": document["batchNo"]})
-                for document in brewDetails:
-                    totalReceiptsCases500 += float(document["bottleNo500"])
-                    totalReceiptsCases330 += float(document["bottleNo330"])
-                    totalReceiptsKegs += float(document["kegNo"])
+                for brewdocument in brewDetails:
+                    totalReceiptsCases500 += float(brewdocument["bottleNo500"])
+                    totalReceiptsCases330 += float(brewdocument["bottleNo330"])
+                    totalReceiptsKegs += float(brewdocument["kegNo"])
             
             # Opening stock initialisations
             openingStock330Cases = document["openingStock330Cases"]
@@ -263,9 +263,6 @@ def calculateTotalUnits(brewCollection,inventoryCollection, beer, stockReturn):
         "CS_HLPercent": CS_HLPercent
     }
     if stockReturn:
-        return stockReturnInfoInventory
-    else:
         return totalsInventory
-
-def calculateStockReturn(deliveries):
-    return deliveries
+    else:
+        return stockReturnInfoInventory
