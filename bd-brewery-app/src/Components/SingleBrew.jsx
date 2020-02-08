@@ -35,8 +35,10 @@ const divStyle = {
     const [brewDate, setBrewDate] = useState("");
     const [og, setOG] = useState("");
     const [pg, setPG] = useState("");
+    const [ogMinusPg, setOGMinusPG] = useState("");
     //OG-PG is a also a variable, calculate using above values
     const [postConditionDate, setPCD] = useState("");
+    const [postConditionVol, setPCV] = useState("");
     const [kegNo, setKegNo] = useState("");
     const [bottleNo500, setBottleNo500] = useState("");
     const [bottleNo330, setBottleNo330] = useState("");
@@ -68,7 +70,9 @@ const divStyle = {
             setBrewDate(parsed.brewDate);
             setOG(parsed.og);
             setPG(parsed.pg);
+            setOGMinusPG(parsed.ogMinuspg);
             setPCD(parsed.postConditionDate);
+            setPCV(parsed.postConditionVol);
             setKegNo(parsed.kegNo);
             setBottleNo500(parsed.bottleNo500);
             setBottleNo330(parsed.bottleNo330);
@@ -94,6 +98,7 @@ const divStyle = {
                 og: og,
                 pg: pg,
                 postConditionDate: postConditionDate,
+                postConditionVol: postConditionVol,
                 kegNo: kegNo,
                 bottleNo500: bottleNo500,
                 bottleNo330: bottleNo330,
@@ -229,9 +234,22 @@ const divStyle = {
         <React.Fragment> 
             <center><Card style={{ width: '40%' }}>
                 <Card.Body>
-                    <Card.Title>Batch Number: {brew.batchNo}</Card.Title>
+                    <Card.Title><b>Batch Number:</b>  {brew.batchNo}</Card.Title>
                     <Card.Text>
-                        Brew No: {brew.batchNo}
+                       <b>Beer:</b>  {brew.beer}<br/>
+                       <b>Brew Date:</b>  {brew.brewDate}<br/>
+                       <b>Beer:</b>  {brew.beer}<br/>
+                       <b>Original Gravity (OG):</b>  {brew.og}<br/>
+                       <b>Present Gravity (PG):</b>  {brew.pg}<br/>
+                       <b>OG-PG:</b>  {brew.ogMinusPg}<br/>
+                       <b>ABV%:</b>  {brew.abv}<br/>
+                       <b>Post Condition Date:</b>  {brew.postConditionDate}<br/>
+                       <b>Post Condition Volume:</b>  {brew.postConditionVol}<br/>
+                       <b>Number of Kegs:</b>  {brew.kegNo}<br/>
+                       <b>Number of Bottles (500ml):</b>  {brew.bottleNo500}<br/>
+                       <b>Number of Bottles (330ml):</b>  {brew.bottleNo330}<br/>
+                       <b>Duty:</b>  {brew.duty}<br/>
+                       <b>Status:</b>  {brew.status}<br/>
                     </Card.Text>
                 </Card.Body>
             </Card></center>
