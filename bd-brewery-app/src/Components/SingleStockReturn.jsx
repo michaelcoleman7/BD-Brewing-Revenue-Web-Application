@@ -81,34 +81,34 @@ const divStyle = {
             let parsed = JSON.parse(res.data);
             setStockReturn(parsed);
             setBeer(parsed.beer);
-            setOpeningStock330Cases(parsed.openingStock330Cases);
-            console.log("330 "+ parsed)
-            setOpeningStock500Cases(parsed.openingStock500Cases);
-            setOpeningStockKegs(parsed.openingStockKegs);
-            setReceipts330Cases(parsed.receipts330Cases);
-            setReceipts500Cases(parsed.receipts500Cases);
-            setReceiptsKegs(parsed.receiptsKegs);
-            setDeliveries330Cases(parsed.deliveries330Cases);
-            setDeliveries500Cases(parsed.deliveries500Cases);
-            setDeliveriesKegs(parsed.deliveriesKegs);
-            setClosingStock330Cases(parsed.closingStock330Cases);
-            setClosingStock500Cases(parsed.closingStock500Cases);
-            setClosingStockKegs(parsed.closingStockKegs);
+            setOpeningStock330Cases(parsed.totalsInventory.openingStock330Cases);
+            console.log("330 "+ parsed.totalsInventory.openingStock330Cases)
+            setOpeningStock500Cases(parsed.totalsInventory.openingStock500Cases);
+            setOpeningStockKegs(parsed.totalsInventory.openingStockKegs);
+            setReceipts330Cases(parsed.totalsInventory.recieptsCases330);
+            setReceipts500Cases(parsed.totalsInventory.recieptsCases500);
+            setReceiptsKegs(parsed.totalsInventory.recieptsKegs);
+            setDeliveries330Cases(parsed.totalsInventory.deliveries330Cases);
+            setDeliveries500Cases(parsed.totalsInventory.deliveries500Cases);
+            setDeliveriesKegs(parsed.totalsInventory.deliveriesKegs);
+            setClosingStock330Cases(parsed.totalsInventory.closingStockCases330);
+            setClosingStock500Cases(parsed.totalsInventory.closingStockCases500);
+            setClosingStockKegs(parsed.totalsInventory.closingStockKegs);
 
-            setOS_HL(parsed.OS_HL);
-            setReceipts_HL(parsed.receipts_HL);   
-            setDeliveries_HL(parsed.deliveries_HL);    
-            setCS_HL(parsed.CS_HL);   
+            setOS_HL(parsed.totalsInventory.OS_HL);
+            setReceipts_HL(parsed.totalsInventory.receipts_HL);   
+            setDeliveries_HL(parsed.totalsInventory.deliveries_HL);    
+            setCS_HL(parsed.totalsInventory.CS_HL);   
             
-            setOSPercentage(parsed.openingStockPercentage);
-            setReceiptsPercentage(parsed.receiptsPercentage);   
-            setDeliveriesPercentage(parsed.deliveriesPercentage);    
-            setCSPercentage(parsed.ClosingStockPercentage); 
+            setOSPercentage(parsed.totalsInventory.openingStockPercentage);
+            setReceiptsPercentage(parsed.totalsInventory.receiptsPercentage);   
+            setDeliveriesPercentage(parsed.totalsInventory.deliveriesPercentage);    
+            setCSPercentage(parsed.totalsInventory.ClosingStockPercentage); 
 
-            setOS_HLPercent(parsed.OS_HLPercent);
-            setReceipts_HLPercent(parsed.receipts_HLPercent);   
-            setDeliveries_HLPercent(parsed.Deliveries_HLPercent);    
-            setCS_HLPercent(parsed.CS_HLPercent); 
+            setOS_HLPercent(parsed.totalsInventory.OS_HLPercent);
+            setReceipts_HLPercent(parsed.totalsInventory.receipts_HLPercent);   
+            setDeliveries_HLPercent(parsed.totalsInventory.Deliveries_HLPercent);    
+            setCS_HLPercent(parsed.totalsInventory.CS_HLPercent); 
 
             
         }).catch(err => {
