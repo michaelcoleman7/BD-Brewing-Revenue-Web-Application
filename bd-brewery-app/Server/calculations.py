@@ -170,10 +170,10 @@ def calculateTotalUnits(brewCollection,inventoryCollection, beer, stockReturn):
             #print("deliveries330Cases "+str(deliveries330Cases)+" deliveries500Cases"+str(deliveries500Cases)+" deliveriesKegs"+str(deliveriesKegs))#
 
             # Calculate HL for Opening Stock, Receipts, Deliveries and Closing Stock
-            OS_HL = calculatePCV(openingStock330Cases ,openingStock500Cases, openingStockKegs ) / 100
-            receipts_HL = calculatePCV(totalReceiptsCases330 ,totalReceiptsCases500, totalReceiptsKegs ) / 100
-            deliveries_HL = calculatePCV(deliveries500Cases ,deliveries330Cases, deliveriesKegs ) / 100
-            CS_HL = float(document["remainingPCV"]) / 100
+            OS_HL = round(calculatePCV(openingStock330Cases ,openingStock500Cases, openingStockKegs ) / 100, 2)
+            receipts_HL = round(calculatePCV(totalReceiptsCases330 ,totalReceiptsCases500, totalReceiptsKegs ) / 100 ,2)
+            deliveries_HL = round(calculatePCV(deliveries500Cases ,deliveries330Cases, deliveriesKegs ) / 100, 2)
+            CS_HL = round(float(document["remainingPCV"]) / 100, 2)
 
     totalMonthlyCases500SoldTL = totalMonthlyCases500Sold * 6
     total500CasesSoldTL = total500CasesSold * 6
@@ -193,17 +193,17 @@ def calculateTotalUnits(brewCollection,inventoryCollection, beer, stockReturn):
         print("receiptsAvgNewPercentage "+ str(receiptsAvgNewPercentage))
     
     # Calculate monthly sold average %
-    soldMonthAvgNewPercentage = totalSoldMonthAvg / (totalMonthlyCases500SoldTL + totalMonthlyCases330SoldTL + totalMonthlyKegsSoldTL)
+    soldMonthAvgNewPercentage = round(totalSoldMonthAvg / (totalMonthlyCases500SoldTL + totalMonthlyCases330SoldTL + totalMonthlyKegsSoldTL), 2)
     # Calculate remaining average new %
-    remainsAvgNewPercentage = totalAvgRemaining / (totalRemainingCases500TL + totalRemainingCases330TL + totalRemainingKegsTL)
+    remainsAvgNewPercentage = round(totalAvgRemaining / (totalRemainingCases500TL + totalRemainingCases330TL + totalRemainingKegsTL) , 2)
     
-    litresSold = total500CasesSoldTL + total330CasesSoldTL + totalInvKegsSoldTL
-    HLSold = litresSold / 100
+    litresSold = round(total500CasesSoldTL + total330CasesSoldTL + totalInvKegsSoldTL, 2)
+    HLSold = round(litresSold / 100, 2)
 
-    OS_HLPercent = OS_HL * float(openingStockPercentage)
-    receipts_HLPercent  = receipts_HL * receiptsAvgNewPercentage
-    Deliveries_HLPercent = deliveries_HL * soldMonthAvgNewPercentage
-    CS_HLPercent = CS_HL * remainsAvgNewPercentage
+    OS_HLPercent = round(OS_HL * float(openingStockPercentage), 2)
+    receipts_HLPercent  = round(receipts_HL * receiptsAvgNewPercentage, 2)
+    Deliveries_HLPercent = round(deliveries_HL * soldMonthAvgNewPercentage, 2)
+    CS_HLPercent = round(CS_HL * remainsAvgNewPercentage, 2)
 
 
     totalsInventory = {
