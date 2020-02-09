@@ -72,7 +72,6 @@ def inventoryCalculations(brewCollection, calculationVariables):
         totalCasesSold500,
         totalCasesSold330,
         totalKegsSold,
-        remainingPCV,
         receiptsAvg,
         soldAvgMonth,
         AvgRemaining,

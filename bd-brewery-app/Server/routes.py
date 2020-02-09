@@ -225,7 +225,7 @@ def createInventory():
     inventory = {
         "batchNo": batchNo,
         "beer": beer,
-        "totalLitres": invCalculations[7],
+        "totalLitres": invCalculations[6],
         "totalCasesSold500Month": totalCasesSold500Month,
         "remainingCases500": remainingCases500,
         "totalCasesSold330Month": totalCasesSold330Month,
@@ -239,10 +239,9 @@ def createInventory():
         "totalCasesSold500": invCalculations[0],
         "totalCasesSold330": invCalculations[1],
         "totalKegsSold": invCalculations[2],
-        "remainingPCV": invCalculations[3],
-        "receiptsAvg": invCalculations[4],
-        "soldAvgMonth": invCalculations[5],
-        "AvgRemaining": invCalculations[6]
+        "receiptsAvg": invCalculations[3],
+        "soldAvgMonth": invCalculations[4],
+        "AvgRemaining": invCalculations[5]
     }
 
     # Insert the Inventory into the mongoDB in mlabs, adapted from - https://docs.mongodb.com/manual/reference/method/db.collection.insertOne/
@@ -291,7 +290,7 @@ def updateInventory(id):
     updatedInventory = {
         "batchNo": batchNo,
         "beer": beer,
-        "totalLitres": invCalculations[7],
+        "totalLitres": invCalculations[6],
         "totalCasesSold500Month": totalCasesSold500Month,
         "remainingCases500": remainingCases500,
         "totalCasesSold330Month": totalCasesSold330Month,
@@ -305,10 +304,9 @@ def updateInventory(id):
         "totalCasesSold500": invCalculations[0],
         "totalCasesSold330": invCalculations[1],
         "totalKegsSold": invCalculations[2],
-        "remainingPCV": invCalculations[3],
-        "receiptsAvg": invCalculations[4],
-        "soldAvgMonth": invCalculations[5],
-        "AvgRemaining": invCalculations[6]
+        "receiptsAvg": invCalculations[3],
+        "soldAvgMonth": invCalculations[4],
+        "AvgRemaining": invCalculations[5]
     }
 
     # need to parse id so that mongo gets correct instance of id, otherwise will take it as invalid - {"_id": ObjectId(inventoryId)}
