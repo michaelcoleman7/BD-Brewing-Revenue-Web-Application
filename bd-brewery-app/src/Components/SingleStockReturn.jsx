@@ -152,57 +152,174 @@ const divStyle = {
     return(
         // React Fragment is a way of sending back multiple elements - https://reactjs.org/docs/fragments.html
         <React.Fragment> 
-            <Table striped bordered hover>
-            <thead>
-                <tr>
-                <th></th>
-                <th>Cases of Bottles 330</th>
-                <th>Cases of Bottles 500</th>
-                <th>Number of Kegs</th>
-                <th>Quantity (HLs)</th>
-                <th>%Vol</th>
-                <th>Hectolitre %</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                <td>Opening Stock</td>
-                <th>{openingStock330Cases}</th>
-                <th>{openingStock500Cases}</th>
-                <th>{openingStockKegs}</th>
-                <th>{oS_HL}</th>
-                <th>{oSPercentage}</th>
-                <th>{oS_HLPercent}</th>
-                </tr>
-                <tr>
-                <td>Add Reciepts</td>
-                <th>{receipts330Cases}</th>
-                <th>{receipts500Cases}</th>
-                <th>{receiptsKegs}</th>
-                <th>{receipts_HL}</th>
-                <th>{receiptsPercentage}</th>
-                <th>{receipts_HLPercent}</th>
-                </tr>
-                <tr>
-                <td>Less Deliveries</td>
-                <th>{deliveries330Cases}</th>
-                <th>{deliveries500Cases}</th>
-                <th>{deliveriesKegs}</th>
-                <th>{deliveries_HL}</th>
-                <th>{deliveriesPercentage}</th>
-                <th>{deliveries_HLPercent}</th>
-                </tr>
-                <tr>
-                <td>Closing Stock</td>
-                <th>{closingStock330Cases}</th>
-                <th>{closingStock500Cases}</th>
-                <th>{closingStockKegs}</th>
-                <th>{cS_HL}</th>
-                <th>{cSPercentage}</th>
-                <th>{cS_HLPercent}</th>
-                </tr>
-            </tbody>
-            </Table>
+            <center><Card style={{ width: '75%' }}>
+                <Card.Body>
+                    <Card.Title><b>Stock Return For:</b>  {stockReturn.beer}</Card.Title>
+                    <Card.Text>
+                        <Table striped bordered hover>
+                        <thead>
+                            <tr>
+                            <th></th>
+                            <th>Cases of Bottles 330</th>
+                            <th>Cases of Bottles 500</th>
+                            <th>Number of Kegs</th>
+                            <th>Quantity (HLs)</th>
+                            <th>%Vol</th>
+                            <th>Hectolitre %</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Opening Stock</td>
+                                <th>{openingStock330Cases}</th>
+                                <th>{openingStock500Cases}</th>
+                                <th>{openingStockKegs}</th>
+                                <th>{oS_HL}</th>
+                                <th>{oSPercentage}</th>
+                                <th>{oS_HLPercent}</th>
+                            </tr>
+                            <tr>
+                            <td>Add Reciepts</td>
+                                <th>{receipts330Cases}</th>
+                                <th>{receipts500Cases}</th>
+                                <th>{receiptsKegs}</th>
+                                <th>{receipts_HL}</th>
+                                <th>{receiptsPercentage}</th>
+                                <th>{receipts_HLPercent}</th>
+                            </tr>
+                            <tr>
+                                <td>Less Deliveries</td>
+                                <th>{deliveries330Cases}</th>
+                                <th>{deliveries500Cases}</th>
+                                <th>{deliveriesKegs}</th>
+                                <th>{deliveries_HL}</th>
+                                <th>{deliveriesPercentage}</th>
+                                <th>{deliveries_HLPercent}</th>
+                            </tr>
+                            <tr>
+                                <td>Closing Stock</td>
+                                <th>{closingStock330Cases}</th>
+                                <th>{closingStock500Cases}</th>
+                                <th>{closingStockKegs}</th>
+                                <th>{cS_HL}</th>
+                                <th>{cSPercentage}</th>
+                                <th>{cS_HLPercent}</th>
+                            </tr>
+
+                            <tr>
+                                <td></td>
+                                <th colSpan="7" height="25"></th>
+                            </tr>
+
+                            <tr>
+                                <td><b>Receipts:</b></td>
+                                <th></th>
+                            </tr>
+
+                            <tr>
+                                <td></td>
+                                <th colSpan="7" height="25"></th>
+                            </tr>
+
+                            <tr>
+                                <td>Kegged/Bottled During Month</td>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+
+                            <tr>
+                                <td>Received from other warehouses</td>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+
+                            <tr>
+                                <td>Received from Import</td>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+
+                            <tr>
+                                <td><b>Total Receipts</b></td>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+
+                            <tr>
+                                <td></td>
+                                <th colSpan="7" height="25"></th>
+                            </tr>
+
+                            <tr>
+                                <td><b>Deliveries:</b></td>
+                                <th></th>
+                            </tr>
+
+                            <tr>
+                                <td></td>
+                                <th colSpan="7" height="25"></th>
+                            </tr>
+
+                            <tr>
+                                <td>Delivered for Home Consumption</td>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+
+                            <tr>
+                                <td>Delivered for Export</td>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+
+                            <tr>
+                                <td>Delivered to other Warehouses</td>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+
+                            <tr>
+                                <td><b>Total Deliveries</b></td>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </tbody>
+                        </Table>
+                    </Card.Text>
+                </Card.Body>
+            </Card></center>
         </React.Fragment>)
 }
     
