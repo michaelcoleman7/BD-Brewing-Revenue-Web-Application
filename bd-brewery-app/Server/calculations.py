@@ -63,15 +63,16 @@ def inventoryCalculations(brewCollection, calculationVariables):
             receiptsAvg = 0.0
 
         monthPCV = calculatePCV(calculationVariables[4] ,calculationVariables[5], calculationVariables[6] )
-        soldAvgMonth = float(monthPCV) * float(abv)
+        soldAvgMonth = round(float(monthPCV) * float(abv), 2)
 
         remainingPCV = calculatePCV(calculationVariables[1] ,calculationVariables[2], calculationVariables[3] )
-        AvgRemaining= float(remainingPCV) * float(abv)
+        AvgRemaining= round(float(remainingPCV) * float(abv), 2)
     # create json format of data to send to MongoDB
     invCalculations = [
         totalCasesSold500,
         totalCasesSold330,
         totalKegsSold,
+        remainingPCV,
         receiptsAvg,
         soldAvgMonth,
         AvgRemaining,
