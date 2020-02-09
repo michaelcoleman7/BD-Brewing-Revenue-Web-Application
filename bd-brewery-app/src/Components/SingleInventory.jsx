@@ -35,10 +35,8 @@ const divStyle = {
 
     const [totalLitres, setTotalLitres] = useState("");
     const [totalCasesSold500Month, setTotalCasesSold500Month] = useState("");
-    const [totalCasesSold500, setTotalCasesSold500] = useState("");
     const [remainingCases500, setRemainingCases500] = useState("");
     const [totalCasesSold330Month, setTotalCasesSold330Month] = useState("");
-    const [totalCasesSold330, setTotalCasesSold330] = useState("");
     const [remainingCases330, setRemainingCases330] = useState("");
     const [totalKegsSoldMonth, setTotalKegsSoldMonth] = useState("");
     const [remainingKegs, setRemainingKegs] = useState("");
@@ -68,10 +66,8 @@ const divStyle = {
             setBatchNo(parsed.batchNo);
             setTotalLitres(parsed.totalLitres)
             setTotalCasesSold500Month(parsed.totalCasesSold500Month);
-            setTotalCasesSold500(parsed.totalCasesSold500)
             setRemainingCases500(parsed.remainingCases500);
             setTotalCasesSold330Month(parsed.totalCasesSold330Month);
-            setTotalCasesSold330(parsed.totalCasesSold330)
             setRemainingCases330(parsed.remainingCases330);
             setTotalKegsSoldMonth(parsed.totalKegsSoldMonth);
             setRemainingKegs(parsed.remainingKegs);
@@ -110,14 +106,11 @@ const divStyle = {
             inventoryId: inventoryId,
             batchNo: batchNo,
             beer: beer,
-            totalLitres: totalLitres,
             totalCasesSold500Month: totalCasesSold500Month,
-            totalCasesSold500: totalCasesSold500,
             remainingCases500: remainingCases500,
             totalCasesSold330Month: totalCasesSold330Month,
             remainingCases330: remainingCases330,
             totalKegsSoldMonth: totalKegsSoldMonth,
-            totalCasesSold330: totalCasesSold330,
             remainingKegs: remainingKegs,
             openingStock330Cases: openingStock330Cases,
             openingStock500Cases: openingStock500Cases,
@@ -280,7 +273,7 @@ const divStyle = {
         <React.Fragment> 
             <center><Card style={{ width: '40%' }}>
                 <Card.Body>
-                    <Card.Title>Batch Name: {inventory.batchNo}</Card.Title>
+                    <Card.Title><b>Batch Number:</b>  {inventory.batchNo}</Card.Title>
                     <Card.Text>
                     <b>Beer:</b> {inventory.beer}<br/>
                     <b>Total Litres:</b> {inventory.totalLitres}<br/>
@@ -290,6 +283,13 @@ const divStyle = {
                     <b>Total Cases Sold (330ml):</b> {inventory.totalCasesSold330}<br/>
                     <b>Cases Sold This Month (330ml):</b> {inventory.totalCasesSold330Month}<br/>
                     <b>Remaining Cases: (330ml)</b> {inventory.remainingCases330}<br/>
+                    <b>Total Kegs Sold:</b> {inventory.totalKegsSold}<br/>
+                    <b>Kegs Sold This Month:</b> {inventory.totalKegsSoldMonth}<br/>
+                    <b>Remaining Kegs:</b> {inventory.remainingKegs}<br/>
+
+                    <b>Receipts Average %:</b> {inventory.receiptsAvg}<br/>
+                    <b>Sold Month Average %:</b> {inventory.soldAvgMonth}<br/>
+                    <b>Remaining Average %:</b> {inventory.AvgRemaining}<br/>
                     </Card.Text>
                 </Card.Body>
             </Card></center>
