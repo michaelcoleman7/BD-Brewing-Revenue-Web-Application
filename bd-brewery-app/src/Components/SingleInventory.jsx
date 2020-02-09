@@ -290,9 +290,15 @@ const divStyle = {
                     <b>Kegs Sold This Month:</b> {inventory.totalKegsSoldMonth}<br/>
                     <b>Remaining Kegs:</b> {inventory.remainingKegs}<br/>
 
+                    <b>Opening Stock Cases (330ml):</b> {openingStock330Cases}<br/>
+                    <b>Opening Stock Cases (500ml):</b> {openingStock500Cases}<br/>
+                    <b>Opening Stock Kegs:</b> {openingStockKegs}<br/>
+                    <b>Opening Stock Percentage:</b> {openingStockPercentage}<br/>
+
                     <b>Receipts Average %:</b> {inventory.receiptsAvg}<br/>
                     <b>Sold Month Average %:</b> {inventory.soldAvgMonth}<br/>
                     <b>Remaining Average %:</b> {inventory.AvgRemaining}<br/><br/><br/>
+
                     <b>Totals by Beer for all of: {inventory.beer}</b> <br/><br/>
                     <Table striped bordered hover>
                         <tbody>
