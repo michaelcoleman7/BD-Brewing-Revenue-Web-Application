@@ -182,10 +182,10 @@ const divStyle = {
                         <input type="text"placeholder="Enter Remaining Kegs" onChange={event => setRemainingKegs(event.target.value)}/>
 
                         <label>Opening Stock 500ml Cases</label>
-                        <input type="text" placeholder="Enter Opening Stock 500ml Cases" onChange={event => setOpeningStock330Cases(event.target.value)}/>
+                        <input type="text" placeholder="Enter Opening Stock 500ml Cases" onChange={event => setOpeningStock500Cases(event.target.value)}/>
 
                         <label>Opening Stock 330ml Cases</label>
-                        <input type="text" placeholder="Enter Opening Stock 330ml Cases" onChange={event => setOpeningStock500Cases(event.target.value)}/>
+                        <input type="text" placeholder="Enter Opening Stock 330ml Cases" onChange={event => setOpeningStock330Cases(event.target.value)}/>
 
                         <label>Opening Stock Kegs</label>
                         <input type="text" placeholder="Enter Opening Stock Kegs" onChange={event => setOpeningStockKegs(event.target.value)}/>
