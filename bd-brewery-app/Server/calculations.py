@@ -62,10 +62,10 @@ def inventoryCalculations(brewCollection, calculationVariables):
         else:
             receiptsAvg = 0.0
 
-        monthPCV = calculatePCV(calculationVariables[4] ,calculationVariables[5], calculationVariables[6] )
+        monthPCV = calculatePCV(calculationVariables[5] ,calculationVariables[4], calculationVariables[6] )
         soldAvgMonth = round(float(monthPCV) * float(abv), 2)
 
-        remainingPCV = calculatePCV(calculationVariables[1] ,calculationVariables[2], calculationVariables[3] )
+        remainingPCV = calculatePCV(calculationVariables[2] ,calculationVariables[1], calculationVariables[3] )
         AvgRemaining= round(float(remainingPCV) * float(abv), 2)
     # create json format of data to send to MongoDB
     invCalculations = [
@@ -83,22 +83,22 @@ def inventoryCalculations(brewCollection, calculationVariables):
 def calculateTotalUnits(brewCollection,inventoryCollection, beer, stockReturn):
     #retrieval = inventoryCollection.find({},{ "receiptsAvg": 1, "_id": 0 })
     retrieval = inventoryCollection.find({})
-    totalReceiptsAvg = 0.0
-    totalSoldMonthAvg = 0.0
-    totalAvgRemaining = 0.0
-    totalMonthlyCases500Sold = 0.0
-    total500CasesSold = 0.0
-    totalRemainingCases500 = 0.0
-    totalMonthlyCases330Sold = 0.0
-    total330CasesSold = 0.0
-    totalRemainingCases330 = 0.0
-    totalMonthlyKegsSold = 0.0
-    totalInvKegsSold = 0.0
-    totalRemainingKegs = 0.0
+    totalReceiptsAvg = 0
+    totalSoldMonthAvg = 0
+    totalAvgRemaining = 0
+    totalMonthlyCases500Sold = 0
+    total500CasesSold = 0
+    totalRemainingCases500 = 0
+    totalMonthlyCases330Sold = 0
+    total330CasesSold = 0
+    totalRemainingCases330 = 0
+    totalMonthlyKegsSold = 0
+    totalInvKegsSold = 0
+    totalRemainingKegs = 0
     averageReceiptsDivisial = 0.0
-    totalReceiptsCases500 = 0.0
-    totalReceiptsCases330 = 0.0
-    totalReceiptsKegs = 0.0
+    totalReceiptsCases500 = 0
+    totalReceiptsCases330 = 0
+    totalReceiptsKegs = 0
     receiptsAvgNewPercentage = 0.0
     openingStockPercentage = 0.0
 
@@ -109,27 +109,27 @@ def calculateTotalUnits(brewCollection,inventoryCollection, beer, stockReturn):
             totalCasesSold500 = document["totalCasesSold500"]
             remainingCases500 = document["remainingCases500"]
 
-            totalMonthlyCases500Sold += totalMonthlyCases500Sold + float(totalCasesSold500Month)
-            total500CasesSold += total500CasesSold + float(totalCasesSold500)
-            totalRemainingCases500 += totalRemainingCases500 + float(remainingCases500)
+            totalMonthlyCases500Sold += int(totalCasesSold500Month)
+            total500CasesSold +=int(totalCasesSold500)
+            totalRemainingCases500 += int(remainingCases500)
 
             # Total 330 Calculations
             totalCasesSold330Month = document["totalCasesSold330Month"]
             totalCasesSold330 = document["totalCasesSold330"]
             remainingCases330 = document["remainingCases330"]
 
-            totalMonthlyCases330Sold += totalMonthlyCases330Sold + float(totalCasesSold330Month)
-            total330CasesSold += total330CasesSold + float(total330CasesSold)
-            totalRemainingCases330 += totalRemainingCases330 + float(remainingCases330)
+            totalMonthlyCases330Sold += int(totalCasesSold330Month)
+            total330CasesSold += int(total330CasesSold)
+            totalRemainingCases330 += int(remainingCases330)
 
             # Total Keg Calculations
             totalKegsSoldMonth = document["totalKegsSoldMonth"]
             totalKegsSold = document["totalKegsSold"]
             remainingKegs = document["remainingKegs"]
             
-            totalMonthlyKegsSold += totalMonthlyKegsSold + float(totalKegsSoldMonth)
-            totalInvKegsSold += totalInvKegsSold + float(totalKegsSold)
-            totalRemainingKegs += totalRemainingKegs + float(remainingKegs)
+            totalMonthlyKegsSold += int(totalKegsSoldMonth)
+            totalInvKegsSold += int(totalKegsSold)
+            totalRemainingKegs += int(remainingKegs)
 
             receiptsAvg = document["receiptsAvg"]
             soldAvgMonth = document["soldAvgMonth"]
@@ -137,19 +137,18 @@ def calculateTotalUnits(brewCollection,inventoryCollection, beer, stockReturn):
 
             totalReceiptsAvg += receiptsAvg
             #print("totalReceiptsAvg per inv "+ str(totalReceiptsAvg))
-            totalSoldMonthAvg += totalSoldMonthAvg + soldAvgMonth
-            totalAvgRemaining += totalAvgRemaining + AvgRemaining
+            totalSoldMonthAvg += soldAvgMonth
+            totalAvgRemaining += AvgRemaining
 
             totalLitres = document["totalLitres"]
 
-            print(receiptsAvg)
             if float(receiptsAvg) > 0.0:
                 averageReceiptsDivisial += totalLitres
                 brewDetails = brewCollection.find({"batchNo": document["batchNo"]})
                 for brewdocument in brewDetails:
-                    totalReceiptsCases500 += float(brewdocument["bottleNo500"])
-                    totalReceiptsCases330 += float(brewdocument["bottleNo330"])
-                    totalReceiptsKegs += float(brewdocument["kegNo"])
+                    totalReceiptsCases500 += int(brewdocument["bottleNo500"])
+                    totalReceiptsCases330 += int(brewdocument["bottleNo330"])
+                    totalReceiptsKegs += int(brewdocument["kegNo"])
             
             # Opening stock initialisations
             openingStock330Cases = document["openingStock330Cases"]
@@ -157,40 +156,32 @@ def calculateTotalUnits(brewCollection,inventoryCollection, beer, stockReturn):
             openingStockKegs = document["openingStockKegs"]
             openingStockPercentage = document["openingStockPercentage"]
 
-            # Remianing stock initialisations
-            remainingCases330 = document["openingStock330Cases"]
-            remainingCases500 = document["openingStock500Cases"]
-            remainingKegs = document["openingStockKegs"]
-
 
             # Deliveries calculations
-            deliveries330Cases = (int(openingStock330Cases) + totalReceiptsCases330) - int(document["remainingCases330"])
-            deliveries500Cases = (int(openingStock500Cases) + totalReceiptsCases500) - int(document["remainingCases500"])
-            deliveriesKegs = (int(openingStockKegs) + totalReceiptsKegs) - int(document["remainingKegs"])
-            #print("deliveries330Cases "+str(deliveries330Cases)+" deliveries500Cases"+str(deliveries500Cases)+" deliveriesKegs"+str(deliveriesKegs))#
+            deliveries330Cases = (int(openingStock330Cases) + totalReceiptsCases330) - totalRemainingCases330
+            deliveries500Cases = (int(openingStock500Cases) + totalReceiptsCases500) - totalRemainingCases500
+            deliveriesKegs = (int(openingStockKegs) + totalReceiptsKegs) - totalRemainingKegs
+            print("deliveries330Cases "+str(deliveries330Cases)+" deliveries500Cases"+str(deliveries500Cases)+" deliveriesKegs"+str(deliveriesKegs))
 
             # Calculate HL for Opening Stock, Receipts, Deliveries and Closing Stock
             OS_HL = round(calculatePCV(openingStock330Cases ,openingStock500Cases, openingStockKegs ) / 100, 2)
             receipts_HL = round(calculatePCV(totalReceiptsCases330 ,totalReceiptsCases500, totalReceiptsKegs ) / 100 ,2)
-            deliveries_HL = round(calculatePCV(deliveries500Cases ,deliveries330Cases, deliveriesKegs ) / 100, 2)
-            CS_HL = round(float(document["remainingPCV"]) / 100, 2)
+            deliveries_HL = round(calculatePCV(deliveries330Cases ,deliveries500Cases, deliveriesKegs ) / 100, 2)
+            print("deliveries_HL "+str(deliveries_HL))
+            CS_HL = round(calculatePCV(totalRemainingCases330 ,totalRemainingCases500, totalRemainingKegs ) / 100 ,2)
 
     totalMonthlyCases500SoldTL = totalMonthlyCases500Sold * 6
     total500CasesSoldTL = total500CasesSold * 6
     totalRemainingCases500TL = totalRemainingCases500 * 6
-    totalMonthlyCases330SoldTL = totalMonthlyCases330Sold * 6
-    total330CasesSoldTL = total330CasesSold * 6
-    totalRemainingCases330TL = totalRemainingCases330 * 6
-    totalMonthlyKegsSoldTL = totalMonthlyKegsSold * 6
-    totalInvKegsSoldTL = totalInvKegsSold * 6
-    totalRemainingKegsTL = totalRemainingKegs * 6
-
-    print("totalReceiptsAvg "+ str(totalReceiptsAvg))
+    totalMonthlyCases330SoldTL = totalMonthlyCases330Sold * 7.92
+    total330CasesSoldTL = total330CasesSold * 7.92
+    totalRemainingCases330TL = totalRemainingCases330 * 7.92
+    totalMonthlyKegsSoldTL = totalMonthlyKegsSold * 30
+    totalInvKegsSoldTL = totalInvKegsSold * 30
+    totalRemainingKegsTL = totalRemainingKegs * 30
 
     if averageReceiptsDivisial != 0:
         receiptsAvgNewPercentage = round(totalReceiptsAvg / averageReceiptsDivisial, 2)
-        print("averageReceiptsDivisial "+ str(averageReceiptsDivisial))
-        print("receiptsAvgNewPercentage "+ str(receiptsAvgNewPercentage))
     
     # Calculate monthly sold average %
     soldMonthAvgNewPercentage = round(totalSoldMonthAvg / (totalMonthlyCases500SoldTL + totalMonthlyCases330SoldTL + totalMonthlyKegsSoldTL), 2)
@@ -246,9 +237,9 @@ def calculateTotalUnits(brewCollection,inventoryCollection, beer, stockReturn):
         "deliveries330Cases": deliveries330Cases,
         "deliveries500Cases": deliveries500Cases,
         "deliveriesKegs": deliveriesKegs,
-        "closingStockCases330": remainingCases330,
-        "closingStockCases500": remainingCases500,
-        "closingStockKegs": remainingKegs,
+        "closingStockCases330": totalRemainingCases330,
+        "closingStockCases500": totalRemainingCases500,
+        "closingStockKegs": totalRemainingKegs,
         "OS_HL": OS_HL,
         "receipts_HL": receipts_HL,
         "deliveries_HL": deliveries_HL,
@@ -266,3 +257,4 @@ def calculateTotalUnits(brewCollection,inventoryCollection, beer, stockReturn):
         return totalsInventory
     else:
         return stockReturnInfoInventory
+    
