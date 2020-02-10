@@ -26,7 +26,7 @@ db = client["bd_brewery"]
 # link to collection name in mlab
 brewCollection = db["brew"]
 inventoryCollection = db["inventory"]
-totalCollection = db["totals"]
+stockReturnCollection = db["stockReturns"]
 
 
 #Blueprints
@@ -250,8 +250,8 @@ def createInventory():
 
     totalsInventory = calculations.calculateTotalUnits(brewCollection,inventoryCollection, beer, True)
 
-    brewRetrieval = brewCollection.find({})
-    for document in brewRetrieval:
+    invRetrieval = inventoryCollection.find({})
+    for document in invRetrieval:
         if batchNo == document["batchNo"]:
             id = document["_id"]
 
@@ -338,7 +338,7 @@ def delete(id):
 def indexStockReturn():
     stockReturn = []
 
-    retrieval = totalCollection.find({})
+    retrieval = stockReturnCollection.find({})
 
     for document in retrieval:
         stockReturn.append({"_id": JSONEncoder().encode(document["_id"]), "beer":document["beer"]})
@@ -347,7 +347,7 @@ def indexStockReturn():
 @indexStockReturnRoute.route("/api/stockreturn/<id>", methods=["GET"])
 def stockReturnSingle(id):
     # Find one object from mongo using the object id
-    cursor = totalCollection.find_one({"_id":ObjectId(id)})
+    cursor = stockReturnCollection.find_one({"_id":ObjectId(id)})
     #print(cursor, flush=True)
 
     # Prevemt serializable error being thrown
@@ -369,15 +369,17 @@ def createStockReturn():
 
     totalCalculations = {
         "beer": beer,
+        "otherBreweryCheck": otherBreweryCheck,
+        "otherCountryCheck": otherCountryCheck,
         "totalsInventory": totalsInventory
     }
 
-    totalCollection.insert_one(totalCalculations)
+    stockReturnCollection.insert_one(totalCalculations)
 
     # Insert the brew into the mongoDB in mlabs, adapted from - https://docs.mongodb.com/manual/reference/method/db.collection.insertOne/
     # brewCollection.insert_one(brew)
 
-    return jsonify(data="Brew created successfully")
+    return jsonify(data="Stock Return created successfully")
     
 
 
