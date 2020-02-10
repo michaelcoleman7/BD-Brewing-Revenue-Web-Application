@@ -29,6 +29,9 @@ const divStyle = {
     // using react hooks to get data back - adapted from https://reactjs.org/docs/hooks-state.html
     const [batchNo, setBatchNo] = useState("");
     const [beer, setBeer] = useState("");
+    const [makeChanges, setMakeChanges] = useState("");
+    const [otherBreweryCheck, setOtherBreweryCheck] = useState("");
+    const [otherCountryCheck, setOtherCountryCheck] = useState("");
     const [stockReturnId, setStockReturnId] = useState("");
     const [stockReturn, setStockReturn] = useState("");
     const [changeInventory, setChangeInventory] = useState(false); 
@@ -77,12 +80,10 @@ const divStyle = {
         fetch(url+"api/stockreturn/"+quotationlessId).then(res => {
             return res.json();
         }).then(res => {
-            console.log("response "+res.data);
             let parsed = JSON.parse(res.data);
             setStockReturn(parsed);
             setBeer(parsed.beer);
             setOpeningStock330Cases(parsed.totalsInventory.openingStock330Cases);
-            console.log("330 "+ parsed.totalsInventory.openingStock330Cases)
             setOpeningStock500Cases(parsed.totalsInventory.openingStock500Cases);
             setOpeningStockKegs(parsed.totalsInventory.openingStockKegs);
             setReceipts330Cases(parsed.totalsInventory.recieptsCases330);
@@ -110,7 +111,9 @@ const divStyle = {
             setDeliveries_HLPercent(parsed.totalsInventory.Deliveries_HLPercent);    
             setCS_HLPercent(parsed.totalsInventory.CS_HLPercent); 
 
-            
+            setOtherBreweryCheck(parsed.otherBreweryCheck);
+            setOtherCountryCheck(parsed.otherCountryCheck);
+            setMakeChanges(true);
         }).catch(err => {
             console.log(err);
         })
@@ -122,6 +125,37 @@ const divStyle = {
 
     const updateInventory = (e) => {
         // DO A REFRESH OF A TOTALS HERE ---------------------------------------------------------
+    }
+
+    if(makeChanges){
+        console.log("otherBreweryCheck: "+ otherBreweryCheck + " otherCountryCheck: "+otherCountryCheck);
+        if(otherBreweryCheck == false && otherCountryCheck == false){
+            var elems = document.getElementsByClassName("kdm");
+            elems[0].innerHTML = receipts330Cases;
+            elems[1].innerHTML = receipts500Cases;
+            elems[2].innerHTML = receiptsKegs;
+            elems[3].innerHTML = receipts_HL;
+            elems[4].innerHTML = receiptsPercentage;
+            elems[5].innerHTML = receipts_HLPercent;
+        }
+        else if(otherBreweryCheck == true && otherCountryCheck == false){
+            var elems = document.getElementsByClassName("warehouse");
+            elems[0].innerHTML = receipts330Cases;
+            elems[1].innerHTML = receipts500Cases;
+            elems[2].innerHTML = receiptsKegs;
+            elems[3].innerHTML = receipts_HL;
+            elems[4].innerHTML = receiptsPercentage;
+            elems[5].innerHTML = receipts_HLPercent;
+        }
+        else if(otherBreweryCheck == false && otherCountryCheck == true){
+            var elems = document.getElementsByClassName("country");
+            elems[0].innerHTML = receipts330Cases;
+            elems[1].innerHTML = receipts500Cases;
+            elems[2].innerHTML = receiptsKegs;
+            elems[3].innerHTML = receipts_HL;
+            elems[4].innerHTML = receiptsPercentage;
+            elems[5].innerHTML = receipts_HLPercent;
+        }
     }
 
     let redirectRoute = "/stockreturnlist/"
@@ -148,6 +182,7 @@ const divStyle = {
                console.log(err)
            })
     }
+    
 
     return(
         // React Fragment is a way of sending back multiple elements - https://reactjs.org/docs/fragments.html
@@ -179,7 +214,7 @@ const divStyle = {
                                 <th>{oS_HLPercent}</th>
                             </tr>
                             <tr>
-                            <td>Add Reciepts</td>
+                                <td>Add Reciepts</td>
                                 <th>{receipts330Cases}</th>
                                 <th>{receipts500Cases}</th>
                                 <th>{receiptsKegs}</th>
@@ -223,32 +258,32 @@ const divStyle = {
 
                             <tr>
                                 <td>Kegged/Bottled During Month</td>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
+                                <th class="kdm"></th>
+                                <th class="kdm"></th>
+                                <th class="kdm"></th>
+                                <th class="kdm"></th>
+                                <th class="kdm"></th>
+                                <th class="kdm"></th>
                             </tr>
 
                             <tr>
                                 <td>Received from other warehouses</td>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
+                                <th class="warehouse"></th>
+                                <th class="warehouse"></th>
+                                <th class="warehouse"></th>
+                                <th class="warehouse"></th>
+                                <th class="warehouse"></th>
+                                <th class="warehouse"></th>
                             </tr>
 
                             <tr>
                                 <td>Received from Import</td>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
+                                <th class="country"></th>
+                                <th class="country"></th>
+                                <th class="country"></th>
+                                <th class="country"></th>
+                                <th class="country"></th>
+                                <th class="country"></th>
                             </tr>
 
                             <tr>
