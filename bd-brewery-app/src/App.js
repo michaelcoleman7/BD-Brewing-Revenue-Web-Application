@@ -12,7 +12,6 @@ import InventoryList from './Components/InventoryList';
 import SingleInventory from './Components/SingleInventory';
 import BrewSeparator from './Components/BrewSeparator';
 import InventorySeparator from './Components/InventorySeparator';
-import CreateStockReturn from './Components/CreateStockReturn';
 import StockReturnList from './Components/StockReturnList';
 import SingleStockReturn from './Components/SingleStockReturn';
 
@@ -34,7 +33,6 @@ function App() {
         <Route exact path={"/inventory"} component={InventorySeparator}/>
         <Route exact path={"/inventory/:id"} component={SingleInventory}/>
 
-        <Route exact path={"/createstockreturn"} component={CreateStockReturn}/>
         <Route exact path={"/stockreturnlist"} component={StockReturnList}/>
         <Route exact path={"/stockreturn/:id"} component={SingleStockReturn}/>
       </Switch>
