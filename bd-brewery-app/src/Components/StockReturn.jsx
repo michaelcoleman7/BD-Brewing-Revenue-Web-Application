@@ -11,9 +11,12 @@ const url = "http://127.0.0.1:5000/"
 const StockReturn = () => {
   const [inventories, setinventories] = useState([]);
   const [beer, setBeer] = useState([]);
-  const [hiddenVal, setHiddenVal] = useState([]);
-  const [otherBreweryCheck, setOtherBreweryCheck] = useState([]);
-  const [otherCountryCheck, setOtherCountryCheck] = useState([]);
+  const [hiddenValRec, setHiddenValRec] = useState([]);
+  const [hiddenValDel, setHiddenValDel] = useState([]);
+  const [otherBreweryCheckRec, setOtherBreweryCheckRec] = useState([]);
+  const [otherCountryCheckRec, setOtherCountryCheckRec] = useState([]);
+  const [otherBreweryCheckDel, setOtherBreweryCheckDel] = useState([]);
+  const [otherCountryCheckDel, setOtherCountryCheckDel] = useState([]);
   const [routeRedirect, setRedirect] = useState(""); 
 
   const getInventories = () => {
@@ -23,9 +26,12 @@ const StockReturn = () => {
       setinventories(inventories.data);
       //set initial values for data
       setBeer(null);
-      setHiddenVal(true);
-      setOtherBreweryCheck(false);
-      setOtherCountryCheck(false);
+      setHiddenValRec(true);
+      setHiddenValDel(true);
+      setOtherBreweryCheckRec(false);
+      setOtherCountryCheckRec(false);
+      setOtherBreweryCheckDel(false);
+      setOtherCountryCheckDel(false);
     }).catch(err => {
       console.log(err);
     })
@@ -65,8 +71,10 @@ const StockReturn = () => {
     //brew values to be sent to server
     const stockreturn = {
         beer: beer,
-        otherBreweryCheck: otherBreweryCheck,
-        otherCountryCheck: otherCountryCheck
+        otherBreweryCheckRec: otherBreweryCheckRec,
+        otherCountryCheckRec: otherCountryCheckRec,
+        otherBreweryCheckDel: otherBreweryCheckDel,
+        otherCountryCheckDel: otherCountryCheckDel
     }
 
     //options needed to send request to server
@@ -88,34 +96,54 @@ const StockReturn = () => {
       }).catch(err => {
           console.log(err)
       })    
-    }else{
-        //setAlertShow(!showAlert);
-        console.log("Invalid form format, will not be sent to database");
     }
     setShow(false);
     setRedirect(true);  
   }
-  const importChecked = () => {
-    if(hiddenVal){
-      setHiddenVal(false);
+  const importRecChecked = () => {
+    if(hiddenValRec){
+      setHiddenValRec(false);
     }
     else{
-      setHiddenVal(true);
-      setOtherBreweryCheck(false);
-      setOtherCountryCheck(false);
+      setHiddenValRec(true);
+      setOtherBreweryCheckRec(false);
+      setOtherCountryCheckRec(false);
     }
   }
 
-  const swapRadios = (event) => {
-    if(otherBreweryCheck){
-      setOtherCountryCheck(true);
-      setOtherBreweryCheck(false);
+  const importDelChecked = () => {
+    if(hiddenValDel){
+      setHiddenValDel(false);
     }
     else{
-      setOtherBreweryCheck(true);
-      setOtherCountryCheck(false);
+      setHiddenValDel(true);
+      setOtherBreweryCheckDel(false);
+      setOtherCountryCheckDel(false);
     }
   }
+
+  const swapRadiosRec = (event) => {
+    if(otherBreweryCheckRec){
+      setOtherCountryCheckRec(true);
+      setOtherBreweryCheckRec(false);
+    }
+    else if(!otherBreweryCheckRec){
+      setOtherBreweryCheckRec(true);
+      setOtherCountryCheckRec(false);
+    }
+  }
+
+  const swapRadiosDel = (event) => {
+    if(otherBreweryCheckDel){
+      setOtherCountryCheckDel(true);
+      setOtherBreweryCheckDel(false);
+    }
+    else if(!otherBreweryCheckDel){
+      setOtherBreweryCheckDel(true);
+      setOtherCountryCheckDel(false);
+    }
+  }
+
   const divStyle = {
     width: '28rem'
   };
@@ -141,13 +169,17 @@ const StockReturn = () => {
         <Modal.Title>Select a Beer for the new Stock Return</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-      <select onChange={event => setUpBeers(event)}>
-        <option>Select a Batch Number...</option>
-        {beersList}
-      </select><br/>
-      <input type="checkbox" id="import" name="import" onChange={importChecked}></input> External Brewery import<br/>
-      <input type="radio" hidden={hiddenVal} name="import" checked={otherBreweryCheck} onChange={event =>swapRadios(event)}></input>&nbsp;<p style={textStyle} hidden={hiddenVal}>Other Brewery</p> &nbsp;
-      <input type="radio"  hidden={hiddenVal} name="import" checked={otherCountryCheck} onChange={event =>swapRadios(event)}></input>&nbsp;<p style={textStyle} hidden={hiddenVal}>Imported from Abroad</p>
+        <select onChange={event => setUpBeers(event)}>
+          <option>Select a Beer...</option>
+          {beersList}
+        </select><br/>
+        <input type="checkbox" id="importRec" onChange={importRecChecked}></input> Receipts External Brewery import<br/>
+        <label hidden={hiddenValRec}>Receipts: </label> <input type="radio" hidden={hiddenValRec} name="importRec" checked={otherBreweryCheckRec} onChange={event =>swapRadiosRec(event)}></input>&nbsp;<p style={textStyle} hidden={hiddenValRec}>Other Brewery</p> &nbsp;
+        <input type="radio"  hidden={hiddenValRec} name="importRec" checked={otherCountryCheckRec} onChange={event =>swapRadiosRec(event)}></input>&nbsp;<p style={textStyle} hidden={hiddenValRec}>Imported from Abroad</p>
+        <br/>
+        <input type="checkbox" id="importDel" onChange={importDelChecked}></input> Deliveries External Brewery import<br/>
+        <label hidden={hiddenValDel}>Deliveries: </label> <input type="radio" hidden={hiddenValDel} name="importDel" checked={otherBreweryCheckDel} onChange={event =>swapRadiosDel(event)}></input>&nbsp;<p style={textStyle} hidden={hiddenValDel}>Other Brewery</p> &nbsp;
+        <input type="radio"  hidden={hiddenValDel} name="importDel" checked={otherCountryCheckDel} onChange={event =>swapRadiosDel(event)}></input>&nbsp;<p style={textStyle} hidden={hiddenValDel}>Imported from Abroad</p>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
