@@ -381,8 +381,8 @@ def createStockReturn():
 
     stockReturnCollection.insert_one(totalCalculations)
 
-    # Insert the brew into the mongoDB in mlabs, adapted from - https://docs.mongodb.com/manual/reference/method/db.collection.insertOne/
-    # brewCollection.insert_one(brew)
+    retrieval = stockReturnCollection.find({})
+    totalHLPercent = calculations.calculateStockReturnTotalHL(retrieval)
 
     return jsonify(data="Stock Return created successfully")
     

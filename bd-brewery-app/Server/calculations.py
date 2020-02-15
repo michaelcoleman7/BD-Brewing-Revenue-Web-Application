@@ -257,4 +257,12 @@ def calculateTotalUnits(brewCollection,inventoryCollection, beer, stockReturn):
         return totalsInventory
     else:
         return stockReturnInfoInventory
+
+def calculateStockReturnTotalHL(stockReturn):
+    totalHLPercent = 0.0
+    for document in stockReturn:
+        totalsInventory = document["totalsInventory"]
+        Deliveries_HLPercent= totalsInventory["Deliveries_HLPercent"]
+        totalHLPercent += float(Deliveries_HLPercent)
+    return totalHLPercent
     
