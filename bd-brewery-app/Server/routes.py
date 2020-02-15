@@ -358,19 +358,24 @@ def stockReturnSingle(id):
 def createStockReturn():
     # Request all information and store in variables
     beer = request.json.get("beer")
-    otherBreweryCheck = request.json.get("otherBreweryCheck")
-    otherCountryCheck = request.json.get("otherCountryCheck")
+    otherBreweryCheckRec = request.json.get("otherBreweryCheckRec")
+    otherCountryCheckRec = request.json.get("otherCountryCheckRec")
+    otherBreweryCheckDel = request.json.get("otherBreweryCheckDel")
+    otherCountryCheckDel = request.json.get("otherCountryCheckDel")
 
-    print("beer: "+ beer)
-    print("otherBreweryCheck: "+ str(otherBreweryCheck))
-    print("otherCountryCheck: "+ str(otherCountryCheck))
+    print("otherBreweryCheckrec: "+ str(otherBreweryCheckRec))
+    print("otherCountryCheckrec: "+ str(otherCountryCheckRec))
+    print("otherBreweryCheckdel: "+ str(otherBreweryCheckDel))
+    print("otherCountryCheckdel: "+ str(otherCountryCheckDel))
 
     totalsInventory = calculations.calculateTotalUnits(brewCollection,inventoryCollection, beer, False)
 
     totalCalculations = {
         "beer": beer,
-        "otherBreweryCheck": otherBreweryCheck,
-        "otherCountryCheck": otherCountryCheck,
+        "otherBreweryCheckRec": otherBreweryCheckRec,
+        "otherCountryCheckRec": otherCountryCheckRec,
+        "otherBreweryCheckDel": otherBreweryCheckDel,
+        "otherCountryCheckDel": otherCountryCheckDel,
         "totalsInventory": totalsInventory
     }
 
