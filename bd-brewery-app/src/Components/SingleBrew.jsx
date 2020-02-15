@@ -3,6 +3,8 @@ import Card from 'react-bootstrap/Card'
 import { Redirect } from 'react-router';
 import Alert from 'react-bootstrap/Alert';
 import '../Stylesheets/Form.css';
+import DatePicker from 'react-date-picker';
+import { format } from 'date-fns';
 
 //set the url to send the data to
 const url = "http://localhost:5000/"
@@ -182,6 +184,13 @@ const divStyle = {
         setChangeBrew(!changeBrew);
     }
 
+    let newDate;
+    const dateChange = (date) => {
+            newDate = format(new Date(date), 'dd-MM-yyyy')
+            setBrewDate(newDate);
+            document.getElementById('dp').placeholder=newDate;
+    }
+
 
     let editForm;
     if(changeBrew){
@@ -197,7 +206,9 @@ const divStyle = {
                         <input type="text" name="beer" placeholder="Enter Beer" onChange={event => setBeer(event.target.value)} defaultValue={brew.beer}/>
 
                         <label>Brew Date</label>
-                        <input type="text" name="brewDate" placeholder="Enter Brew Date" onChange={event => setBrewDate(event.target.value)} defaultValue={brew.brewDate}/>
+                        <div><input disabled="true" type="text" id="dp" name="brewDate" placeholder={brew.brewDate}/>
+                        <DatePicker onChange={event => dateChange(event)}/>
+                        </div><br/>
 
                         <label>OG (Original Gravity)</label>
                         <input type="text" name="og" placeholder="Enter OG" onChange={event => setOG(event.target.value)} defaultValue={brew.og}/>
