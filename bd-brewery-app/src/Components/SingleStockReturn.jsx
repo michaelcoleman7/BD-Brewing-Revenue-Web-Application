@@ -30,8 +30,10 @@ const divStyle = {
     const [batchNo, setBatchNo] = useState("");
     const [beer, setBeer] = useState("");
     const [makeChanges, setMakeChanges] = useState("");
-    const [otherBreweryCheck, setOtherBreweryCheck] = useState("");
-    const [otherCountryCheck, setOtherCountryCheck] = useState("");
+    const [otherBreweryCheckRec, setOtherBreweryCheckRec] = useState("");
+    const [otherCountryCheckRec, setOtherCountryCheckRec] = useState("");
+    const [otherBreweryCheckDel, setOtherBreweryCheckDel] = useState("");
+    const [otherCountryCheckDel, setOtherCountryCheckDel] = useState("");
     const [stockReturnId, setStockReturnId] = useState("");
     const [stockReturn, setStockReturn] = useState("");
     const [changeInventory, setChangeInventory] = useState(false); 
@@ -65,7 +67,6 @@ const divStyle = {
     const [cS_HLPercent, setCS_HLPercent] = useState("");
 
     const [routeRedirect, setRedirect] = useState(""); 
-    const [showAlert, setAlertShow] = useState(false);
 
     const getStockReturn = () => {
         let id = props.match.params.id;
@@ -111,8 +112,10 @@ const divStyle = {
             setDeliveries_HLPercent(parsed.totalsInventory.Deliveries_HLPercent);    
             setCS_HLPercent(parsed.totalsInventory.CS_HLPercent); 
 
-            setOtherBreweryCheck(parsed.otherBreweryCheck);
-            setOtherCountryCheck(parsed.otherCountryCheck);
+            setOtherBreweryCheckRec(parsed.otherBreweryCheckRec);
+            setOtherCountryCheckRec(parsed.otherCountryCheckRec);
+            setOtherBreweryCheckDel(parsed.otherBreweryCheckDel);
+            setOtherCountryCheckDel(parsed.otherCountryCheckDel);
             setMakeChanges(true);
         }).catch(err => {
             console.log(err);
@@ -128,9 +131,10 @@ const divStyle = {
     }
 
     if(makeChanges){
-        console.log("otherBreweryCheck: "+ otherBreweryCheck + " otherCountryCheck: "+otherCountryCheck);
-        if(otherBreweryCheck == false && otherCountryCheck == false){
-            var elems = document.getElementsByClassName("kdm");
+        console.log("otherBreweryCheck: "+ otherBreweryCheckRec + " otherCountryCheck: "+otherCountryCheckRec);
+        //set up reciepts columns
+        if(otherBreweryCheckRec == false && otherCountryCheckRec == false){
+            var elems = document.getElementsByClassName("kdmRec");
             elems[0].innerHTML = receipts330Cases;
             elems[1].innerHTML = receipts500Cases;
             elems[2].innerHTML = receiptsKegs;
@@ -138,8 +142,8 @@ const divStyle = {
             elems[4].innerHTML = receiptsPercentage;
             elems[5].innerHTML = receipts_HLPercent;
         }
-        else if(otherBreweryCheck == true && otherCountryCheck == false){
-            var elems = document.getElementsByClassName("warehouse");
+        else if(otherBreweryCheckRec == true && otherCountryCheckRec == false){
+            var elems = document.getElementsByClassName("warehouseRec");
             elems[0].innerHTML = receipts330Cases;
             elems[1].innerHTML = receipts500Cases;
             elems[2].innerHTML = receiptsKegs;
@@ -147,14 +151,44 @@ const divStyle = {
             elems[4].innerHTML = receiptsPercentage;
             elems[5].innerHTML = receipts_HLPercent;
         }
-        else if(otherBreweryCheck == false && otherCountryCheck == true){
-            var elems = document.getElementsByClassName("country");
+        else if(otherBreweryCheckRec == false && otherCountryCheckRec == true){
+            var elems = document.getElementsByClassName("countryRec");
             elems[0].innerHTML = receipts330Cases;
             elems[1].innerHTML = receipts500Cases;
             elems[2].innerHTML = receiptsKegs;
             elems[3].innerHTML = receipts_HL;
             elems[4].innerHTML = receiptsPercentage;
             elems[5].innerHTML = receipts_HLPercent;
+        }
+
+        console.log("otherBreweryCheck: "+ otherBreweryCheckDel + " otherCountryCheck: "+otherCountryCheckDel);
+        //set up delveries columns
+        if(otherBreweryCheckDel == false && otherCountryCheckDel == false){
+            var elems = document.getElementsByClassName("kdmDel");
+            elems[0].innerHTML = deliveries330Cases;
+            elems[1].innerHTML = deliveries500Cases;
+            elems[2].innerHTML = deliveriesKegs;
+            elems[3].innerHTML = deliveries_HL;
+            elems[4].innerHTML = deliveriesPercentage;
+            elems[5].innerHTML = deliveries_HLPercent;
+        }
+        else if(otherBreweryCheckDel == true && otherCountryCheckDel == false){
+            var elems = document.getElementsByClassName("warehouseDel");
+            elems[0].innerHTML = deliveries330Cases;
+            elems[1].innerHTML = deliveries500Cases;
+            elems[2].innerHTML = deliveriesKegs;
+            elems[3].innerHTML = deliveries_HL;
+            elems[4].innerHTML = deliveriesPercentage;
+            elems[5].innerHTML = deliveries_HLPercent;
+        }
+        else if(otherBreweryCheckDel == false && otherCountryCheckDel == true){
+            var elems = document.getElementsByClassName("countryDel");
+            elems[0].innerHTML = deliveries330Cases;
+            elems[1].innerHTML = deliveries500Cases;
+            elems[2].innerHTML = deliveriesKegs;
+            elems[3].innerHTML = deliveries_HL;
+            elems[4].innerHTML = deliveriesPercentage;
+            elems[5].innerHTML = deliveries_HLPercent;
         }
     }
 
@@ -258,32 +292,32 @@ const divStyle = {
 
                             <tr>
                                 <td>Kegged/Bottled During Month</td>
-                                <th class="kdm"></th>
-                                <th class="kdm"></th>
-                                <th class="kdm"></th>
-                                <th class="kdm"></th>
-                                <th class="kdm"></th>
-                                <th class="kdm"></th>
+                                <th class="kdmRec"></th>
+                                <th class="kdmRec"></th>
+                                <th class="kdmRec"></th>
+                                <th class="kdmRec"></th>
+                                <th class="kdmRec"></th>
+                                <th class="kdmRec"></th>
                             </tr>
 
                             <tr>
                                 <td>Received from other warehouses</td>
-                                <th class="warehouse"></th>
-                                <th class="warehouse"></th>
-                                <th class="warehouse"></th>
-                                <th class="warehouse"></th>
-                                <th class="warehouse"></th>
-                                <th class="warehouse"></th>
+                                <th class="warehouseRec"></th>
+                                <th class="warehouseRec"></th>
+                                <th class="warehouseRec"></th>
+                                <th class="warehouseRec"></th>
+                                <th class="warehouseRec"></th>
+                                <th class="warehouseRec"></th>
                             </tr>
 
                             <tr>
                                 <td>Received from Import</td>
-                                <th class="country"></th>
-                                <th class="country"></th>
-                                <th class="country"></th>
-                                <th class="country"></th>
-                                <th class="country"></th>
-                                <th class="country"></th>
+                                <th class="countryRec"></th>
+                                <th class="countryRec"></th>
+                                <th class="countryRec"></th>
+                                <th class="countryRec"></th>
+                                <th class="countryRec"></th>
+                                <th class="countryRec"></th>
                             </tr>
 
                             <tr>
@@ -313,32 +347,32 @@ const divStyle = {
 
                             <tr>
                                 <td>Delivered for Home Consumption</td>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-
-                            <tr>
-                                <td>Delivered for Export</td>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
+                                <th class="kdmDel"></th>
+                                <th class="kdmDel"></th>
+                                <th class="kdmDel"></th>
+                                <th class="kdmDel"></th>
+                                <th class="kdmDel"></th>
+                                <th class="kdmDel"></th>
                             </tr>
 
                             <tr>
                                 <td>Delivered to other Warehouses</td>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
+                                <th class="warehouseDel"></th>
+                                <th class="warehouseDel"></th>
+                                <th class="warehouseDel"></th>
+                                <th class="warehouseDel"></th>
+                                <th class="warehouseDel"></th>
+                                <th class="warehouseDel"></th>
+                            </tr>
+
+                            <tr>
+                                <td>Delivered for Export</td>
+                                <th class="countryDel"></th>
+                                <th class="countryDel"></th>
+                                <th class="countryDel"></th>
+                                <th class="countryDel"></th>
+                                <th class="countryDel"></th>
+                                <th class="countryDel"></th>
                             </tr>
 
                             <tr>
