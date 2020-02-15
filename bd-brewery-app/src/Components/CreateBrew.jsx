@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Redirect } from 'react-router';
 import Alert from 'react-bootstrap/Alert';
 import '../Stylesheets/Form.css';
+import DatePicker from 'react-date-picker';
+import { format } from 'date-fns';
 
 //set the url to send the data to
 const url = "http://127.0.0.1:5000/"
@@ -111,6 +113,15 @@ const divStyle = {
     if(redirect){
          return <Redirect to="/brew" />  
     }
+     
+    let newDate;
+    const dateChange = (date) => {
+            newDate = format(new Date(date), 'dd-MM-yyyy')
+            setBrewDate(newDate);
+            document.getElementById('dp').placeholder=newDate;
+    }
+
+
 
     return(
         // React Fragment is a way of sending back multiple elements - https://reactjs.org/docs/fragments.html
@@ -124,8 +135,9 @@ const divStyle = {
                         <input type="text" name="beer" placeholder="Enter Beer" onChange={event => setBeer(event.target.value)}/>
 
                         <label>Brew Date</label>
-                        <input type="text" name="brewDate" placeholder="Enter Brew Date" onChange={event => setBrewDate(event.target.value)}/>
-
+                        <div><input disabled="true" type="text" id="dp" name="brewDate" placeholder="Select a Date using Date Picker Below"/>
+                        <DatePicker onChange={event => dateChange(event)}/>
+                        </div><br/>
                         <label>OG (Original Gravity) - Number required</label>
                         <input type="text" name="og" placeholder="Enter OG" onChange={event => setOG(event.target.value)}/>
 
