@@ -76,23 +76,26 @@ const divStyle = {
 
             //if all data is valid, then post to server
             if( beer && batchNo && brewDate && og && pg && postConditionDate && kegNo && bottleNo500 && bottleNo330 && status && packaged){
-                if(isNaN(parseFloat(og).toFixed(5)) || isNaN(parseFloat(pg).toFixed(5)) || isNaN(parseInt(kegNo)) || isNaN(parseInt(bottleNo500)) || isNaN(parseInt(bottleNo330))){
-                    setAlertShow(!showAlert);
-                    console.log("Invalid form format, will not be sent to database");
-                }
-                else{
-                    fetch(url +"api/createbrew", options)
-                    .then(res => {
-                        setRedirect(true);
-                        return res.json();
-                    }).catch(err => {
-                        console.log(err)
-                    })
-                }               
+                if(status == "Bottled" || status == "Kegged" || status == "Mixed"){
+                    if(isNaN(parseFloat(og).toFixed(5)) || isNaN(parseFloat(pg).toFixed(5)) || isNaN(parseInt(kegNo)) || isNaN(parseInt(bottleNo500)) || isNaN(parseInt(bottleNo330))){
+                        setAlertShow(!showAlert);
+                        console.log("Invalid form format, will not be sent to database");
+                    }
+                    else{
+                        fetch(url +"api/createbrew", options)
+                        .then(res => {
+                            setRedirect(true);
+                            return res.json();
+                        }).catch(err => {
+                            console.log(err)
+                        })
+                    }   
+                }            
             }else{
                 setAlertShow(!showAlert);
                 console.log("Invalid form format, will not be sent to database");
             }
+        
     }
 
     let alertFormError;
@@ -161,6 +164,7 @@ const divStyle = {
 
                         <label>Status</label>
                         <select onChange={event => setStatus(event.target.value)}>
+                            <option>Select Packaging Status...</option>
                             <option>Bottled</option>
                             <option>Kegged</option>
                             <option>Mixed</option>
