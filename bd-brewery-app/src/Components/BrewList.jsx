@@ -69,7 +69,7 @@ const BrewList = (props) => {
   }else{
     brewsArray = 
     <div>
-      <h1 style={{color: "white"}}>No Brews exist in the database, please create a brew</h1>
+      <h2 style={{color: "white"}}>No Brews exist  for this beer in the database, please create a brew of this beer type</h2>
     </div>
   }
 

@@ -160,7 +160,11 @@ const divStyle = {
                         <input type="text" name="bottleNo330" placeholder="Enter Bottle Number (330ml)" onChange={event => setBottleNo330(event.target.value)}/>
 
                         <label>Status</label>
-                        <input type="text" name="status" placeholder="Enter Status" onChange={event => setStatus(event.target.value)}/>
+                        <select onChange={event => setStatus(event.target.value)}>
+                            <option>Bottled</option>
+                            <option>Kegged</option>
+                            <option>Mixed</option>
+                        </select>
 
                         <input type="radio" name="brewpackaged" value="false" onChange={event => setPackaged(event.target.value)}/> Unpackaged
                     </div>

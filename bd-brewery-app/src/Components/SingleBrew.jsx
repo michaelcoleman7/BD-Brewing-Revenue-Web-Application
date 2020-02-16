@@ -232,7 +232,12 @@ const divStyle = {
                         <input type="text" name="bottleNo330" placeholder="Enter Bottle Number (330ml)" onChange={event => setBottleNo330(event.target.value)} defaultValue={brew.bottleNo330}/>
 
                         <label>Status</label>
-                        <input type="text" name="status" placeholder="Enter Status" onChange={event => setStatus(event.target.value)} defaultValue={brew.status}/>
+                        <select onChange={event => setStatus(event.target.value)}>
+                            <option>{brew.status}</option>
+                            <option>Bottled</option>
+                            <option>Kegged</option>
+                            <option>Mixed</option>
+                        </select>
                     </div>
                     <input type="submit" value="Update Brew"/>
                     {alertFormError}
@@ -259,7 +264,7 @@ const divStyle = {
                        <b>Number of Kegs:</b>  {brew.kegNo}<br/>
                        <b>Number of Bottles (500ml):</b>  {brew.bottleNo500}<br/>
                        <b>Number of Bottles (330ml):</b>  {brew.bottleNo330}<br/>
-                       <b>Duty:</b>  {brew.duty}<br/>
+                       <b>Duty:</b>  €{brew.duty}<br/>
                        <b>Status:</b>  {brew.status}<br/>
                     </Card.Text>
                 </Card.Body>
