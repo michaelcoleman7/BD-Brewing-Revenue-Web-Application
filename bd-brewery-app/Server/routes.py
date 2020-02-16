@@ -215,7 +215,6 @@ def createInventory():
     openingStock500Cases = request.json.get("openingStock500Cases")
     openingStockKegs = request.json.get("openingStockKegs")
     openingStockPercentage = request.json.get("openingStockPercentage")
-    print(openingStockPercentage)
 
     calculationVariables = [batchNo, remainingCases500,remainingCases330, remainingKegs,totalCasesSold500Month,totalCasesSold330Month, totalKegsSoldMonth]
 
@@ -363,11 +362,6 @@ def createStockReturn():
     otherBreweryCheckDel = request.json.get("otherBreweryCheckDel")
     otherCountryCheckDel = request.json.get("otherCountryCheckDel")
 
-    print("otherBreweryCheckrec: "+ str(otherBreweryCheckRec))
-    print("otherCountryCheckrec: "+ str(otherCountryCheckRec))
-    print("otherBreweryCheckdel: "+ str(otherBreweryCheckDel))
-    print("otherCountryCheckdel: "+ str(otherCountryCheckDel))
-
     totalsInventory = calculations.calculateTotalUnits(brewCollection,inventoryCollection, beer, False)
 
     totalCalculations = {
@@ -381,8 +375,14 @@ def createStockReturn():
 
     stockReturnCollection.insert_one(totalCalculations)
 
-    retrieval = stockReturnCollection.find({})
-    totalHLPercent = calculations.calculateStockReturnTotalHL(retrieval)
+    stockReturnRetrieval = stockReturnCollection.find({})
+    totalHLPercent = calculations.calculateStockReturnTotalHL(stockReturnRetrieval)
+    stockReturnRetrieval = stockReturnCollection.find({})
+    for document in stockReturnRetrieval:
+        id = document["_id"]
+        stockReturnCollection.update_one({"_id": ObjectId(id)}, {"$set":  {
+            'totalHLPercent': round(totalHLPercent, 2)
+        }})
 
     return jsonify(data="Stock Return created successfully")
     

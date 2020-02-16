@@ -161,13 +161,11 @@ def calculateTotalUnits(brewCollection,inventoryCollection, beer, stockReturn):
             deliveries330Cases = (int(openingStock330Cases) + totalReceiptsCases330) - totalRemainingCases330
             deliveries500Cases = (int(openingStock500Cases) + totalReceiptsCases500) - totalRemainingCases500
             deliveriesKegs = (int(openingStockKegs) + totalReceiptsKegs) - totalRemainingKegs
-            print("deliveries330Cases "+str(deliveries330Cases)+" deliveries500Cases"+str(deliveries500Cases)+" deliveriesKegs"+str(deliveriesKegs))
 
             # Calculate HL for Opening Stock, Receipts, Deliveries and Closing Stock
             OS_HL = round(calculatePCV(openingStock330Cases ,openingStock500Cases, openingStockKegs ) / 100, 2)
             receipts_HL = round(calculatePCV(totalReceiptsCases330 ,totalReceiptsCases500, totalReceiptsKegs ) / 100 ,2)
             deliveries_HL = round(calculatePCV(deliveries330Cases ,deliveries500Cases, deliveriesKegs ) / 100, 2)
-            print("deliveries_HL "+str(deliveries_HL))
             CS_HL = round(calculatePCV(totalRemainingCases330 ,totalRemainingCases500, totalRemainingKegs ) / 100 ,2)
 
     totalMonthlyCases500SoldTL = totalMonthlyCases500Sold * 6
