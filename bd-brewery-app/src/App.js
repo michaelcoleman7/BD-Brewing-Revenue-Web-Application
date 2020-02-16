@@ -14,30 +14,42 @@ import BrewSeparator from './Components/BrewSeparator';
 import InventorySeparator from './Components/InventorySeparator';
 import StockReturnList from './Components/StockReturnList';
 import SingleStockReturn from './Components/SingleStockReturn';
+import Login from './Components/Login';
+import { Security, ImplicitCallback, SecureRoute } from '@okta/okta-react';
 
 function App() {
   return (
     <div className="App">
     <NavBar></NavBar>
     <Router>
+      {/*Security details linked to okta application protecting access*/}
+      <Security
+         issuer="https://dev-895663.okta.com"
+         client_id="0oa2a32mkLlJLDjuW4x6"
+         redirect_uri={'http://localhost:3000/implicit/callback'}
+         scope={['openid', 'profile', 'email']}>
       <Switch>
-        <Route path="/" exact component={Home}/>
+        <Route path="/" exact component={Login}/>
+        <Route path="/implicit/callback" component={ImplicitCallback} />
 
-        <Route exact path={"/brewlist/:beer"} component={BrewList}/>
-        <Route exact path={"/createbrew"} component={CreateBrew}/>
-        <Route exact path={"/brew/:id"} component={SingleBrew}/>
-        <Route exact path={"/brew"} component={BrewSeparator}/>
+        {/*Secure Route allows for routes  to be protected unless the user is signed into okta account linked to application*/}
+        <SecureRoute  exact path={"/home"} component={Home}/>
+        <SecureRoute  exact path={"/brewlist/:beer"} component={BrewList}/>
+        <SecureRoute  exact path={"/createbrew"} component={CreateBrew}/>
+        <SecureRoute  exact path={"/brew/:id"} component={SingleBrew}/>
+        <SecureRoute  exact path={"/brew"} component={BrewSeparator}/>
 
-        <Route exact path={"/createinventory"} component={CreateInventory}/>
-        <Route exact path={"/inventorylist/:beer"} component={InventoryList}/>
-        <Route exact path={"/inventory"} component={InventorySeparator}/>
-        <Route exact path={"/inventory/:id"} component={SingleInventory}/>
+        <SecureRoute  exact path={"/createinventory"} component={CreateInventory}/>
+        <SecureRoute  exact path={"/inventorylist/:beer"} component={InventoryList}/>
+        <SecureRoute  exact path={"/inventory"} component={InventorySeparator}/>
+        <SecureRoute  exact path={"/inventory/:id"} component={SingleInventory}/>
 
-        <Route exact path={"/stockreturnlist"} component={StockReturnList}/>
-        <Route exact path={"/stockreturn/:id"} component={SingleStockReturn}/>
+        <SecureRoute  exact path={"/stockreturnlist"} component={StockReturnList}/>
+        <SecureRoute  exact path={"/stockreturn/:id"} component={SingleStockReturn}/>
 
-        <Route path="*" exact component={() => <h1>404 NOT FOUND</h1>}/>
+        <SecureRoute path="*" exact component={() => <h1>404 NOT FOUND</h1>}/>
       </Switch>
+      </Security>
   </Router>
 
     </div>
