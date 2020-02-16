@@ -258,9 +258,11 @@ def calculateTotalUnits(brewCollection,inventoryCollection, beer, stockReturn):
 
 def calculateStockReturnTotalHL(stockReturn):
     totalHLPercent = 0.0
+    totalDutyOwed = 0.0
     for document in stockReturn:
         totalsInventory = document["totalsInventory"]
         Deliveries_HLPercent= totalsInventory["Deliveries_HLPercent"]
         totalHLPercent += float(Deliveries_HLPercent)
-    return totalHLPercent
+    totalDutyOwed = totalHLPercent * (22.55/2)
+    return [totalHLPercent,totalDutyOwed]
     

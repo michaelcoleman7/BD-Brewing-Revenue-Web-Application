@@ -376,12 +376,13 @@ def createStockReturn():
     stockReturnCollection.insert_one(totalCalculations)
 
     stockReturnRetrieval = stockReturnCollection.find({})
-    totalHLPercent = calculations.calculateStockReturnTotalHL(stockReturnRetrieval)
+    totalStockReturnVals = calculations.calculateStockReturnTotalHL(stockReturnRetrieval)
     stockReturnRetrieval = stockReturnCollection.find({})
     for document in stockReturnRetrieval:
         id = document["_id"]
         stockReturnCollection.update_one({"_id": ObjectId(id)}, {"$set":  {
-            'totalHLPercent': round(totalHLPercent, 2)
+            'totalHLPercent': round(totalStockReturnVals[0], 2),
+            'totalDutyOwed': round(totalStockReturnVals[1], 2)
         }})
 
     return jsonify(data="Stock Return created successfully")
