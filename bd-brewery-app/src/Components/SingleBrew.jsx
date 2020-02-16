@@ -270,8 +270,8 @@ const divStyle = {
                 </Card.Body>
             </Card></center>
             
-            <button className="edit" onClick={(e) => editItem(brewId)}>Edit Item</button>
-            <button onClick={(e) => deleteItem(brewId)}>Delete Item</button>
+            <button className="edit" onClick={(e) => editItem(brewId)}>Edit Brew</button>
+            <button onClick={(e) => deleteItem(brewId)}>Delete Brew</button>
             {editForm}
         </React.Fragment>)
 }

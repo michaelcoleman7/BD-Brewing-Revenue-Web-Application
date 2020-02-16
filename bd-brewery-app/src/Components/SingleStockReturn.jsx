@@ -219,7 +219,7 @@ const divStyle = {
          return <Redirect to={redirectRoute}/>  
     }
 
-    const deleteItem = (stockReturnId) => {
+    const deleteStockReturn = (stockReturnId) => {
         const options = { 
             method: 'delete',
             headers: {
@@ -423,6 +423,8 @@ const divStyle = {
                     </Table>
                 </Card.Body>
             </Card></center>
+
+            <button onClick={(e) => deleteStockReturn(stockReturnId)}>Delete Stock Return</button>
         </React.Fragment>)
 }
     
