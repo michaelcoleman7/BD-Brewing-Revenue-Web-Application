@@ -73,6 +73,7 @@ const BrewSeparator = () => {
 return(
     <React.Fragment> 
       <div>
+      <h1 style={{color: "white"}}>Brew: Beers</h1>
         {brewsArray}
       </div>
     </React.Fragment>)

@@ -73,6 +73,7 @@ const InventorySeparator = () => {
   return(
       <React.Fragment> 
         <div>
+          <h1 style={{color: "white"}}>Inventory: Beers</h1>
           {inventoriesArray}
         </div>
       </React.Fragment>)

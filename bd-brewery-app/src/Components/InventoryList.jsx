@@ -70,6 +70,7 @@ const InventoryList = (props) => {
 return(
     <React.Fragment> 
       <div>
+      <h1 style={{color: "white"}}>Inventories List</h1>
         {inventoriesArray}
       </div>
     </React.Fragment>)

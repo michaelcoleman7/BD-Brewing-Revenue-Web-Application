@@ -63,6 +63,7 @@ const StockReturnList = () => {
 return(
     <React.Fragment> 
       <div>
+      <h1 style={{color: "white"}}>Stock Return List</h1>
         {stockReturnArray}
       </div>
     </React.Fragment>)

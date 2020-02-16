@@ -76,6 +76,7 @@ const BrewList = (props) => {
 return(
     <React.Fragment> 
       <div>
+      <h1 style={{color: "white"}}>Brew: {props.match.params.beer} - Batch Numbers</h1>
         {brewsArray}
       </div>
     </React.Fragment>)
