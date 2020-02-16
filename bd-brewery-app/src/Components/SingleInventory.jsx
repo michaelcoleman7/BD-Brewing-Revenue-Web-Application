@@ -64,6 +64,7 @@ const divStyle = {
         }).then(res => {
             //console.log("response "+res.data);
             let parsed = JSON.parse(res.data);
+            setBeer(props)
             setInventory(parsed);
             setTotalsInventory(parsed.totalsInventory)
             setBatchNo(parsed.batchNo);
@@ -154,7 +155,7 @@ const divStyle = {
             console.log("Invalid form format, will not be sent to database");
         }
     }
-    let redirectRoute = "/inventorylist/"+ beer
+    let redirectRoute = "/"
     const redirect = routeRedirect;
     if(redirect){
          return <Redirect to={redirectRoute} />  

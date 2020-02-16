@@ -35,6 +35,8 @@ function App() {
 
         <Route exact path={"/stockreturnlist"} component={StockReturnList}/>
         <Route exact path={"/stockreturn/:id"} component={SingleStockReturn}/>
+
+        <Route path="*" exact component={() => <h1>404 NOT FOUND</h1>}/>
       </Switch>
   </Router>
 
