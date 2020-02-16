@@ -45,6 +45,7 @@ inventoryRoute = Blueprint("inventorySingle", __name__)
 indexStockReturnRoute = Blueprint("indexStockReturn", __name__)
 createStockReturnRoute = Blueprint("createStockReturn", __name__)
 stockReturnRoute = Blueprint("stockReturnSingle", __name__)
+deleteStockReturnRoute = Blueprint("deleteStockReturn", __name__)
 
 #routes 
 @indexBrewRoute.route("/api/brew")
@@ -386,6 +387,14 @@ def createStockReturn():
         }})
 
     return jsonify(data="Stock Return created successfully")
+
+@deleteStockReturnRoute.route("/api/deletestockreturn/<id>", methods = ["DELETE"])
+def delete(id):
+    print(request.json, flush=True)
+    stockReturnId = request.json.get("id")
+    stockReturnCollection.remove({"_id": ObjectId(stockReturnId)})
+
+    return jsonify(data= "inventory delete successfully") 
     
 
 
