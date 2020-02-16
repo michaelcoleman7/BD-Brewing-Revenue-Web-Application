@@ -66,6 +66,9 @@ const divStyle = {
     const [deliveries_HLPercent, setDeliveries_HLPercent] = useState("");
     const [cS_HLPercent, setCS_HLPercent] = useState("");
 
+    const [totalHlPercent, setTotalHlPercent] = useState("");
+    const [totalDuty, setTotalDuty] = useState("");
+
     const [routeRedirect, setRedirect] = useState(""); 
 
     const getStockReturn = () => {
@@ -116,6 +119,11 @@ const divStyle = {
             setOtherCountryCheckRec(parsed.otherCountryCheckRec);
             setOtherBreweryCheckDel(parsed.otherBreweryCheckDel);
             setOtherCountryCheckDel(parsed.otherCountryCheckDel);
+
+            setTotalHlPercent(parsed.totalHLPercent);
+            setTotalDuty(parsed.totalDutyOwed);
+            console.log(parsed.totalHLPercent);
+
             setMakeChanges(true);
         }).catch(err => {
             console.log(err);
@@ -131,7 +139,6 @@ const divStyle = {
     }
 
     if(makeChanges){
-        console.log("otherBreweryCheck: "+ otherBreweryCheckRec + " otherCountryCheck: "+otherCountryCheckRec);
         //set up reciepts columns
         if(otherBreweryCheckRec == false && otherCountryCheckRec == false){
             var elems = document.getElementsByClassName("kdmRec");
@@ -161,7 +168,6 @@ const divStyle = {
             elems[5].innerHTML = receipts_HLPercent;
         }
 
-        console.log("otherBreweryCheck: "+ otherBreweryCheckDel + " otherCountryCheck: "+otherCountryCheckDel);
         //set up delveries columns
         if(otherBreweryCheckDel == false && otherCountryCheckDel == false){
             var elems = document.getElementsByClassName("kdmDel");
@@ -190,6 +196,21 @@ const divStyle = {
             elems[4].innerHTML = deliveriesPercentage;
             elems[5].innerHTML = deliveries_HLPercent;
         }
+        //set up totals - according to stock return sheets
+        var elems = document.getElementsByClassName("totDel");
+        elems[0].innerHTML = deliveries330Cases;
+        elems[1].innerHTML = deliveries500Cases;
+        elems[2].innerHTML = deliveriesKegs;
+        elems[3].innerHTML = deliveries_HL;
+        elems[4].innerHTML = deliveriesPercentage;
+        elems[5].innerHTML = deliveries_HLPercent;
+        var elems = document.getElementsByClassName("totRec");
+        elems[0].innerHTML = receipts330Cases;
+        elems[1].innerHTML = receipts500Cases;
+        elems[2].innerHTML = receiptsKegs;
+        elems[3].innerHTML = receipts_HL;
+        elems[4].innerHTML = receiptsPercentage;
+        elems[5].innerHTML = receipts_HLPercent;
     }
 
     let redirectRoute = "/stockreturnlist/"
@@ -277,17 +298,17 @@ const divStyle = {
 
                             <tr>
                                 <td></td>
-                                <th colSpan="7" height="25"></th>
+                                <th colSpan="6" height="25"></th>
                             </tr>
 
                             <tr>
-                                <td><b>Receipts:</b></td>
+                                <td colSpan="6" ><b>Receipts:</b></td>
                                 <th></th>
                             </tr>
 
                             <tr>
                                 <td></td>
-                                <th colSpan="7" height="25"></th>
+                                <th colSpan="6" height="25"></th>
                             </tr>
 
                             <tr>
@@ -322,27 +343,27 @@ const divStyle = {
 
                             <tr>
                                 <td><b>Total Receipts</b></td>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
+                                <th class="totRec"></th>
+                                <th class="totRec"></th>
+                                <th class="totRec"></th>
+                                <th class="totRec"></th>
+                                <th class="totRec"></th>
+                                <th class="totRec"></th>
+                            </tr>
+
+                            <tr>
+                                <td></td>
+                                <th colSpan="6" height="25"></th>
+                            </tr>
+
+                            <tr>
+                                <td colSpan="6" ><b>Deliveries:</b></td>
                                 <th></th>
                             </tr>
 
                             <tr>
                                 <td></td>
-                                <th colSpan="7" height="25"></th>
-                            </tr>
-
-                            <tr>
-                                <td><b>Deliveries:</b></td>
-                                <th></th>
-                            </tr>
-
-                            <tr>
-                                <td></td>
-                                <th colSpan="7" height="25"></th>
+                                <th colSpan="6" height="25"></th>
                             </tr>
 
                             <tr>
@@ -377,16 +398,29 @@ const divStyle = {
 
                             <tr>
                                 <td><b>Total Deliveries</b></td>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
+                                <th class="totDel"></th>
+                                <th class="totDel"></th>
+                                <th class="totDel"></th>
+                                <th class="totDel"></th>
+                                <th class="totDel"></th>
+                                <th class="totDel"></th>
                             </tr>
                         </tbody>
                         </Table>
                     </Card.Text>
+                    <br/><h3>Totals for All Stock Returns</h3><br/>
+                    <Table striped bordered hover>
+                        <tbody>
+                            <tr>
+                                <td><b>Total HL across all stock returns:</b></td>
+                                <th>{totalHlPercent}%</th>
+                            </tr>
+                            <tr>
+                                <td><b>Total Duty across all stock returns:</b></td>
+                                <th>€{totalDuty}</th>
+                            </tr>
+                        </tbody>
+                    </Table>
                 </Card.Body>
             </Card></center>
         </React.Fragment>)
