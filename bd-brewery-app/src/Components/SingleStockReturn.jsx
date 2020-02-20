@@ -3,6 +3,7 @@ import Card from 'react-bootstrap/Card'
 import { Redirect } from 'react-router';
 import Table from 'react-bootstrap/Table'
 import '../Stylesheets/Form.css';
+import ReactToPrint from "react-to-print";
 
 //set the url to send the data to
 const url = "http://localhost:5000/"
@@ -138,81 +139,6 @@ const divStyle = {
         // DO A REFRESH OF A TOTALS HERE ---------------------------------------------------------
     }
 
-    if(makeChanges){
-        //set up reciepts columns
-        if(otherBreweryCheckRec == false && otherCountryCheckRec == false){
-            var elems = document.getElementsByClassName("kdmRec");
-            elems[0].innerHTML = receipts330Cases;
-            elems[1].innerHTML = receipts500Cases;
-            elems[2].innerHTML = receiptsKegs;
-            elems[3].innerHTML = receipts_HL;
-            elems[4].innerHTML = receiptsPercentage;
-            elems[5].innerHTML = receipts_HLPercent;
-        }
-        else if(otherBreweryCheckRec == true && otherCountryCheckRec == false){
-            var elems = document.getElementsByClassName("warehouseRec");
-            elems[0].innerHTML = receipts330Cases;
-            elems[1].innerHTML = receipts500Cases;
-            elems[2].innerHTML = receiptsKegs;
-            elems[3].innerHTML = receipts_HL;
-            elems[4].innerHTML = receiptsPercentage;
-            elems[5].innerHTML = receipts_HLPercent;
-        }
-        else if(otherBreweryCheckRec == false && otherCountryCheckRec == true){
-            var elems = document.getElementsByClassName("countryRec");
-            elems[0].innerHTML = receipts330Cases;
-            elems[1].innerHTML = receipts500Cases;
-            elems[2].innerHTML = receiptsKegs;
-            elems[3].innerHTML = receipts_HL;
-            elems[4].innerHTML = receiptsPercentage;
-            elems[5].innerHTML = receipts_HLPercent;
-        }
-
-        //set up delveries columns
-        if(otherBreweryCheckDel == false && otherCountryCheckDel == false){
-            var elems = document.getElementsByClassName("kdmDel");
-            elems[0].innerHTML = deliveries330Cases;
-            elems[1].innerHTML = deliveries500Cases;
-            elems[2].innerHTML = deliveriesKegs;
-            elems[3].innerHTML = deliveries_HL;
-            elems[4].innerHTML = deliveriesPercentage;
-            elems[5].innerHTML = deliveries_HLPercent;
-        }
-        else if(otherBreweryCheckDel == true && otherCountryCheckDel == false){
-            var elems = document.getElementsByClassName("warehouseDel");
-            elems[0].innerHTML = deliveries330Cases;
-            elems[1].innerHTML = deliveries500Cases;
-            elems[2].innerHTML = deliveriesKegs;
-            elems[3].innerHTML = deliveries_HL;
-            elems[4].innerHTML = deliveriesPercentage;
-            elems[5].innerHTML = deliveries_HLPercent;
-        }
-        else if(otherBreweryCheckDel == false && otherCountryCheckDel == true){
-            var elems = document.getElementsByClassName("countryDel");
-            elems[0].innerHTML = deliveries330Cases;
-            elems[1].innerHTML = deliveries500Cases;
-            elems[2].innerHTML = deliveriesKegs;
-            elems[3].innerHTML = deliveries_HL;
-            elems[4].innerHTML = deliveriesPercentage;
-            elems[5].innerHTML = deliveries_HLPercent;
-        }
-        //set up totals - according to stock return sheets
-        var elems = document.getElementsByClassName("totDel");
-        elems[0].innerHTML = deliveries330Cases;
-        elems[1].innerHTML = deliveries500Cases;
-        elems[2].innerHTML = deliveriesKegs;
-        elems[3].innerHTML = deliveries_HL;
-        elems[4].innerHTML = deliveriesPercentage;
-        elems[5].innerHTML = deliveries_HLPercent;
-        var elems = document.getElementsByClassName("totRec");
-        elems[0].innerHTML = receipts330Cases;
-        elems[1].innerHTML = receipts500Cases;
-        elems[2].innerHTML = receiptsKegs;
-        elems[3].innerHTML = receipts_HL;
-        elems[4].innerHTML = receiptsPercentage;
-        elems[5].innerHTML = receipts_HLPercent;
-    }
-
     let redirectRoute = "/stockreturnlist/"
     const redirect = routeRedirect;
     if(redirect){
@@ -238,10 +164,84 @@ const divStyle = {
            })
     }
     
-
-    return(
-        // React Fragment is a way of sending back multiple elements - https://reactjs.org/docs/fragments.html
-        <React.Fragment> 
+    //adapted from - https://www.npmjs.com/package/react-to-print
+    class StockReturnInformation extends React.Component {
+        //method fired when the component is created
+        componentDidMount() {
+                    if(otherBreweryCheckRec == false && otherCountryCheckRec == false){
+                    var elems = document.getElementsByClassName("kdmRec");
+                    elems[0].innerHTML = receipts330Cases;
+                    elems[1].innerHTML = receipts500Cases;
+                    elems[2].innerHTML = receiptsKegs;
+                    elems[3].innerHTML = receipts_HL;
+                    elems[4].innerHTML = receiptsPercentage;
+                    elems[5].innerHTML = receipts_HLPercent;
+                }
+                else if(otherBreweryCheckRec == true && otherCountryCheckRec == false){
+                    var elems = document.getElementsByClassName("warehouseRec");
+                    elems[0].innerHTML = receipts330Cases;
+                    elems[1].innerHTML = receipts500Cases;
+                    elems[2].innerHTML = receiptsKegs;
+                    elems[3].innerHTML = receipts_HL;
+                    elems[4].innerHTML = receiptsPercentage;
+                    elems[5].innerHTML = receipts_HLPercent;
+                }
+                else if(otherBreweryCheckRec == false && otherCountryCheckRec == true){
+                    var elems = document.getElementsByClassName("countryRec");
+                    elems[0].innerHTML = receipts330Cases;
+                    elems[1].innerHTML = receipts500Cases;
+                    elems[2].innerHTML = receiptsKegs;
+                    elems[3].innerHTML = receipts_HL;
+                    elems[4].innerHTML = receiptsPercentage;
+                    elems[5].innerHTML = receipts_HLPercent;
+                }
+        
+                //set up delveries columns
+                if(otherBreweryCheckDel == false && otherCountryCheckDel == false){
+                    var elems = document.getElementsByClassName("kdmDel");
+                    elems[0].innerHTML = deliveries330Cases;
+                    elems[1].innerHTML = deliveries500Cases;
+                    elems[2].innerHTML = deliveriesKegs;
+                    elems[3].innerHTML = deliveries_HL;
+                    elems[4].innerHTML = deliveriesPercentage;
+                    elems[5].innerHTML = deliveries_HLPercent;
+                }
+                else if(otherBreweryCheckDel == true && otherCountryCheckDel == false){
+                    var elems = document.getElementsByClassName("warehouseDel");
+                    elems[0].innerHTML = deliveries330Cases;
+                    elems[1].innerHTML = deliveries500Cases;
+                    elems[2].innerHTML = deliveriesKegs;
+                    elems[3].innerHTML = deliveries_HL;
+                    elems[4].innerHTML = deliveriesPercentage;
+                    elems[5].innerHTML = deliveries_HLPercent;
+                }
+                else if(otherBreweryCheckDel == false && otherCountryCheckDel == true){
+                    var elems = document.getElementsByClassName("countryDel");
+                    elems[0].innerHTML = deliveries330Cases;
+                    elems[1].innerHTML = deliveries500Cases;
+                    elems[2].innerHTML = deliveriesKegs;
+                    elems[3].innerHTML = deliveries_HL;
+                    elems[4].innerHTML = deliveriesPercentage;
+                    elems[5].innerHTML = deliveries_HLPercent;
+                }
+                //set up totals - according to stock return sheets
+                var elems = document.getElementsByClassName("totDel");
+                elems[0].innerHTML = deliveries330Cases;
+                elems[1].innerHTML = deliveries500Cases;
+                elems[2].innerHTML = deliveriesKegs;
+                elems[3].innerHTML = deliveries_HL;
+                elems[4].innerHTML = deliveriesPercentage;
+                elems[5].innerHTML = deliveries_HLPercent;
+                var elems = document.getElementsByClassName("totRec");
+                elems[0].innerHTML = receipts330Cases;
+                elems[1].innerHTML = receipts500Cases;
+                elems[2].innerHTML = receiptsKegs;
+                elems[3].innerHTML = receipts_HL;
+                elems[4].innerHTML = receiptsPercentage;
+                elems[5].innerHTML = receipts_HLPercent;
+          }
+        render() {
+          return (
             <center><Card style={{ width: '75%' }}>
                 <Card.Body>
                     <Card.Title><b>Stock Return For:</b>  {stockReturn.beer}</Card.Title>
@@ -423,7 +423,29 @@ const divStyle = {
                     </Table>
                 </Card.Body>
             </Card></center>
+          );
+        }
+      } 
 
+      class StockReturnDisplay extends React.Component {
+        render() {
+        return (
+            <div>
+            <StockReturnInformation ref={el => (this.componentRef = el)} />
+            <ReactToPrint
+                trigger={() => <button href="#">Print Stock Return</button>}
+                content={() => this.componentRef}
+            />
+            </div>
+        );
+        }
+    }
+    
+
+    return(
+        // React Fragment is a way of sending back multiple elements - https://reactjs.org/docs/fragments.html
+        <React.Fragment> 
+            <StockReturnDisplay/>
             <button onClick={(e) => deleteStockReturn(stockReturnId)}>Delete Stock Return</button>
         </React.Fragment>)
 }
