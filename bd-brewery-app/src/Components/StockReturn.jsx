@@ -98,7 +98,6 @@ const StockReturn = () => {
       })    
     }
     setShow(false);
-    setRedirect(true);  
   }
   const importRecChecked = () => {
     if(hiddenValRec){

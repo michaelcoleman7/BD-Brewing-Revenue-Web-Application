@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Card from 'react-bootstrap/Card'
+import Card from 'react-bootstrap/Card';
 import { Redirect } from 'react-router';
 import Alert from 'react-bootstrap/Alert';
 import '../Stylesheets/Form.css';
@@ -245,6 +245,7 @@ const divStyle = {
                 </form>  
             </React.Fragment>
     }
+    
     //adapted from - https://www.npmjs.com/package/react-to-print
     class BrewInformation extends React.Component {
         render() {

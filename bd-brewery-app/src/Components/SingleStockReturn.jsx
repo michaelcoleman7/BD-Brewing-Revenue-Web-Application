@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import Card from 'react-bootstrap/Card'
+import Card from 'react-bootstrap/Card';
 import { Redirect } from 'react-router';
-import Table from 'react-bootstrap/Table'
+import Table from 'react-bootstrap/Table';
 import '../Stylesheets/Form.css';
 import ReactToPrint from "react-to-print";
 
