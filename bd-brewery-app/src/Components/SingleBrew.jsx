@@ -250,11 +250,11 @@ const divStyle = {
         render() {
           return (
             <center>
-            <Card style={{ width: '40%' }}>
+            <Card style={{ width: '50%' }}>
                 <Card.Body>
-                    <h1><b>Brew: {brew.beer}</b></h1>
-                    <Card.Title><b>Batch Number:</b>  {brew.batchNo}</Card.Title>
+                    <Card.Title><h3><b>Brew: {brew.beer}</b></h3></Card.Title>
                     <Card.Text>
+                        <b>Batch Number:</b>  {brew.batchNo}<br/>
                         <b>Beer:</b>  {brew.beer}<br/>
                         <b>Brew Date:</b>  {brew.brewDate}<br/>
                         <b>Original Gravity (OG):</b>  {brew.og}<br/>

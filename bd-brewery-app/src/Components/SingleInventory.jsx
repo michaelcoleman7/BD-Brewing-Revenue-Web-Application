@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card'
 import { Redirect } from 'react-router';
 import Alert from 'react-bootstrap/Alert';
-import Table from 'react-bootstrap/Table'
+import Table from 'react-bootstrap/Table';
 import '../Stylesheets/Form.css';
+import ReactToPrint from "react-to-print";
 
 //set the url to send the data to
 const url = "http://localhost:5000/"
@@ -272,13 +273,15 @@ const divStyle = {
             </React.Fragment>
     }
 
-    return(
-        // React Fragment is a way of sending back multiple elements - https://reactjs.org/docs/fragments.html
-        <React.Fragment> 
-            <center><Card style={{ width: '75%' }}>
+       //adapted from - https://www.npmjs.com/package/react-to-print
+       class InventoryInformation extends React.Component {
+        render() {
+          return (
+            <center><Card style={{ width: '85%'}}>
                 <Card.Body>
-                    <Card.Title><b>Batch Number:</b>  {inventory.batchNo}</Card.Title>
+                    <Card.Title><h3><b>Inventory: {inventory.beer} - {inventory.batchNo}</b></h3></Card.Title>
                     <Card.Text>
+                    <b>Batch Number:</b> {inventory.batchNo}<br/>
                     <b>Beer:</b> {inventory.beer}<br/>
                     <b>Total Litres:</b> {inventory.totalLitres}<br/>
                     <b>Total Cases Sold (500ml):</b> {inventory.totalCasesSold500}<br/>
@@ -300,81 +303,101 @@ const divStyle = {
                     <b>Sold Month Average %:</b> {inventory.soldAvgMonth}<br/>
                     <b>Remaining Average %:</b> {inventory.AvgRemaining}<br/><br/><br/>
 
-                    <b>Totals by Beer for all of: {inventory.beer}</b> <br/><br/>
+                    <b><h3>Totals by Beer for all of: {inventory.beer}</h3></b> <br/><br/>
                     <Table striped bordered hover>
                         <tbody>
                             <tr>
-                                <td>Total Monthly Cases (500ml) Sold</td>
-                                <th>{totalsInventory.totalMonthlyCases500Sold}</th>
-                                <td>Total Cases (500ml) Sold</td>
-                                <th>{totalsInventory.total500CasesSold}</th>
-                                <td>Total Remaining Cases (500ml)</td>
-                                <th>{totalsInventory.totalRemainingCases500}</th>
-                                <td>Total Monthly Cases (500ml) Sold Total Litres</td>
-                                <th>{totalsInventory.totalMonthlyCases500SoldTL}</th>
-                                <td>Total Cases (500ml) Sold Total Litres</td>
-                                <th>{totalsInventory.total500CasesSoldTL}</th>
-                                <td>Total Remaining Cases (500ml) Total Litres</td>
-                                <th>{totalsInventory.totalRemainingCases500TL}</th>
+                                <th>Total Monthly Cases (500ml) Sold</th>
+                                <td>{totalsInventory.totalMonthlyCases500Sold}</td>
+                                <th>Total Cases (500ml) Sold</th>
+                                <td>{totalsInventory.total500CasesSold}</td>
+                                <th>Total Remaining Cases (500ml)</th>
+                                <td>{totalsInventory.totalRemainingCases500}</td>
+                                <th>Total Monthly Cases (500ml) Sold Total Litres</th>
+                                <td>{totalsInventory.totalMonthlyCases500SoldTL}</td>
+                                <th>Total Cases (500ml) Sold Total Litres</th>
+                                <td>{totalsInventory.total500CasesSoldTL}</td>
+                                <th>Total Remaining Cases (500ml) Total Litres</th>
+                                <td>{totalsInventory.totalRemainingCases500TL}</td>
                             </tr>
 
                             <tr>
-                                <td>Total Monthly Cases (330ml) Sold</td>
-                                <th>{totalsInventory.totalMonthlyCases330Sold}</th>
-                                <td>Total Cases (330ml) Sold</td>
-                                <th>{totalsInventory.total330CasesSold}</th>
-                                <td>Total Remaining Cases (330ml)</td>
-                                <th>{totalsInventory.totalRemainingCases330}</th>
-                                <td>Total Monthly Cases (330ml) Sold Total Litres</td>
-                                <th>{totalsInventory.totalMonthlyCases330SoldTL}</th>
-                                <td>Total Cases (330ml) Sold Total Litres</td>
-                                <th>{totalsInventory.total330CasesSoldTL}</th>
-                                <td>Total Remaining Cases (330ml) Total Litres</td>
-                                <th>{totalsInventory.totalRemainingCases330TL}</th>
+                                <th>Total Monthly Cases (330ml) Sold</th>
+                                <td>{totalsInventory.totalMonthlyCases330Sold}</td>
+                                <th>Total Cases (330ml) Sold</th>
+                                <td>{totalsInventory.total330CasesSold}</td>
+                                <th>Total Remaining Cases (330ml)</th>
+                                <td>{totalsInventory.totalRemainingCases330}</td>
+                                <th>Total Monthly Cases (330ml) Sold Total Litres</th>
+                                <td>{totalsInventory.totalMonthlyCases330SoldTL}</td>
+                                <th>Total Cases (330ml) Sold Total Litres</th>
+                                <td>{totalsInventory.total330CasesSoldTL}</td>
+                                <th>Total Remaining Cases (330ml) Total Litres</th>
+                                <td>{totalsInventory.totalRemainingCases330TL}</td>
                             </tr>
 
                             <tr>
-                                <td>Total Monthly Kegs Sold</td>
-                                <th>{totalsInventory.totalMonthlyKegsSold}</th>
-                                <td>Total Kegs Sold</td>
-                                <th>{totalsInventory.totalInvKegsSold}</th>
-                                <td>Total Remaining Kegs</td>
-                                <th>{totalsInventory.totalRemainingKegs}</th>
-                                <td>Total Monthly Kegs Total Litres</td>
-                                <th>{totalsInventory.totalMonthlyKegsSoldTL}</th>
-                                <td>Total Kegs Sold Total Litres</td>
-                                <th>{totalsInventory.totalInvKegsSoldTL}</th>
-                                <td>Total Remaining Kegs Total Litres</td>
-                                <th>{totalsInventory.totalRemainingKegsTL}</th>
+                                <th>Total Monthly Kegs Sold</th>
+                                <td>{totalsInventory.totalMonthlyKegsSold}</td>
+                                <th>Total Kegs Sold</th>
+                                <td>{totalsInventory.totalInvKegsSold}</td>
+                                <th>Total Remaining Kegs</th>
+                                <td>{totalsInventory.totalRemainingKegs}</td>
+                                <th>Total Monthly Kegs Total Litres</th>
+                                <td>{totalsInventory.totalMonthlyKegsSoldTL}</td>
+                                <th>Total Kegs Sold Total Litres</th>
+                                <td>{totalsInventory.totalInvKegsSoldTL}</td>
+                                <th>Total Remaining Kegs Total Litres</th>
+                                <td>{totalsInventory.totalRemainingKegsTL}</td>
                             </tr>
 
                             <tr>
-                                <td>Totals of Receipts Averages</td>
-                                <th>{totalsInventory.totalReceiptsAvg}</th>
-                                <td>Totals of Monthly Sold Averages</td>
-                                <th>{totalsInventory.totalSoldMonthAvg}</th>
-                                <td>Totals of Remaining Averages</td>
-                                <th>{totalsInventory.totalAvgRemaining}</th>
-                                <td>Receipts Average New Percentage</td>
-                                <th>{totalsInventory.receiptsAvgNewPercentage}%</th>
-                                <td>Sold Month Average New Percentage</td>
-                                <th>{totalsInventory.soldMonthAvgNewPercentage}%</th>
-                                <td>Remains Average New Percentage</td>
-                                <th>{totalsInventory.remainsAvgNewPercentage}%</th>
+                                <th>Totals of Receipts Averages</th>
+                                <td>{totalsInventory.totalReceiptsAvg}</td>
+                                <th>Totals of Monthly Sold Averages</th>
+                                <td>{totalsInventory.totalSoldMonthAvg}</td>
+                                <th>Totals of Remaining Averages</th>
+                                <td>{totalsInventory.totalAvgRemaining}</td>
+                                <th>Receipts Average New Percentage</th>
+                                <td>{totalsInventory.receiptsAvgNewPercentage}%</td>
+                                <th>Sold Month Average New Percentage</th>
+                                <td>{totalsInventory.soldMonthAvgNewPercentage}%</td>
+                                <th>Remains Average New Percentage</th>
+                                <td>{totalsInventory.remainsAvgNewPercentage}%</td>
                             </tr>
 
                             <tr>
-                                <td>Total Litres sold for Beer</td>
-                                <th colSpan="5"> {totalsInventory.litresSold}</th>
-                                <td>Totals HectoLitres Sold</td>
-                                <th colSpan="5">{totalsInventory.HLSold}</th>
+                                <th>Total Litres sold for Beer</th>
+                                <td colSpan="5"> {totalsInventory.litresSold}</td>
+                                <th>Totals HectoLitres Sold</th>
+                                <td colSpan="5">{totalsInventory.HLSold}</td>
                             </tr>
                         </tbody>
                     </Table>
                     </Card.Text>
                 </Card.Body>
             </Card></center>
-            
+          );
+        }
+      }    
+    class InventoryDisplay extends React.Component {
+        render() {
+        return (
+            <div>
+            <InventoryInformation ref={el => (this.componentRef = el)} />
+            <ReactToPrint
+                trigger={() => <button href="#">Print Inventory</button>}
+                content={() => this.componentRef}
+            />
+            </div>
+        );
+        }
+    }
+
+    return(
+        // React Fragment is a way of sending back multiple elements - https://reactjs.org/docs/fragments.html
+        <React.Fragment> 
+            <InventoryDisplay/> 
             <button className="edit" onClick={(e) => editItem(inventoryId)}>Edit Inventory</button>
             <button onClick={(e) => deleteItem(inventoryId)}>Delete Inventory</button>
             {editForm}
