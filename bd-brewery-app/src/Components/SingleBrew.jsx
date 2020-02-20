@@ -5,7 +5,6 @@ import Alert from 'react-bootstrap/Alert';
 import '../Stylesheets/Form.css';
 import DatePicker from 'react-date-picker';
 import { format } from 'date-fns';
-//import ComponentToPrint from './ComponentToPrint';
 import ReactToPrint from "react-to-print";
 
 //set the url to send the data to
@@ -246,43 +245,42 @@ const divStyle = {
                 </form>  
             </React.Fragment>
     }
-    //https://www.npmjs.com/package/react-to-print
-    class ComponentToPrint extends React.Component {
+    //adapted from - https://www.npmjs.com/package/react-to-print
+    class BrewInformation extends React.Component {
         render() {
           return (
             <center>
             <Card style={{ width: '40%' }}>
                 <Card.Body>
-                    <h1><b>Brew</b></h1>
+                    <h1><b>Brew: {brew.beer}</b></h1>
                     <Card.Title><b>Batch Number:</b>  {brew.batchNo}</Card.Title>
                     <Card.Text>
-                    <b>Beer:</b>  {brew.beer}<br/>
-                    <b>Brew Date:</b>  {brew.brewDate}<br/>
-                    <b>Beer:</b>  {brew.beer}<br/>
-                    <b>Original Gravity (OG):</b>  {brew.og}<br/>
-                    <b>Present Gravity (PG):</b>  {brew.pg}<br/>
-                    <b>OG-PG:</b>  {brew.ogMinusPg}<br/>
-                    <b>ABV%:</b>  {brew.abv}<br/>
-                    <b>Post Condition Date:</b>  {brew.postConditionDate}<br/>
-                    <b>Post Condition Volume:</b>  {brew.postConditionVol}<br/>
-                    <b>Number of Kegs:</b>  {brew.kegNo}<br/>
-                    <b>Number of Bottles (500ml):</b>  {brew.bottleNo500}<br/>
-                    <b>Number of Bottles (330ml):</b>  {brew.bottleNo330}<br/>
-                    <b>Duty:</b>  €{brew.duty}<br/>
-                    <b>Status:</b>  {brew.status}<br/>
+                        <b>Beer:</b>  {brew.beer}<br/>
+                        <b>Brew Date:</b>  {brew.brewDate}<br/>
+                        <b>Original Gravity (OG):</b>  {brew.og}<br/>
+                        <b>Present Gravity (PG):</b>  {brew.pg}<br/>
+                        <b>OG-PG:</b>  {brew.ogMinusPg}<br/>
+                        <b>ABV%:</b>  {brew.abv}<br/>
+                        <b>Post Condition Date:</b>  {brew.postConditionDate}<br/>
+                        <b>Post Condition Volume:</b>  {brew.postConditionVol}<br/>
+                        <b>Number of Kegs:</b>  {brew.kegNo}<br/>
+                        <b>Number of Bottles (500ml):</b>  {brew.bottleNo500}<br/>
+                        <b>Number of Bottles (330ml):</b>  {brew.bottleNo330}<br/>
+                        <b>Duty:</b>  €{brew.duty}<br/>
+                        <b>Status:</b>  {brew.status}<br/>
                     </Card.Text>
                 </Card.Body>
             </Card></center>
           );
         }
       }    
-    class Example extends React.Component {
+    class BrewDisplay extends React.Component {
         render() {
         return (
             <div>
-            <ComponentToPrint ref={el => (this.componentRef = el)} />
+            <BrewInformation ref={el => (this.componentRef = el)} />
             <ReactToPrint
-                trigger={() => <button href="#">Print this out!</button>}
+                trigger={() => <button href="#">Print Brew</button>}
                 content={() => this.componentRef}
             />
             </div>
@@ -293,8 +291,7 @@ const divStyle = {
     return(
         // React Fragment is a way of sending back multiple elements - https://reactjs.org/docs/fragments.html
         <React.Fragment> 
-            <Example/>
-            
+            <BrewDisplay/>
             <button className="edit" onClick={(e) => editItem(brewId)}>Edit Brew</button>
             <button onClick={(e) => deleteItem(brewId)}>Delete Brew</button>
             {editForm}
