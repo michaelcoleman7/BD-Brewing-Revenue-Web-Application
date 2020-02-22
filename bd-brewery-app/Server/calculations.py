@@ -42,7 +42,6 @@ def calculateDuty(postConditionVolume , abv):
 def inventoryCalculations(brewCollection, calculationVariables):
     brewDetails = brewCollection.find( { "batchNo": calculationVariables[0] } )
     for document in brewDetails:
-        print("batchNo brew" + document["batchNo"])
         total500cases = document["bottleNo500"]
         total330cases = document["bottleNo330"]
         totalkegs = document["kegNo"]
@@ -136,7 +135,6 @@ def calculateTotalUnits(brewCollection,inventoryCollection, beer, stockReturn):
             AvgRemaining = document["AvgRemaining"]
 
             totalReceiptsAvg += receiptsAvg
-            #print("totalReceiptsAvg per inv "+ str(totalReceiptsAvg))
             totalSoldMonthAvg += soldAvgMonth
             totalAvgRemaining += AvgRemaining
 

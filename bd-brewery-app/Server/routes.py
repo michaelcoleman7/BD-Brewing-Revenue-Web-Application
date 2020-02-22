@@ -64,7 +64,6 @@ def indexBrew():
 def brewSingle(id):
     # Find one object from mongo using the object id
     cursor = brewCollection.find_one({"_id":ObjectId(id)})
-    #print(cursor, flush=True)
 
     # Prevemt serializable error being thrown
     return jsonify(data=JSONEncoder().encode(cursor))
@@ -72,8 +71,6 @@ def brewSingle(id):
 # Route to handle creation of a brew
 @createBrewRoute.route("/api/createbrew", methods=["POST"])
 def createBrew():
-    #print(request.json, flush=True)
-
     # Request all information and store in variables
     beer = request.json.get("beer")
     batchNo = request.json.get("batchNo")
@@ -90,9 +87,6 @@ def createBrew():
     abv = calculations.calculateABV(og, pg)
     postConditionVol= calculations.calculatePCV(bottleNo330, bottleNo500, kegNo)
     duty= calculations.calculateDuty(postConditionVol,abv)
-
-    # print variables to check if correct
-    #print("Brew Name:" +"Brew Number:" +brewNo + " Beer:" + beer + " batchNo:" + batchNo + " brewDate:" + brewDate + " og:" + og + " pg:" + pg + " abv:" + abv + " postConditionDate:" + postConditionDate + " postConditionVol:" + postConditionVol + " kegNo:" + kegNo + " bottleNo500:" + bottleNo500 + " bottleNo330:" + bottleNo330 + " duty:" + duty + " status:" + status)
 
     # create json format of data to send to MongoDB
     brew = {
@@ -123,9 +117,6 @@ def createBrew():
 # Added cross origin to prevent blocking of requests
 #@cross_origin(origin='localhost',headers=['Content-Type','Authorization']) 
 def updateBrew(id):
-    #print("Updated Info")
-    #print(request.json, flush=True)
-    
     # Request all information and store in variables
     brewId= request.json.get("brewId")
     beer = request.json.get("beer")
@@ -175,7 +166,6 @@ def updateBrew(id):
 
 @deleteBrewRoute.route("/api/deleteBrew/<id>", methods = ["DELETE"])
 def delete(id):
-    print(request.json, flush=True)
     brewId = request.json.get("id")
     brewCollection.remove({"_id": ObjectId(brewId)})
 
@@ -195,7 +185,6 @@ def indexInventory():
 def inventorySingle(id):
     # Find one object from mongo using the object id
     cursor = inventoryCollection.find_one({"_id":ObjectId(id)})
-    #print(cursor, flush=True)
 
     # Prevemt serializable error being thrown
     return jsonify(data=JSONEncoder().encode(cursor))
@@ -262,11 +251,7 @@ def createInventory():
     return jsonify(data="inventory created successfully")
 # Update an Inventory 
 @updateInventoryRoute.route("/api/updateInventory/<id>", methods=["PUT"])
-# Added cross origin to prevent blocking of requests
-#@cross_origin(origin='localhost',headers=['Content-Type','Authorization']) 
 def updateInventory(id):
-    #print("Updated Info")
-    #print(request.json, flush=True)
     # Request all information and store in variables
     batchNo = request.json.get("batchNo")
     beer = request.json.get("beer")
@@ -281,7 +266,6 @@ def updateInventory(id):
     openingStock500Cases = request.json.get("openingStock500Cases")
     openingStockKegs = request.json.get("openingStockKegs")
     openingStockPercentage = request.json.get("openingStockPercentage")
-    print(openingStockPercentage)
 
     calculationVariables = [batchNo, remainingCases500,remainingCases330, remainingKegs,totalCasesSold500Month,totalCasesSold330Month, totalKegsSoldMonth]
 
@@ -328,7 +312,6 @@ def updateInventory(id):
 
 @deleteInventoryRoute.route("/api/deleteInventory/<id>", methods = ["DELETE"])
 def delete(id):
-    print(request.json, flush=True)
     inventoryId = request.json.get("id")
     inventoryCollection.remove({"_id": ObjectId(inventoryId)})
 
@@ -348,7 +331,6 @@ def indexStockReturn():
 def stockReturnSingle(id):
     # Find one object from mongo using the object id
     cursor = stockReturnCollection.find_one({"_id":ObjectId(id)})
-    #print(cursor, flush=True)
 
     # Prevemt serializable error being thrown
     return jsonify(data=JSONEncoder().encode(cursor))
@@ -390,7 +372,6 @@ def createStockReturn():
 
 @deleteStockReturnRoute.route("/api/deletestockreturn/<id>", methods = ["DELETE"])
 def delete(id):
-    print(request.json, flush=True)
     stockReturnId = request.json.get("id")
     stockReturnCollection.remove({"_id": ObjectId(stockReturnId)})
 
