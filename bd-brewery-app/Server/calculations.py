@@ -33,7 +33,7 @@ def calculatePCV(bottle330, bottle500, kegs):
     bottleNum500 = int(bottle500)
     kegNum = int(kegs)
     postConditionVolume = (bottleNum330 * 7.92) + (bottleNum500 * 6) + (kegNum * 30)
-    return round(postConditionVolume, 2)
+    return round(postConditionVolume, 0)
 
 def calculateDuty(postConditionVolume , abv):
     duty = (postConditionVolume/100 * abv * 22.5)/2
