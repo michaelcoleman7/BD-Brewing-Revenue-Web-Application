@@ -1,7 +1,8 @@
 .App {
   text-align: center;
   background-image: url("./Images/Background2.PNG");
-  height: 100vh;
+  height:auto; 
+  min-height: 944px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
