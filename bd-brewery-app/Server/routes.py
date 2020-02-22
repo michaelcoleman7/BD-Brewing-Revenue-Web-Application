@@ -248,7 +248,7 @@ def createInventory():
     # Insert the Inventory into the mongoDB in mlabs, adapted from - https://docs.mongodb.com/manual/reference/method/db.collection.insertOne/
     inventoryCollection.insert_one(inventory)
 
-    totalsInventory = calculations.calculateTotalUnits(brewCollection,inventoryCollection, beer, True)
+    totalsInventory = calculations.calculateTotalUnits(brewCollection,inventoryCollection, beer, False)
 
     invRetrieval = inventoryCollection.find({})
     for document in invRetrieval:
@@ -315,7 +315,7 @@ def updateInventory(id):
     # Set the contents of the id in mongo to the updated data above - {"$set": updatedInventory}
     inventoryCollection.update_one({"_id": ObjectId(inventoryId)}, {"$set": updatedInventory})
 
-    totalsInventory = calculations.calculateTotalUnits(brewCollection,inventoryCollection, beer, True)
+    totalsInventory = calculations.calculateTotalUnits(brewCollection,inventoryCollection, beer, False)
 
     inventoryCollection.update_one({"_id": ObjectId(inventoryId)}, {"$set":  {
         'totalsInventory': totalsInventory
@@ -363,7 +363,7 @@ def createStockReturn():
     otherBreweryCheckDel = request.json.get("otherBreweryCheckDel")
     otherCountryCheckDel = request.json.get("otherCountryCheckDel")
 
-    totalsInventory = calculations.calculateTotalUnits(brewCollection,inventoryCollection, beer, False)
+    totalsInventory = calculations.calculateTotalUnits(brewCollection,inventoryCollection, beer, True)
 
     totalCalculations = {
         "beer": beer,

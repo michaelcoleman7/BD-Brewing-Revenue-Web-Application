@@ -251,7 +251,7 @@ def calculateTotalUnits(brewCollection,inventoryCollection, beer, stockReturn):
         "Deliveries_HLPercent": Deliveries_HLPercent,
         "CS_HLPercent": CS_HLPercent
     }
-    if stockReturn:
+    if stockReturn == False:
         return totalsInventory
     else:
         return stockReturnInfoInventory

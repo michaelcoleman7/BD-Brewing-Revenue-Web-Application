@@ -31,7 +31,9 @@ def test_inventoryCalculations():
     assert calculations.inventoryCalculations(brewCollection,["SS00719", 157, 0 ,0,4, 0, 0]) == [4, 0, 0, 942, 5303.34, 131.76, 5171.58, 966]
 
 def test_calculateTotalUnits():
-    assert calculations.calculateTotalUnits(brewCollection ,inventoryCollection, "Sheep Stealer", True) == {"totalMonthlyCases500Sold": 4,
+    # Test calculations for totals in inventories
+    assert calculations.calculateTotalUnits(brewCollection ,inventoryCollection, "Sheep Stealer", True) == {
+        "totalMonthlyCases500Sold": 4,
         "total500CasesSold": 4,
         "totalRemainingCases500": 157,
         "totalMonthlyCases330Sold": 0,
@@ -58,4 +60,33 @@ def test_calculateTotalUnits():
         "remainsAvgNewPercentage": 5.54,
         "litresSold": 204,
         "HLSold": 2.04
-        }
+    }
+
+    # Test calculations for totals in stock returns
+    assert calculations.calculateTotalUnits(brewCollection ,inventoryCollection, "Sheep Stealer", False) == {
+        "openingStock330Cases": "16",
+        "openingStock500Cases": "50",
+        "openingStockKegs": "7",
+        "recieptsCases330": 0,
+        "recieptsCases500": 161,
+        "recieptsKegs": 33,
+        "deliveries330Cases": 16,
+        "deliveries500Cases": 54,
+        "deliveriesKegs": 13,
+        "closingStockCases330": 0,
+        "closingStockCases500": 157,
+        "closingStockKegs": 27,
+        "OS_HL": 6.37,
+        "receipts_HL": 19.56,
+        "deliveries_HL": 8.41,
+        "CS_HL": 17.52,
+        "openingStockPercentage": "5.62",
+        "receiptsPercentage": 5.54,
+        "deliveriesPercentage": 5.58,
+        "ClosingStockPercentage": 5.54,
+        "OS_HLPercent": 35.8,
+        "receipts_HLPercent": 108.36,
+        "Deliveries_HLPercent": 46.93,
+        "CS_HLPercent": 97.06
+    }
+
