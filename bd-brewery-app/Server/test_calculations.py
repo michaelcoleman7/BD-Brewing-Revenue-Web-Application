@@ -16,3 +16,8 @@ def test_calculatePCV():
     assert calculations.calculatePCV(0, 0, 20) == 600
     assert calculations.calculatePCV(0, 0, 0) == 0
     assert calculations.calculatePCV(100, 100, 100) == 4392
+
+def test_calculateDuty():
+    assert calculations.calculateDuty(948, 5.46) == 582.31
+    assert calculations.calculateDuty(966, 5.49) == 596.63
+    assert calculations.calculateDuty(828, 4.90) == 456.44
