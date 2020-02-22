@@ -1,5 +1,5 @@
 import calculations
-from routes import brewCollection,inventoryCollection
+from routes import brewCollection,inventoryCollection, stockReturnCollection
 
 
 #Test for calculating ABV%
@@ -32,7 +32,7 @@ def test_inventoryCalculations():
 
 def test_calculateTotalUnits():
     # Test calculations for totals in inventories
-    assert calculations.calculateTotalUnits(brewCollection ,inventoryCollection, "Sheep Stealer", True) == {
+    assert calculations.calculateTotalUnits(brewCollection ,inventoryCollection, "Sheep Stealer", False) == {
         "totalMonthlyCases500Sold": 4,
         "total500CasesSold": 4,
         "totalRemainingCases500": 157,
@@ -63,7 +63,7 @@ def test_calculateTotalUnits():
     }
 
     # Test calculations for totals in stock returns
-    assert calculations.calculateTotalUnits(brewCollection ,inventoryCollection, "Sheep Stealer", False) == {
+    assert calculations.calculateTotalUnits(brewCollection ,inventoryCollection, "Sheep Stealer", True) == {
         "openingStock330Cases": "16",
         "openingStock500Cases": "50",
         "openingStockKegs": "7",
@@ -89,4 +89,7 @@ def test_calculateTotalUnits():
         "Deliveries_HLPercent": 46.93,
         "CS_HLPercent": 97.06
     }
+
+def test_calculateStockReturnTotalHL():
+    assert calculations.calculateStockReturnTotalHL(stockReturnCollection.find({})) == [93.86,1058.2715]
 
