@@ -324,7 +324,7 @@ def indexStockReturn():
     retrieval = stockReturnCollection.find({})
 
     for document in retrieval:
-        stockReturn.append({"_id": JSONEncoder().encode(document["_id"]), "beer":document["beer"]})
+        stockReturn.append({"_id": JSONEncoder().encode(document["_id"]), "beer":document["beer"], "totalHLPercent":document["totalHLPercent"], "totalDutyOwed":document["totalDutyOwed"]})
     return jsonify(data=stockReturn)
 # Route to handle individual stock returns
 @indexStockReturnRoute.route("/api/stockreturn/<id>", methods=["GET"])
