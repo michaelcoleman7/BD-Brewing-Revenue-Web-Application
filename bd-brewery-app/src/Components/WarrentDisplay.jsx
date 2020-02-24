@@ -6,9 +6,32 @@ import '../Stylesheets/Form.css';
 import DatePicker from 'react-date-picker';
 import { format } from 'date-fns';
 import ReactToPrint from "react-to-print";
+import Table from 'react-bootstrap/Table';
+
+
 
   const WarrentDisplay = (props) => {
-      console.log("props: "+ props.location.state.repaymentsAllowed);
+    const [repaymentsAllowed, setRepaymentsAllowed] = useState("");
+    const [repaymentsAllowedDuty, setRepaymentsAllowedDuty] = useState("");
+    const [totalDutyOwed, setTotalDutyOwed] = useState("");
+    const [totalHLPercent, setTotalHLPercent] = useState("");
+    const [totalDutyOwedLessRepayents, setTotalDutyOwedLessRepayents] = useState("");
+    const [lessRepaymentsDuty, setLessRepaymentsDuty] = useState("");
+    const dutyPayable = 22.55;
+    
+
+    const setupCalculations = () => {
+        setRepaymentsAllowed(props.location.state.repaymentsAllowed);
+        setTotalHLPercent(props.location.state.totalHLPercent);
+        setTotalDutyOwed(props.location.state.totalDutyOwed);
+        setTotalDutyOwedLessRepayents(parseFloat(props.location.state.totalDutyOwed) - parseFloat(props.location.state.repaymentsAllowed));
+        setLessRepaymentsDuty(parseFloat(props.location.state.repaymentsAllowed * dutyPayable/2).toFixed(2));
+        
+    }
+
+    useEffect(() => {
+        setupCalculations();
+    },[]);
     
     //adapted from - https://www.npmjs.com/package/react-to-print
     class BrewInformation extends React.Component {
@@ -19,7 +42,36 @@ import ReactToPrint from "react-to-print";
                 <Card.Body>
                     <Card.Title><h3><b>BREWER'S BEER DUTY RETURN</b></h3></Card.Title>
                     <Card.Text>
-                    <p>hello</p>
+                        <Table striped bordered hover>
+                        <thead>
+                            <tr>
+                                <th>Excise Home (ERN 9820)</th>
+                                <th>Quantity (HL%)</th>
+                                <th>Rate of Duty</th>
+                                <th>Duty Payable (€)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>Delivered for Home Consumption:</th>
+                                    <td>{totalHLPercent}</td>
+                                    <td>{dutyPayable}/2</td>
+                                    <td>{totalDutyOwed}</td>
+                                </tr>
+                                <tr>
+                                    <th>Less Repayment amounts</th>
+                                    <td>{repaymentsAllowed}</td>
+                                    <td>{dutyPayable}/2</td>
+                                    <td>{lessRepaymentsDuty}</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <th>Net Payable</th>
+                                    <td>{dutyPayable}/2</td>
+                                    <td colSpan="2">{totalDutyOwedLessRepayents}</td>
+                                </tr>
+                            </tbody>
+                        </Table>
                     </Card.Text>
                 </Card.Body>
             </Card></center>
@@ -47,5 +99,4 @@ import ReactToPrint from "react-to-print";
         </React.Fragment>)
 }
     
-
 export default WarrentDisplay;
