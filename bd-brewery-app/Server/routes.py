@@ -405,7 +405,23 @@ def createBrewInfo():
         "designationofSignatory": designationofSignatory
     }
 
-    breweryInformationCollection.insert_one(brewInfo)
+    if breweryInformationCollection.count() == 0:
+        breweryInformationCollection.insert_one(brewInfo)
+    else:
+        breweryInformationRetrieval = breweryInformationCollection.find({})
+        for document in breweryInformationRetrieval:
+            id = document["_id"]
+            breweryInformationCollection.update_one({"_id": ObjectId(id)}, {"$set":  {
+                "brewerName": brewerName,
+                "address": address,
+                "warehouseName": warehouseName,
+                "IETWNo": IETWNo,
+                "IEWKNo": IEWKNo,
+                "payerRevenueNumber": payerRevenueNumber,  
+                "taxType": taxType,
+                "phoneNumber": phoneNumber,
+                "designationofSignatory": designationofSignatory
+            }})
 
     return jsonify(data="Stock Return created successfully")
     
