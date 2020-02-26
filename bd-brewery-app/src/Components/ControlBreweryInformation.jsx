@@ -257,15 +257,15 @@ const divStyle = {
                 <Card.Body>
                     <Card.Title><h3><b>Brewery Information</b></h3></Card.Title>
                     <Card.Text>
-                        <b>Batch Number:</b>  {breweyInfo.brewerName}<br/>
-                        <b>Beer:</b>  {breweyInfo.address}<br/>
-                        <b>Brew Date:</b>  {breweyInfo.warehouseName}<br/>
-                        <b>Original Gravity (OG):</b>  {breweyInfo.IETWNo}<br/>
-                        <b>Present Gravity (PG):</b>  {breweyInfo.IEWKNo}<br/>
-                        <b>OG-PG:</b>  {breweyInfo.payerRevenueNumber}<br/>
-                        <b>ABV%:</b>  {breweyInfo.taxType}<br/>
-                        <b>Post Condition Date:</b>  {breweyInfo.phoneNumber}<br/>
-                        <b>Post Condition Volume:</b>  {breweyInfo.designationofSignatory}<br/>
+                        <b>Brewer Name:</b>  {breweyInfo.brewerName}<br/>
+                        <b>Address:</b>  {breweyInfo.address}<br/>
+                        <b>Warehouse Name:</b>  {breweyInfo.warehouseName}<br/>
+                        <b>IETW Number:</b>  {breweyInfo.IETWNo}<br/>
+                        <b>IEWK Number:</b>  {breweyInfo.IEWKNo}<br/>
+                        <b>Payer Revenue Number:</b>  {breweyInfo.payerRevenueNumber}<br/>
+                        <b>Tax Type:</b>  {breweyInfo.taxType}<br/>
+                        <b>Phone Number:</b>  {breweyInfo.phoneNumber}<br/>
+                        <b>Designation of Signatory (for signing warrent):</b>  {breweyInfo.designationofSignatory}<br/>
                     </Card.Text>
                 </Card.Body>
             </Card></center>
