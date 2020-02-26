@@ -42,6 +42,7 @@ const divStyle = {
     const [routeRedirect, setRedirect] = useState(false); 
     const [showAlert, setAlertShow] = useState(false);
     const [createBrewInfo, setCreateBrewInfo] = useState(false); 
+    const [editBrewInfo, setEditBrewInfo] = useState(false); 
     const [infoExists, setInfoExists] = useState(false); 
 
     const getBreweryInfo = () => { 
@@ -133,6 +134,10 @@ const divStyle = {
         setCreateBrewInfo(!createBrewInfo);
     }
 
+    const editBreweryInfo = () => {
+        setEditBrewInfo(!editBrewInfo);
+    }
+
     const deleteItem = () => {
         const options = { 
             method: 'delete',
@@ -200,7 +205,48 @@ const divStyle = {
                     {alertFormError}
                 </form>
             </React.Fragment>
+    }else if(editBrewInfo){
+        form =
+        <React.Fragment>
+            <form style={formStyle} onSubmit={create}>
+                    <label>Brewer Name</label>
+                    <input type="text" placeholder="Enter Brewer Name" onChange={event => setBrewerName(event.target.value)} defaultValue={breweyInfo.brewerName}/>
+                <div style={divStyle} className="float-left">
+
+                    <label>Address</label>
+                    <input type="text" placeholder="Enter Address" onChange={event => setAddress(event.target.value)} defaultValue={breweyInfo.address}/>
+
+                    <label>Warehouse Name</label>
+                    <input type="text" placeholder="Enter Warehouse Name" onChange={event => setWarehouseName(event.target.value)} defaultValue={breweyInfo.warehouseName}/>
+
+                    <label>IETW (Tax Warehouse) Number - Number required</label>
+                    <input type="text" placeholder="Enter IETW" onChange={event => setIETWNo(event.target.value)} defaultValue={breweyInfo.IETWNo}/>
+
+                    <label>IEWK (Warehouse Keeper) Number - Number required</label>
+                    <input type="text" placeholder="Enter IEWK" onChange={event => setIEWKNo(event.target.value)} defaultValue={breweyInfo.IEWKNo}/>
+                </div>
+                <div className="float-right" style={divStyle}>
+
+                    <label>Payer Revenue Number</label>
+                    <input type="text" placeholder="Enter Payer Revenue Number" onChange={event => setPayerRevenueNumber(event.target.value)} defaultValue={breweyInfo.payerRevenueNumber}/>
+
+                    <label>Tax Type</label>
+                    <input type="text"  placeholder="Enter Tax Type paid by Brewery" onChange={event => setTaxType(event.target.value)} defaultValue={breweyInfo.taxType}/>
+
+                    <label>Phone Number - Number required</label>
+                    <input type="text"  placeholder="Enter Phone Number" onChange={event => setPhoneNumber(event.target.value)} defaultValue={breweyInfo.phoneNumber}/>
+
+                    <label>Brewer Designation</label>
+                    <input type="text"  placeholder="Enter Brewer Designation" onChange={event => setDesignationofSignatory(event.target.value)} defaultValue={breweyInfo.designationofSignatory}/>
+
+
+                </div>
+                <input type="submit" value="Create Brewery Information"/>
+                {alertFormError}
+            </form>
+        </React.Fragment>
     }
+
 
     let infoDisplay;
     if(infoExists){
@@ -223,6 +269,7 @@ const divStyle = {
                     </Card.Text>
                 </Card.Body>
             </Card></center>
+            <Button onClick={(e) => editBreweryInfo()}>Edit Brewery Information</Button>&nbsp;
             <Button onClick={(e) => deleteItem()}>Delete Brewery Information</Button>
             </React.Fragment>
     }
