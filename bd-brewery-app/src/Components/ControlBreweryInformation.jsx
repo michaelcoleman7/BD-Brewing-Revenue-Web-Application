@@ -133,7 +133,25 @@ const divStyle = {
         setCreateBrewInfo(!createBrewInfo);
     }
 
-
+    const deleteItem = () => {
+        const options = { 
+            method: 'delete',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify()
+          } 
+          fetch(url+"api/deletebrewinfo" , options)
+          .then(res => {
+            return res.json()
+           })
+           .then(res => {
+               console.log(res);
+               setRedirect(true);
+           }).catch(err => {
+               console.log(err)
+           })
+    }
 
     // Redirect to brew page after creation
     const redirect = routeRedirect;
