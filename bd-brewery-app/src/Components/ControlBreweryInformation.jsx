@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Redirect } from 'react-router';
 import Alert from 'react-bootstrap/Alert';
+import {Card,Button} from 'react-bootstrap';
 import '../Stylesheets/Form.css';
 
 //set the url to send the data to
@@ -28,6 +29,7 @@ const divStyle = {
   // react arrow function component to create a brew
   const CreateBrew = () => {
     // using react hooks to get data back - adapted from https://reactjs.org/docs/hooks-state.html
+    const [breweyInfo, setBreweryInfo] = useState("");
     const [brewerName, setBrewerName] = useState("");
     const [address, setAddress] = useState("");
     const [warehouseName, setWarehouseName] = useState("");
@@ -39,6 +41,33 @@ const divStyle = {
     const [designationofSignatory, setDesignationofSignatory] = useState("");
     const [routeRedirect, setRedirect] = useState(false); 
     const [showAlert, setAlertShow] = useState(false);
+    const [createBrewInfo, setCreateBrewInfo] = useState(false); 
+    const [infoExists, setInfoExists] = useState(false); 
+
+    const getBreweryInfo = () => { 
+        fetch(url+"api/brewinfo").then(res => {
+            return res.json();
+        }).then(res => {
+            let parsed = JSON.parse(res.data);
+            setBreweryInfo(parsed);
+            setBrewerName(parsed.brewerName);
+            setAddress(parsed.address);
+            setWarehouseName(parsed.warehouseName);
+            setIETWNo(parsed.IETWNo);
+            setIEWKNo(parsed.IEWKNo);
+            setPayerRevenueNumber(parsed.payerRevenueNumber);
+            setTaxType(parsed.taxType);
+            setPhoneNumber(parsed.phoneNumber);
+            setDesignationofSignatory(parsed.designationofSignatory);
+            setInfoExists(true);
+        }).catch(err => {
+            setInfoExists(false)
+        })
+    }
+
+    useEffect(() => {
+        getBreweryInfo();
+    },[]);
 
     const create = (event) => {
             event.preventDefault();   
@@ -100,15 +129,22 @@ const divStyle = {
             </React.Fragment>
     }
 
+    const createItem = () => {
+        setCreateBrewInfo(!createBrewInfo);
+    }
+
+
+
     // Redirect to brew page after creation
     const redirect = routeRedirect;
     if(redirect){
-         return <Redirect to="/brewInfo" />  
+         return <Redirect to="/"/>  
     }
 
-    return(
-        // React Fragment is a way of sending back multiple elements - https://reactjs.org/docs/fragments.html
-        <React.Fragment> 
+    let form;
+    if(createBrewInfo){
+        form =
+            <React.Fragment>
                 <form style={formStyle} onSubmit={create}>
                         <label>Brewer Name</label>
                         <input type="text" placeholder="Enter Brewer Name" onChange={event => setBrewerName(event.target.value)}/>
@@ -145,7 +181,53 @@ const divStyle = {
                     <input type="submit" value="Create Brewery Information"/>
                     {alertFormError}
                 </form>
+            </React.Fragment>
+    }
 
+    let infoDisplay;
+    if(infoExists){
+        infoDisplay =
+            <React.Fragment>
+            <center>
+            <Card style={{ width: '50%' }}>
+                <Card.Body>
+                    <Card.Title><h3><b>Brewery Information</b></h3></Card.Title>
+                    <Card.Text>
+                        <b>Batch Number:</b>  {breweyInfo.brewerName}<br/>
+                        <b>Beer:</b>  {breweyInfo.address}<br/>
+                        <b>Brew Date:</b>  {breweyInfo.warehouseName}<br/>
+                        <b>Original Gravity (OG):</b>  {breweyInfo.IETWNo}<br/>
+                        <b>Present Gravity (PG):</b>  {breweyInfo.IEWKNo}<br/>
+                        <b>OG-PG:</b>  {breweyInfo.payerRevenueNumber}<br/>
+                        <b>ABV%:</b>  {breweyInfo.taxType}<br/>
+                        <b>Post Condition Date:</b>  {breweyInfo.phoneNumber}<br/>
+                        <b>Post Condition Volume:</b>  {breweyInfo.designationofSignatory}<br/>
+                    </Card.Text>
+                </Card.Body>
+            </Card></center>
+            <Button onClick={(e) => deleteItem()}>Delete Brewery Information</Button>
+            </React.Fragment>
+    }
+    else{
+        infoDisplay = <React.Fragment>
+        <center>
+        <Card style={{ width: '50%' }}>
+            <Card.Body>
+                <Card.Title><h3><b>Brewery Information: No Brewery Information Available</b></h3></Card.Title>
+                <Card.Text>
+                    <p>Please create brewery information by pressing the button below</p>
+                    <Button className="edit" onClick={(e) => createItem()}>Create Brew Information</Button>
+                </Card.Text>
+            </Card.Body>
+        </Card></center>
+        </React.Fragment>
+    }
+
+    return(
+        // React Fragment is a way of sending back multiple elements - https://reactjs.org/docs/fragments.html
+        <React.Fragment> 
+            {infoDisplay}
+            {form}
         </React.Fragment>)
 }
     
