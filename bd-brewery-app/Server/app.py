@@ -2,7 +2,7 @@ from flask import Flask
 
 # Routes
 from flask_cors import CORS
-from routes import indexBrewRoute, createBrewRoute, updateBrewRoute, deleteBrewRoute, brewRoute, indexInventoryRoute, createInventoryRoute, updateInventoryRoute, deleteInventoryRoute, inventoryRoute,indexStockReturnRoute,createStockReturnRoute,stockReturnRoute,deleteStockReturnRoute,indexBrewInfoRoute,createBrewInfoRoute
+from routes import indexBrewRoute, createBrewRoute, updateBrewRoute, deleteBrewRoute, brewRoute, indexInventoryRoute, createInventoryRoute, updateInventoryRoute, deleteInventoryRoute, inventoryRoute,indexStockReturnRoute,createStockReturnRoute,stockReturnRoute,deleteStockReturnRoute,indexBreweryInfoRoute,createBreweryInfoRoute,deleteBreweryinfoRoute
 
 app = Flask(__name__)
 CORS(app)
@@ -27,8 +27,9 @@ app.register_blueprint(createStockReturnRoute)
 app.register_blueprint(stockReturnRoute)
 app.register_blueprint(deleteStockReturnRoute)
 
-app.register_blueprint(createBrewInfoRoute)
-app.register_blueprint(indexBrewInfoRoute)
+app.register_blueprint(createBreweryInfoRoute)
+app.register_blueprint(indexBreweryInfoRoute)
+app.register_blueprint(deleteBreweryinfoRoute)
 
 if __name__ == "__main__":
     app.run(debug=True)
