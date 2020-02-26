@@ -15,7 +15,7 @@ import InventorySeparator from './Components/InventorySeparator';
 import StockReturnList from './Components/StockReturnList';
 import SingleStockReturn from './Components/SingleStockReturn';
 import WarrentDisplay from './Components/WarrentDisplay';
-import CreateBreweryInformation from './Components/CreateBreweryInformation';
+import ControlBreweryInformation from './Components/ControlBreweryInformation';
 import Login from './Components/Login';
 import { Security, ImplicitCallback, SecureRoute } from '@okta/okta-react';
 
@@ -51,7 +51,7 @@ function App() {
 
         <SecureRoute  exact path={"/warrentdisplay"} component={WarrentDisplay}/>
 
-        <SecureRoute  exact path={"/createbreweryinfo"} component={CreateBreweryInformation}/>
+        <SecureRoute  exact path={"/controlbreweryinfo"} component={ControlBreweryInformation}/>
 
         <SecureRoute path="*" exact component={() => <h1>404 NOT FOUND</h1>}/>
       </Switch>

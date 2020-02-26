@@ -47,6 +47,8 @@ indexStockReturnRoute = Blueprint("indexStockReturn", __name__)
 createStockReturnRoute = Blueprint("createStockReturn", __name__)
 stockReturnRoute = Blueprint("stockReturnSingle", __name__)
 deleteStockReturnRoute = Blueprint("deleteStockReturn", __name__)
+
+indexBrewInfoRoute = Blueprint("indexBrewInfo", __name__)
 createBrewInfoRoute = Blueprint("createBrewInfo", __name__)
 
 #routes 
@@ -379,6 +381,13 @@ def delete(id):
 
     return jsonify(data= "inventory delete successfully") 
 
+@indexBrewInfoRoute.route("/api/brewinfo")
+def indexBrewInfo():
+    # findone will return the first document that matches the specified criteria, so when no criteria given returns first document
+    # only one brew info document at one time so will always match info
+    cursor = breweryInformationCollection.find_one()
+
+    return jsonify(data=JSONEncoder().encode(cursor))
 @createBrewInfoRoute.route("/api/createbrewinfo", methods=["POST"])
 def createBrewInfo():
     # Request all information and store in variables
@@ -423,7 +432,7 @@ def createBrewInfo():
                 "designationofSignatory": designationofSignatory
             }})
 
-    return jsonify(data="Stock Return created successfully")
+    return jsonify(data="Brew Information created successfully")
     
 
 
