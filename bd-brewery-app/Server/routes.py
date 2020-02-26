@@ -27,6 +27,7 @@ db = client["bd_brewery"]
 brewCollection = db["brew"]
 inventoryCollection = db["inventory"]
 stockReturnCollection = db["stockReturns"]
+breweryInformationCollection = db["breweryInfo"]
 
 
 #Blueprints
@@ -46,6 +47,7 @@ indexStockReturnRoute = Blueprint("indexStockReturn", __name__)
 createStockReturnRoute = Blueprint("createStockReturn", __name__)
 stockReturnRoute = Blueprint("stockReturnSingle", __name__)
 deleteStockReturnRoute = Blueprint("deleteStockReturn", __name__)
+createBrewInfoRoute = Blueprint("createBrewInfo", __name__)
 
 #routes 
 @indexBrewRoute.route("/api/brew")
@@ -376,6 +378,36 @@ def delete(id):
     stockReturnCollection.remove({"_id": ObjectId(stockReturnId)})
 
     return jsonify(data= "inventory delete successfully") 
+
+@createBrewInfoRoute.route("/api/createbrewinfo", methods=["POST"])
+def createBrewInfo():
+    # Request all information and store in variables
+    brewerName = request.json.get("brewerName")
+    address = request.json.get("address")
+    warehouseName = request.json.get("warehouseName")
+    IETWNo = request.json.get("IETWNo")
+    IEWKNo = request.json.get("IEWKNo")
+    payerRevenueNumber = request.json.get("payerRevenueNumber")
+    taxType = request.json.get("taxType")
+    phoneNumber = request.json.get("phoneNumber")
+    designationofSignatory = request.json.get("designationofSignatory")
+
+
+    brewInfo = {
+        "brewerName": brewerName,
+        "address": address,
+        "warehouseName": warehouseName,
+        "IETWNo": IETWNo,
+        "IEWKNo": IEWKNo,
+        "payerRevenueNumber": payerRevenueNumber,  
+        "taxType": taxType,
+        "phoneNumber": phoneNumber,
+        "designationofSignatory": designationofSignatory
+    }
+
+    breweryInformationCollection.insert_one(brewInfo)
+
+    return jsonify(data="Stock Return created successfully")
     
 
 
