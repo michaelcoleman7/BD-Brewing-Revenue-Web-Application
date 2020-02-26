@@ -5,7 +5,7 @@ import Inventory from './Inventory';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import StockReturn from './StockReturn';
-import Warrent from './Warrent';
+import Warrant from './Warrant';
 import BreweryInformation from './BreweryInformation';
 
 class Home extends React.Component {
@@ -21,8 +21,8 @@ class Home extends React.Component {
           <Tab eventKey="StockReturn" title="Stock Returns">
             <StockReturn/>
           </Tab>
-          <Tab eventKey="Warrent" title="Warrent Management">
-            <Warrent/>
+          <Tab eventKey="Warrant" title="Warrant Management">
+            <Warrant/>
           </Tab>
           <Tab eventKey="BreweryInformation" title="Brewery Information">
             <BreweryInformation/>

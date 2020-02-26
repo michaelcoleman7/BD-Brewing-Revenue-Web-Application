@@ -14,7 +14,7 @@ import BrewSeparator from './Components/BrewSeparator';
 import InventorySeparator from './Components/InventorySeparator';
 import StockReturnList from './Components/StockReturnList';
 import SingleStockReturn from './Components/SingleStockReturn';
-import WarrentDisplay from './Components/WarrentDisplay';
+import WarrantDisplay from './Components/WarrantDisplay';
 import ControlBreweryInformation from './Components/ControlBreweryInformation';
 import Login from './Components/Login';
 import { Security, ImplicitCallback, SecureRoute } from '@okta/okta-react';
@@ -49,7 +49,7 @@ function App() {
         <SecureRoute  exact path={"/stockreturnlist"} component={StockReturnList}/>
         <SecureRoute  exact path={"/stockreturn/:id"} component={SingleStockReturn}/>
 
-        <SecureRoute  exact path={"/warrentdisplay"} component={WarrentDisplay}/>
+        <SecureRoute  exact path={"/Warrantdisplay"} component={WarrantDisplay}/>
 
         <SecureRoute  exact path={"/controlbreweryinfo"} component={ControlBreweryInformation}/>
 

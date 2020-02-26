@@ -6,7 +6,7 @@ import { Redirect } from 'react-router';
 
 const url = "http://127.0.0.1:5000/"
 
-const Warrent = () => {
+const Warrant = () => {
   const [totalDutyOwed, setTotalDutyOwed] = useState([]);
   const [totalHLPercent, setTotalHLPercent] = useState([]);
   const [repaymentsAllowed, setRepaymentsAllowed] = useState([]);
@@ -45,7 +45,7 @@ const Warrent = () => {
   const redirect = routeRedirect;
   if(redirect){
        return <Redirect to={{
-        pathname: '/warrentdisplay',
+        pathname: '/Warrantdisplay',
         state: { repaymentsAllowed: repaymentsAllowed, totalDutyOwed:totalDutyOwed, totalHLPercent:totalHLPercent }
     }}/>  
   }
@@ -54,7 +54,7 @@ const Warrent = () => {
   <div>
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Enter Warrent Less Repayments Allowed</Modal.Title>
+        <Modal.Title>Enter Warrant Less Repayments Allowed</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <div>
@@ -74,14 +74,14 @@ const Warrent = () => {
 
 return(
     <React.Fragment> 
-      <h1 style={header}>Warrent Management</h1>
+      <h1 style={header}>Warrant Management</h1>
       <div class="d-flex justify-content-around">
             <Card bg="primary" style={divStyle}>          
-              <Link onClick={handleShow}> <Card.Img src={require("../Images/Background1.jpg")} height="300"/></Link>
+              <Link onClick={handleShow}> <Card.Img src={require("../Images/warrant.jpg")} height="300"/></Link>
               <Card.Body>
-                <Card.Title>View Current Warrent</Card.Title>
+                <Card.Title>View Current Warrant</Card.Title>
                 <Card.Text>
-                  View warrent to be sent to revenue.
+                  View Warrant to be sent to revenue.
                 </Card.Text>
               </Card.Body>
             </Card>
@@ -90,4 +90,4 @@ return(
     </React.Fragment>)
   }
 
-export default Warrent;
+export default Warrant;

@@ -24,7 +24,7 @@ import Table from 'react-bootstrap/Table';
         setRepaymentsAllowed(props.location.state.repaymentsAllowed);
         setTotalHLPercent(props.location.state.totalHLPercent);
         setTotalDutyOwed(props.location.state.totalDutyOwed);
-        setTotalDutyOwedLessRepayents(parseFloat(props.location.state.totalDutyOwed) - parseFloat(props.location.state.repaymentsAllowed));
+        setTotalDutyOwedLessRepayents(parseFloat(props.location.state.totalDutyOwed) - parseFloat(props.location.state.repaymentsAllowed).toFixed(2));
         setLessRepaymentsDuty(parseFloat(props.location.state.repaymentsAllowed * dutyPayable/2).toFixed(2));
         
     }
