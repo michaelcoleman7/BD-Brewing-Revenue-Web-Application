@@ -60,7 +60,7 @@ def indexBrew():
     retrieval = brewCollection.find({})
 
     for document in retrieval:
-        brews.append({"_id": JSONEncoder().encode(document["_id"]), "batchNo":document["batchNo"], "beer":document["beer"]})
+        brews.append({"_id": JSONEncoder().encode(document["_id"]), "batchNo":document["batchNo"], "beer":document["beer"],"brewDate":document["brewDate"]})
     return jsonify(data=brews)
 
 
