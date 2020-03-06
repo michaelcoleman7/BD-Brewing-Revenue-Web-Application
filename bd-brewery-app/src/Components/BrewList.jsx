@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import {Link} from 'react-router-dom';
-import ListGroup from 'react-bootstrap/ListGroup'
+import ListGroup from 'react-bootstrap/ListGroup';
+import DatePicker from 'react-date-picker';
+import { format } from 'date-fns';
+import { exportDefaultSpecifier } from '@babel/types';
 
 //set the url to receive the data from
 const url = "http://127.0.0.1:5000/"
 
 const BrewList = (props) => {
   const [brews, setbrews] = useState([]);
+  const [monthDate, setMonthDate] = useState("");
+  const [selectedMonth, setSelectedMonth] = useState("None Selected");
   const getBrews = () => {
     //console.log(props.match.params.beer)
     fetch(url+"api/brew").then(res =>{
@@ -37,14 +42,18 @@ const BrewList = (props) => {
 
   let beerlist = []
   for (var i = 0; i < brews.length; i++) {
-    console.log(brews[i].batchNo);
+    //console.log(brews[i].brewDate);
+    var test = brews[i].brewDate.substring(3);
+    if(test == monthDate){
       if(brews[i].beer == props.match.params.beer){
         beerlist.push(brews[i]);
-        //console.log("added");
       }
-      else{
-        //console.log(brews[i].batchNo);
+    }
+    else if(monthDate==""){
+      if(brews[i].beer == props.match.params.beer){
+        beerlist.push(brews[i]);
       }
+    }
   }
   
   let brewsArray;
@@ -73,9 +82,18 @@ const BrewList = (props) => {
     </div>
   }
 
+  let newDate;
+  const dateChange = (date) => {
+          newDate = format(new Date(date), 'MM-yyyy')
+          setMonthDate(newDate);
+          setSelectedMonth("Current selected Month is: "+ newDate);
+  }
+
 return(
     <React.Fragment> 
       <div>
+      <h5 style={{color: "white"}}>Select a Date in the month you wish to sort by: {selectedMonth}</h5>
+      <DatePicker format="MM/yyyy" onChange={event => dateChange(event)}/>
       <h1 style={{color: "white"}}>Brew: {props.match.params.beer} - Batch Numbers</h1>
         {brewsArray}
       </div>
