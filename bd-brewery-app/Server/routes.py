@@ -183,7 +183,7 @@ def indexInventory():
     retrieval = inventoryCollection.find({})
 
     for document in retrieval:
-        inventories.append({"_id": JSONEncoder().encode(document["_id"]), "batchNo":document["batchNo"], "beer":document["beer"]})
+        inventories.append({"_id": JSONEncoder().encode(document["_id"]), "batchNo":document["batchNo"], "beer":document["beer"],"brewDate":document["brewDate"]})
     return jsonify(data=inventories)
 # Route to handle individual inventories
 @indexInventoryRoute.route("/api/inventory/<id>", methods=["GET"])
@@ -236,7 +236,8 @@ def createInventory():
         "remainingPCV": invCalculations[3],
         "receiptsAvg": invCalculations[4],
         "soldAvgMonth": invCalculations[5],
-        "AvgRemaining": invCalculations[6]
+        "AvgRemaining": invCalculations[6],
+        "AvgRemaining": invCalculations[8]
     }
 
     # Insert the Inventory into the mongoDB in mlabs, adapted from - https://docs.mongodb.com/manual/reference/method/db.collection.insertOne/
@@ -297,7 +298,8 @@ def updateInventory(id):
         "remainingPCV": invCalculations[3],
         "receiptsAvg": invCalculations[4],
         "soldAvgMonth": invCalculations[5],
-        "AvgRemaining": invCalculations[6]
+        "AvgRemaining": invCalculations[6],
+        "brewDate": invCalculations[8]
     }
 
     # need to parse id so that mongo gets correct instance of id, otherwise will take it as invalid - {"_id": ObjectId(inventoryId)}
