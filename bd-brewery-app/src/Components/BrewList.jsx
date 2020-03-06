@@ -3,7 +3,6 @@ import {Link} from 'react-router-dom';
 import ListGroup from 'react-bootstrap/ListGroup';
 import DatePicker from 'react-date-picker';
 import { format } from 'date-fns';
-import { exportDefaultSpecifier } from '@babel/types';
 
 //set the url to receive the data from
 const url = "http://127.0.0.1:5000/"
@@ -42,9 +41,8 @@ const BrewList = (props) => {
 
   let beerlist = []
   for (var i = 0; i < brews.length; i++) {
-    //console.log(brews[i].brewDate);
-    var test = brews[i].brewDate.substring(3);
-    if(test == monthDate){
+    var monthdateSS = brews[i].brewDate.substring(3);
+    if(monthDate == monthdateSS){
       if(brews[i].beer == props.match.params.beer){
         beerlist.push(brews[i]);
       }
@@ -78,7 +76,7 @@ const BrewList = (props) => {
   }else{
     brewsArray = 
     <div>
-      <h2 style={{color: "white"}}>No Brews exist  for this beer in the database, please create a brew of this beer type</h2>
+      <h3 style={{color: "white"}}>No Brews exist  for this beer in the database, please create a brew of this beer type or check if beer in month exists</h3>
     </div>
   }
 
