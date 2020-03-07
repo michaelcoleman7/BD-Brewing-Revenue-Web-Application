@@ -26,9 +26,9 @@ function App() {
     <Router>
       {/*Security details linked to okta application protecting access*/}
       <Security
-         issuer="https://dev-895663.okta.com"
-         client_id="0oa2a32mkLlJLDjuW4x6"
-         redirect_uri={'http://localhost:3000/implicit/callback'}
+         issuer={process.env.REACT_APP_OKTA_ISSUER}
+         client_id={process.env.REACT_APP_OKTA_CLIENT_ID}
+         redirect_uri={process.env.REACT_APP_OKTA_REDIRECT_URL}
          scope={['openid', 'profile', 'email']}>
       <Switch>
         <Route path="/" exact component={Login}/>
