@@ -24,3 +24,5 @@ yarn-debug.log*
 yarn-error.log*
 
 bd-brewery-app/Server/__pycache__/
+
+env.py
