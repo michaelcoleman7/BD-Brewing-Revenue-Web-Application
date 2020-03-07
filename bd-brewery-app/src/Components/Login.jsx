@@ -37,7 +37,7 @@ class Login extends React.Component {
         return (
           <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                 <Card bg="light" onClick={this.login}>  
-                <Card.Title>Login with OKTA {process.env.REACT_APP_WEATHER_API_KEY}</Card.Title>        
+                <Card.Title>Login with OKTA</Card.Title>        
                 <Card.Body>
                     <Card.Img src={require("../Images/login.png")} height="275"/>
                 </Card.Body>
