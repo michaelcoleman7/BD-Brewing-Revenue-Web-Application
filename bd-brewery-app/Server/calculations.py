@@ -81,7 +81,7 @@ def inventoryCalculations(brewCollection, calculationVariables):
     ]
     return invCalculations
 
-def calculateTotalUnits(brewCollection,inventoryCollection, beer, stockReturn):
+def calculateTotalUnits(brewCollection,inventoryCollection, beer, stockReturn, monthToCalculateUsing):
     #retrieval = inventoryCollection.find({},{ "receiptsAvg": 1, "_id": 0 })
     retrieval = inventoryCollection.find({})
     totalReceiptsAvg = 0
@@ -104,7 +104,9 @@ def calculateTotalUnits(brewCollection,inventoryCollection, beer, stockReturn):
     openingStockPercentage = 0.0
 
     for document in retrieval: 
-        if document["beer"] == beer:
+        brewDate = document["brewDate"]
+        brewDateByMonth = brewDate[3:]
+        if document["beer"] == beer and brewDateByMonth == monthToCalculateUsing:
             #Total 500 Calculations
             totalCasesSold500Month = document["totalCasesSold500Month"]
             totalCasesSold500 = document["totalCasesSold500"]
@@ -256,13 +258,15 @@ def calculateTotalUnits(brewCollection,inventoryCollection, beer, stockReturn):
     else:
         return stockReturnInfoInventory
 
-def calculateStockReturnTotalHL(stockReturn):
+def calculateStockReturnTotalHL(stockReturn,monthToCalculateUsing):
     totalHLPercent = 0.0
     totalDutyOwed = 0.0
     for document in stockReturn:
-        totalsInventory = document["totalsInventory"]
-        Deliveries_HLPercent= totalsInventory["Deliveries_HLPercent"]
-        totalHLPercent += float(Deliveries_HLPercent)
+        stockreturnDate = document["stockReturnDate"]
+        if(monthToCalculateUsing == stockreturnDate):
+            totalsInventory = document["totalsInventory"]
+            Deliveries_HLPercent= totalsInventory["Deliveries_HLPercent"]
+            totalHLPercent += float(Deliveries_HLPercent)
     totalDutyOwed = totalHLPercent * (22.55/2)
     return [totalHLPercent,totalDutyOwed]
     

@@ -214,6 +214,7 @@ def createInventory():
     calculationVariables = [batchNo, remainingCases500,remainingCases330, remainingKegs,totalCasesSold500Month,totalCasesSold330Month, totalKegsSoldMonth]
 
     invCalculations = calculations.inventoryCalculations(brewCollection, calculationVariables)
+    brewDate = invCalculations[8]
 
     # create json format of data to send to MongoDB
     inventory = {
@@ -237,13 +238,12 @@ def createInventory():
         "receiptsAvg": invCalculations[4],
         "soldAvgMonth": invCalculations[5],
         "AvgRemaining": invCalculations[6],
-        "AvgRemaining": invCalculations[8]
+        "brewDate": brewDate
     }
 
     # Insert the Inventory into the mongoDB in mlabs, adapted from - https://docs.mongodb.com/manual/reference/method/db.collection.insertOne/
     inventoryCollection.insert_one(inventory)
-
-    totalsInventory = calculations.calculateTotalUnits(brewCollection,inventoryCollection, beer, False)
+    totalsInventory = calculations.calculateTotalUnits(brewCollection,inventoryCollection, beer, False, brewDate[3:])
 
     invRetrieval = inventoryCollection.find({})
     for document in invRetrieval:
@@ -276,6 +276,7 @@ def updateInventory(id):
     calculationVariables = [batchNo, remainingCases500,remainingCases330, remainingKegs,totalCasesSold500Month,totalCasesSold330Month, totalKegsSoldMonth]
 
     invCalculations = calculations.inventoryCalculations(brewCollection,calculationVariables)
+    brewDate = invCalculations[8]
 
     # create json format of data to send to MongoDB
     updatedInventory = {
@@ -299,14 +300,14 @@ def updateInventory(id):
         "receiptsAvg": invCalculations[4],
         "soldAvgMonth": invCalculations[5],
         "AvgRemaining": invCalculations[6],
-        "brewDate": invCalculations[8]
+        "brewDate": brewDate
     }
 
     # need to parse id so that mongo gets correct instance of id, otherwise will take it as invalid - {"_id": ObjectId(inventoryId)}
     # Set the contents of the id in mongo to the updated data above - {"$set": updatedInventory}
     inventoryCollection.update_one({"_id": ObjectId(inventoryId)}, {"$set": updatedInventory})
 
-    totalsInventory = calculations.calculateTotalUnits(brewCollection,inventoryCollection, beer, False)
+    totalsInventory = calculations.calculateTotalUnits(brewCollection,inventoryCollection, beer, False, brewDate[3:])
 
     inventoryCollection.update_one({"_id": ObjectId(inventoryId)}, {"$set":  {
         'totalsInventory': totalsInventory
@@ -331,7 +332,7 @@ def indexStockReturn():
     retrieval = stockReturnCollection.find({})
 
     for document in retrieval:
-        stockReturn.append({"_id": JSONEncoder().encode(document["_id"]), "beer":document["beer"], "totalHLPercent":document["totalHLPercent"], "totalDutyOwed":document["totalDutyOwed"]})
+        stockReturn.append({"_id": JSONEncoder().encode(document["_id"]), "beer":document["beer"]})
     return jsonify(data=stockReturn)
 # Route to handle individual stock returns
 @indexStockReturnRoute.route("/api/stockreturn/<id>", methods=["GET"])
@@ -351,8 +352,9 @@ def createStockReturn():
     otherCountryCheckRec = request.json.get("otherCountryCheckRec")
     otherBreweryCheckDel = request.json.get("otherBreweryCheckDel")
     otherCountryCheckDel = request.json.get("otherCountryCheckDel")
+    stockReturnDate = request.json.get("monthDate")
 
-    totalsInventory = calculations.calculateTotalUnits(brewCollection,inventoryCollection, beer, True)
+    totalsInventory = calculations.calculateTotalUnits(brewCollection,inventoryCollection, beer, True, stockReturnDate)
 
     totalCalculations = {
         "beer": beer,
@@ -360,13 +362,14 @@ def createStockReturn():
         "otherCountryCheckRec": otherCountryCheckRec,
         "otherBreweryCheckDel": otherBreweryCheckDel,
         "otherCountryCheckDel": otherCountryCheckDel,
-        "totalsInventory": totalsInventory
+        "totalsInventory": totalsInventory,
+        "stockReturnDate": stockReturnDate
     }
 
     stockReturnCollection.insert_one(totalCalculations)
 
     stockReturnRetrieval = stockReturnCollection.find({})
-    totalStockReturnVals = calculations.calculateStockReturnTotalHL(stockReturnRetrieval)
+    totalStockReturnVals = calculations.calculateStockReturnTotalHL(stockReturnRetrieval, stockReturnDate)
     stockReturnRetrieval = stockReturnCollection.find({})
     for document in stockReturnRetrieval:
         id = document["_id"]
