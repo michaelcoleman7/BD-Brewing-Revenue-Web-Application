@@ -7,6 +7,7 @@ import sys
 from pymongo import MongoClient
 from bson import ObjectId
 import calculations
+import env
 
 # class to manage MongoDB ObjectId - as returns "object of type ObjectId is not serializable" without encoder
 class JSONEncoder(json.JSONEncoder):
@@ -18,11 +19,11 @@ class JSONEncoder(json.JSONEncoder):
 # Configure MongoDB with mlab connection
 # Set up connection with user and password of database 
 #- retrywrites needs to be set to default as not supported in enviornment - https://stackoverflow.com/questions/57836252/how-to-fix-retrywrites-in-mongo
-connection = "mongodb://bdbrewery:bdbrewery1@ds241968.mlab.com:41968/bd_brewery?retryWrites=false"
+connection = "mongodb://"+env.USER+":"+env.PASSWORD+"@ds241968.mlab.com:41968/"+env.DB+"?retryWrites=false"
 # get a connecion with the database in mlab
 client = MongoClient(connection)
 # Connect to database by name
-db = client["bd_brewery"]
+db = client[env.DB]
 # link to collection name in mlab
 brewCollection = db["brew"]
 inventoryCollection = db["inventory"]
