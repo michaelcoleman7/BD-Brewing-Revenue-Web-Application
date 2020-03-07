@@ -27,17 +27,13 @@ const divStyle = {
 
   // react arrow function component to create a inventory
   const SingleStockReturn = (props) => {
-    // using react hooks to get data back - adapted from https://reactjs.org/docs/hooks-state.html
-    const [batchNo, setBatchNo] = useState("");
-    const [beer, setBeer] = useState("");
-    const [makeChanges, setMakeChanges] = useState("");
+    // using react hooks to change state - adapted from https://reactjs.org/docs/hooks-state.html
     const [otherBreweryCheckRec, setOtherBreweryCheckRec] = useState("");
     const [otherCountryCheckRec, setOtherCountryCheckRec] = useState("");
     const [otherBreweryCheckDel, setOtherBreweryCheckDel] = useState("");
     const [otherCountryCheckDel, setOtherCountryCheckDel] = useState("");
     const [stockReturnId, setStockReturnId] = useState("");
     const [stockReturn, setStockReturn] = useState("");
-    const [changeInventory, setChangeInventory] = useState(false); 
 
     const [openingStock330Cases, setOpeningStock330Cases] = useState("");
     const [openingStock500Cases, setOpeningStock500Cases] = useState("");
@@ -87,7 +83,6 @@ const divStyle = {
         }).then(res => {
             let parsed = JSON.parse(res.data);
             setStockReturn(parsed);
-            setBeer(parsed.beer);
             setOpeningStock330Cases(parsed.totalsInventory.openingStock330Cases);
             setOpeningStock500Cases(parsed.totalsInventory.openingStock500Cases);
             setOpeningStockKegs(parsed.totalsInventory.openingStockKegs);
@@ -123,9 +118,6 @@ const divStyle = {
 
             setTotalHlPercent(parsed.totalHLPercent);
             setTotalDuty(parsed.totalDutyOwed);
-            console.log(parsed.totalHLPercent);
-
-            setMakeChanges(true);
         }).catch(err => {
             console.log(err);
         })
@@ -134,10 +126,6 @@ const divStyle = {
     useEffect(() => {
         getStockReturn();
     },[]);
-
-    const updateInventory = (e) => {
-        // DO A REFRESH OF A TOTALS HERE ---------------------------------------------------------
-    }
 
     let redirectRoute = "/stockreturnlist/"
     const redirect = routeRedirect;

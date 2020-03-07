@@ -3,6 +3,8 @@ import {Link} from 'react-router-dom';
 import { Redirect } from 'react-router';
 import Card from 'react-bootstrap/Card';
 import {Modal,Button} from 'react-bootstrap';
+import DatePicker from 'react-date-picker';
+import { format } from 'date-fns';
 
 
 //set the url to receive the data from
@@ -18,6 +20,8 @@ const StockReturn = () => {
   const [otherBreweryCheckDel, setOtherBreweryCheckDel] = useState([]);
   const [otherCountryCheckDel, setOtherCountryCheckDel] = useState([]);
   const [routeRedirect, setRedirect] = useState(""); 
+  const [monthDate, setMonthDate] = useState("");
+  const [selectedMonth, setSelectedMonth] = useState("None Selected");
 
   const getInventories = () => {
     fetch(url+"api/inventory").then(res =>{
@@ -74,7 +78,8 @@ const StockReturn = () => {
         otherBreweryCheckRec: otherBreweryCheckRec,
         otherCountryCheckRec: otherCountryCheckRec,
         otherBreweryCheckDel: otherBreweryCheckDel,
-        otherCountryCheckDel: otherCountryCheckDel
+        otherCountryCheckDel: otherCountryCheckDel,
+        monthDate: monthDate
     }
 
     //options needed to send request to server
@@ -88,7 +93,7 @@ const StockReturn = () => {
 
     //if all data is valid, then post to server
 
-    if(beer){
+    if(beer && monthDate){
       fetch(url +"api/createstockreturn", options)
       .then(res => {
           setRedirect(true);
@@ -161,6 +166,13 @@ const StockReturn = () => {
        return <Redirect to={redirectRoute} />  
   }
 
+  let newDate;
+  const dateChange = (date) => {
+          newDate = format(new Date(date), 'MM-yyyy')
+          setMonthDate(newDate);
+          setSelectedMonth(newDate);
+  }
+
   let modal =       
   <div>
     <Modal show={show} onHide={handleClose}>
@@ -179,6 +191,7 @@ const StockReturn = () => {
         <input type="checkbox" id="importDel" onChange={importDelChecked}></input> Deliveries External Brewery import<br/>
         <label hidden={hiddenValDel}>Deliveries: </label> <input type="radio" hidden={hiddenValDel} name="importDel" checked={otherBreweryCheckDel} onChange={event =>swapRadiosDel(event)}></input>&nbsp;<p style={textStyle} hidden={hiddenValDel}>Other Brewery</p> &nbsp;
         <input type="radio"  hidden={hiddenValDel} name="importDel" checked={otherCountryCheckDel} onChange={event =>swapRadiosDel(event)}></input>&nbsp;<p style={textStyle} hidden={hiddenValDel}>Imported from Abroad</p>
+        <DatePicker format="MM/yyyy" onChange={event => dateChange(event)}/> Date Selected: {selectedMonth}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
