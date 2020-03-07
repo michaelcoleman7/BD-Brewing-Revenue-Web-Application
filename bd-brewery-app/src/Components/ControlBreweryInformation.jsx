@@ -4,9 +4,6 @@ import Alert from 'react-bootstrap/Alert';
 import {Card,Button} from 'react-bootstrap';
 import '../Stylesheets/Form.css';
 
-//set the url to send the data to
-const url = "http://127.0.0.1:5000/"
-
 // Set some styling for div
 const divStyle = {
     width: '48%',
@@ -28,7 +25,7 @@ const divStyle = {
 
   // react arrow function component to create a brew
   const CreateBrew = () => {
-    // using react hooks to get data back - adapted from https://reactjs.org/docs/hooks-state.html
+    // using react hooks to change states - adapted from https://reactjs.org/docs/hooks-state.html
     const [breweyInfo, setBreweryInfo] = useState("");
     const [brewerName, setBrewerName] = useState("");
     const [address, setAddress] = useState("");
@@ -46,7 +43,7 @@ const divStyle = {
     const [infoExists, setInfoExists] = useState(false); 
 
     const getBreweryInfo = () => { 
-        fetch(url+"api/brewinfo").then(res => {
+        fetch(process.env.REACT_APP_API_URL+"api/brewinfo").then(res => {
             return res.json();
         }).then(res => {
             let parsed = JSON.parse(res.data);
@@ -102,7 +99,7 @@ const divStyle = {
                     console.log("Invalid form format, will not be sent to database");
                 }
                 else{
-                    fetch(url +"api/createbrewinfo", options)
+                    fetch(process.env.REACT_APP_API_URL +"api/createbrewinfo", options)
                     .then(res => {
                         setRedirect(true);
                         return res.json();
@@ -146,7 +143,7 @@ const divStyle = {
             },
             body: JSON.stringify()
           } 
-          fetch(url+"api/deletebrewinfo" , options)
+          fetch(process.env.REACT_APP_API_URL+"api/deletebrewinfo" , options)
           .then(res => {
             return res.json()
            })

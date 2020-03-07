@@ -4,15 +4,13 @@ import Card from 'react-bootstrap/Card';
 import {Modal,Button} from 'react-bootstrap';
 import { Redirect } from 'react-router';
 
-const url = "http://127.0.0.1:5000/"
-
 const Warrant = () => {
   const [totalDutyOwed, setTotalDutyOwed] = useState([]);
   const [totalHLPercent, setTotalHLPercent] = useState([]);
   const [repaymentsAllowed, setRepaymentsAllowed] = useState([]);
   const [routeRedirect, setRedirect] = useState(false); 
   const getStockReturns = () => {
-    fetch(url+"api/stockreturn").then(res =>{
+    fetch(process.env.REACT_APP_API_URL+"api/stockreturn").then(res =>{
       return res.json();
     }).then(stockReturns => {
       // [stockReturns.data.length-1] - Get the latest stock return which was created - newest totals incase old ones are outdated

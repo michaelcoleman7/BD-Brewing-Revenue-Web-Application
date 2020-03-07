@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import {Link} from 'react-router-dom';
-import ListGroup from 'react-bootstrap/ListGroup'
-
-//set the url to receive the data from
-const url = "http://127.0.0.1:5000/"
+import ListGroup from 'react-bootstrap/ListGroup';
 
 const BrewSeparator = () => {
 
   const [brews, setbrews] = useState([]);
   const [beers, setBeers] = useState([]);
   const getBrews = () => {
-    fetch(url+"api/brew").then(res =>{
+    fetch(process.env.REACT_APP_API_URL+"api/brew").then(res =>{
       return res.json();
     }).then(brews => {
       console.log(brews);

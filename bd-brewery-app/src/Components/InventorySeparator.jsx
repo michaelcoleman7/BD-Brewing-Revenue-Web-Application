@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import {Link} from 'react-router-dom';
-import ListGroup from 'react-bootstrap/ListGroup'
-
-//set the url to receive the data from
-const url = "http://127.0.0.1:5000/"
+import ListGroup from 'react-bootstrap/ListGroup';
 
 const InventorySeparator = () => {
 
     const [inventories, setinventories] = useState([]);
     const getInventories = () => {
-      fetch(url+"api/inventory").then(res =>{
+      fetch(process.env.REACT_APP_API_URL+"api/inventory").then(res =>{
         return res.json();
       }).then(inventories => {
         console.log(inventories);

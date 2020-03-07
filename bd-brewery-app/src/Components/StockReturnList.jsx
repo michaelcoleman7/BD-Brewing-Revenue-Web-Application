@@ -4,16 +4,13 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import DatePicker from 'react-date-picker';
 import { format } from 'date-fns';
 
-//set the url to receive the data from
-const url = "http://127.0.0.1:5000/"
-
 const StockReturnList = () => {
 
   const [stockReturns, setStockReturns] = useState([]);
   const [monthDate, setMonthDate] = useState("");
   const [selectedMonth, setSelectedMonth] = useState("None Selected");
   const getStockReturns = () => {
-    fetch(url+"api/stockreturn").then(res =>{
+    fetch(process.env.REACT_APP_API_URL+"api/stockreturn").then(res =>{
       return res.json();
     }).then(stockReturns => {
       console.log(stockReturns);
@@ -53,9 +50,9 @@ const StockReturnList = () => {
 
   let newDate;
   const dateChange = (date) => {
-          newDate = format(new Date(date), 'MM-yyyy')
-          setMonthDate(newDate);
-          setSelectedMonth("Current selected Month is: "+ newDate);
+      newDate = format(new Date(date), 'MM-yyyy')
+      setMonthDate(newDate);
+      setSelectedMonth("Current selected Month is: "+ newDate);
   }
 
 

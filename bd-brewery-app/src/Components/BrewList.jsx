@@ -4,16 +4,13 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import DatePicker from 'react-date-picker';
 import { format } from 'date-fns';
 
-//set the url to receive the data from
-const url = "http://127.0.0.1:5000/"
-
 const BrewList = (props) => {
   const [brews, setbrews] = useState([]);
   const [monthDate, setMonthDate] = useState("");
   const [selectedMonth, setSelectedMonth] = useState("None Selected");
   const getBrews = () => {
     //console.log(props.match.params.beer)
-    fetch(url+"api/brew").then(res =>{
+    fetch(process.env.REACT_APP_API_URL+"api/brew").then(res =>{
       return res.json();
     }).then(brews => {
       //console.log(brews);

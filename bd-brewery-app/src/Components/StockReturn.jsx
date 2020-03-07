@@ -6,10 +6,6 @@ import {Modal,Button} from 'react-bootstrap';
 import DatePicker from 'react-date-picker';
 import { format } from 'date-fns';
 
-
-//set the url to receive the data from
-const url = "http://127.0.0.1:5000/"
-
 const StockReturn = () => {
   const [inventories, setinventories] = useState([]);
   const [beer, setBeer] = useState([]);
@@ -24,7 +20,7 @@ const StockReturn = () => {
   const [selectedMonth, setSelectedMonth] = useState("None Selected");
 
   const getInventories = () => {
-    fetch(url+"api/inventory").then(res =>{
+    fetch(process.env.REACT_APP_API_URL+"api/inventory").then(res =>{
       return res.json();
     }).then(inventories => {
       setinventories(inventories.data);
@@ -94,7 +90,7 @@ const StockReturn = () => {
     //if all data is valid, then post to server
 
     if(beer && monthDate){
-      fetch(url +"api/createstockreturn", options)
+      fetch(process.env.REACT_APP_API_URL +"api/createstockreturn", options)
       .then(res => {
           setRedirect(true);
           return res.json();

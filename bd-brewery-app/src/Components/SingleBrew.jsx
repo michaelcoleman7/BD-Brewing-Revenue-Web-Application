@@ -7,9 +7,6 @@ import DatePicker from 'react-date-picker';
 import { format } from 'date-fns';
 import ReactToPrint from "react-to-print";
 
-//set the url to send the data to
-const url = "http://localhost:5000/"
-
 // Set some styling for div
 const divStyle = {
     width: '48%',
@@ -29,7 +26,7 @@ const divStyle = {
 
   // react arrow function component to create a brew
   const SingleBrew = (props) => {
-    // using react hooks to get data back - adapted from https://reactjs.org/docs/hooks-state.html
+    // using react hooks to change states - adapted from https://reactjs.org/docs/hooks-state.html
     const [brewId, setBrewId] = useState("");
     const [brew, setBrew] = useState("");
     const [changeBrew, setChangeBrew] = useState(false); 
@@ -62,7 +59,7 @@ const divStyle = {
         setBrewId(quotationlessId);
         console.log("quotationlessId "+quotationlessId);
 
-        fetch(url+"api/brew/"+quotationlessId).then(res => {
+        fetch(process.env.REACT_APP_API_URL+"api/brew/"+quotationlessId).then(res => {
             return res.json();
         }).then(res => {
             console.log("response "+res.data);
@@ -125,7 +122,7 @@ const divStyle = {
                             console.log("Invalid form format, will not be sent to database");
                         }
                         else{
-                            fetch(url+"api/updateBrew/"+ brewId, options)
+                            fetch(process.env.REACT_APP_API_URL+"api/updateBrew/"+ brewId, options)
                             .then(res => {
                                 return res.json();
                             }).then(res => {
@@ -168,7 +165,7 @@ const divStyle = {
             },
             body: JSON.stringify({id: brewId})
           } 
-          fetch(url+"api/deleteBrew/"+ brewId , options)
+          fetch(process.env.REACT_APP_API_URL+"api/deleteBrew/"+ brewId , options)
           .then(res => {
             return res.json()
            })

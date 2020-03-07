@@ -6,9 +6,6 @@ import Table from 'react-bootstrap/Table';
 import '../Stylesheets/Form.css';
 import ReactToPrint from "react-to-print";
 
-//set the url to send the data to
-const url = "http://localhost:5000/"
-
 // Set some styling for div
 const divStyle = {
     width: '48%',
@@ -28,7 +25,7 @@ const divStyle = {
 
   // react arrow function component to create a inventory
   const SingleInventory = (props) => {
-    // using react hooks to get data back - adapted from https://reactjs.org/docs/hooks-state.html
+    // using react hooks to change states - adapted from https://reactjs.org/docs/hooks-state.html
     const [batchNo, setBatchNo] = useState("");
     const [beer, setBeer] = useState("");
     const [inventoryId, setInventoryId] = useState("");
@@ -60,7 +57,7 @@ const divStyle = {
 
         setInventoryId(quotationlessId);
 
-        fetch(url+"api/inventory/"+quotationlessId).then(res => {
+        fetch(process.env.REACT_APP_API_URL+"api/inventory/"+quotationlessId).then(res => {
             return res.json();
         }).then(res => {
             //console.log("response "+res.data);
@@ -91,7 +88,7 @@ const divStyle = {
 
     const [brews, setbrews] = useState([]);
     const getBrews = () => {
-        fetch(url+"api/brew").then(res =>{
+        fetch(process.env.REACT_APP_API_URL+"api/brew").then(res =>{
           return res.json();
         }).then(brews => {
           setbrews(brews.data);
@@ -141,7 +138,7 @@ const divStyle = {
                     console.log("Invalid form format, will not be sent to database");
                 }
                 else{
-                    fetch(url+"api/updateInventory/"+ inventoryId, options)
+                    fetch(process.env.REACT_APP_API_URL+"api/updateInventory/"+ inventoryId, options)
                     .then(res => {
                         return res.json();
                     }).then(res => {
@@ -170,7 +167,7 @@ const divStyle = {
             },
             body: JSON.stringify({id: inventoryId})
           } 
-          fetch(url+"api/deleteInventory/"+ inventoryId , options)
+          fetch(process.env.REACT_APP_API_URL+"api/deleteInventory/"+ inventoryId , options)
           .then(res => {
             return res.json()
            })

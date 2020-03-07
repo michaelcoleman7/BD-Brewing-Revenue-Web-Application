@@ -5,9 +5,6 @@ import '../Stylesheets/Form.css';
 import DatePicker from 'react-date-picker';
 import { format } from 'date-fns';
 
-//set the url to send the data to
-const url = "http://127.0.0.1:5000/"
-
 // Set some styling for div
 const divStyle = {
     width: '48%',
@@ -29,7 +26,7 @@ const divStyle = {
 
   // react arrow function component to create a brew
   const CreateBrew = () => {
-    // using react hooks to get data back - adapted from https://reactjs.org/docs/hooks-state.html
+    // using react hooks to change states - adapted from https://reactjs.org/docs/hooks-state.html
     const [productName, setProductName] = useState("");
     const [beer, setBeer] = useState("");
     const [batchNo, setBatchNo] = useState("");
@@ -82,7 +79,7 @@ const divStyle = {
                         console.log("Invalid form format, will not be sent to database");
                     }
                     else{
-                        fetch(url +"api/createbrew", options)
+                        fetch(process.env.REACT_APP_API_URL +"api/createbrew", options)
                         .then(res => {
                             setRedirect(true);
                             return res.json();

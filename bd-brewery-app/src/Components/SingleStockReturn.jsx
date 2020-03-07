@@ -5,9 +5,6 @@ import Table from 'react-bootstrap/Table';
 import '../Stylesheets/Form.css';
 import ReactToPrint from "react-to-print";
 
-//set the url to send the data to
-const url = "http://localhost:5000/"
-
 // Set some styling for div
 const divStyle = {
     width: '48%',
@@ -78,7 +75,7 @@ const divStyle = {
 
         setStockReturnId(quotationlessId);
 
-        fetch(url+"api/stockreturn/"+quotationlessId).then(res => {
+        fetch(process.env.REACT_APP_API_URL+"api/stockreturn/"+quotationlessId).then(res => {
             return res.json();
         }).then(res => {
             let parsed = JSON.parse(res.data);
@@ -141,7 +138,7 @@ const divStyle = {
             },
             body: JSON.stringify({id: stockReturnId})
         } 
-          fetch(url+"api/deletestockreturn/"+ stockReturnId , options)
+          fetch(process.env.REACT_APP_API_URL+"api/deletestockreturn/"+ stockReturnId , options)
           .then(res => {
             return res.json()
            })

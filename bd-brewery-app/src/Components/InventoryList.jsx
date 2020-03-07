@@ -4,16 +4,13 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import { format } from 'date-fns';
 import DatePicker from 'react-date-picker';
 
-//set the url to receive the data from
-const url = "http://127.0.0.1:5000/"
-
 const InventoryList = (props) => {
 
   const [inventories, setinventories] = useState([]);
   const [monthDate, setMonthDate] = useState("");
   const [selectedMonth, setSelectedMonth] = useState("None Selected");
   const getInventories = () => {
-    fetch(url+"api/inventory").then(res =>{
+    fetch(process.env.REACT_APP_API_URL+"api/inventory").then(res =>{
       return res.json();
     }).then(inventories => {
       console.log(inventories);

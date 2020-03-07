@@ -4,9 +4,6 @@ import '../Stylesheets/Form.css';
 import ReactToPrint from "react-to-print";
 import Table from 'react-bootstrap/Table';
 
-//set the url to send the data to
-const url = "http://127.0.0.1:5000/"
-
 
   const WarrentDisplay = (props) => {
     const [repaymentsAllowed, setRepaymentsAllowed] = useState("");
@@ -45,7 +42,7 @@ const url = "http://127.0.0.1:5000/"
     }
 
     const getBreweryInfo = () => { 
-        fetch(url+"api/brewinfo").then(res => {
+        fetch(process.env.REACT_APP_API_URL+"api/brewinfo").then(res => {
             return res.json();
         }).then(res => {
             let parsed = JSON.parse(res.data);

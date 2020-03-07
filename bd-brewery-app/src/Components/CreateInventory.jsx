@@ -3,9 +3,6 @@ import { Redirect } from 'react-router';
 import Alert from 'react-bootstrap/Alert';
 import '../Stylesheets/Form.css';
 
-//set the url to send the data to
-const url = "http://127.0.0.1:5000/"
-
 // Set some styling for div
 const divStyle = {
     width: '48%',
@@ -27,7 +24,7 @@ const divStyle = {
 
   // react arrow function component to create a brew
   const CreateInventory = () => {
-    // using react hooks to get data back - adapted from https://reactjs.org/docs/hooks-state.html
+    // using react hooks to change states - adapted from https://reactjs.org/docs/hooks-state.html
     const [batchNo, setBatchNo] = useState("");
     const [beer, setBeer] = useState("");
     //const [totalCasesSold500, setTotalCasesSold500] = useState(""); - calculated with formula
@@ -51,7 +48,7 @@ const divStyle = {
 
     const [brews, setbrews] = useState([]);
     const getBrews = () => {
-        fetch(url+"api/brew").then(res =>{
+        fetch(process.env.REACT_APP_API_URL+"api/brew").then(res =>{
           return res.json();
         }).then(brews => {
           console.log(brews);
@@ -102,7 +99,7 @@ const divStyle = {
                     console.log("Invalid form format, will not be sent to database");
                 }
                 else{
-                    fetch(url +"api/createinventory", options)
+                    fetch(process.env.REACT_APP_API_URL +"api/createinventory", options)
                     .then(res => {
                         setRedirect(true);
                         return res.json();
