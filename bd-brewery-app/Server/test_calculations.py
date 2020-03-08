@@ -6,12 +6,16 @@ import env
 
 # Configure MongoDB with mlab connection
 # Set up connection with user and password of database 
-#- retrywrites needs to be set to default as not supported in enviornment - https://stackoverflow.com/questions/57836252/how-to-fix-retrywrites-in-mongo
+# retrywrites needs to be set to default as not supported in enviornment - https://stackoverflow.com/questions/57836252/how-to-fix-retrywrites-in-mongo
+# env.Test_... is accessing variables in an enviornment variables file to protect usernames and passwords
 connection = "mongodb://"+env.TEST_USER+":"+env.TEST_PASSWORD+"@ds341605.mlab.com:41605/"+env.TEST_DB+"?retryWrites=false"
+
 # get a connecion with the database in mlab
 client = MongoClient(connection)
+
 # Connect to database by name
 db = client[env.TEST_DB]
+
 # link to collection name in mlab
 brewCollection = db["brew"]
 inventoryCollection = db["inventory"]
@@ -55,6 +59,7 @@ def populateBrews():
         "ogMinusPg": 0.043
     }
 
+    # Insert brews into Database
     brewCollection.insert_one(brew1)
     brewCollection.insert_one(brew2)
 
@@ -166,6 +171,7 @@ def populateInventories():
         "brewDate": "05-03-2020"
     }
 
+    # Insert inventories into Database
     inventoryCollection.insert_one(inv1)
     inventoryCollection.insert_one(inv2)
 
@@ -244,10 +250,11 @@ def populateStockReturns():
         "totalDutyOwed": 0,
         "totalHLPercent": 0
     }
-
+    # Insert stock returns into Database
     stockReturnCollection.insert_one(stockreturn1)
     stockReturnCollection.insert_one(stockreturn2)
 
+# Populate Test database
 def test_setupTestDatabase():
     populateBrews()
     populateInventories()
@@ -342,9 +349,11 @@ def test_calculateTotalUnits():
         "CS_HLPercent": 97.06
     }
 
+# Calculation to test the totals for HL in stock returns
 def test_calculateStockReturnTotalHL():
     assert calculations.calculateStockReturnTotalHL(stockReturnCollection.find({}),"03-2020") == [93.86,1058.2715]
 
+# Delete all the documents in the database to ensure in next usage test data isn't incorrect
 def test_deleteAllDBDocuments():
     brewCollection.remove()
     inventoryCollection.remove()
