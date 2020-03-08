@@ -5,7 +5,7 @@ import '../Stylesheets/Form.css';
 import DatePicker from 'react-date-picker';
 import { format } from 'date-fns';
 
-// Set some styling for div
+// Set some styling for div and form
 const divStyle = {
     width: '48%',
     border: '5px',
@@ -13,7 +13,6 @@ const divStyle = {
     padding: '20px',
     margin: '10px'
   };
-
   const formStyle = {
     width: '100%',
     border: '5px',
@@ -22,18 +21,14 @@ const divStyle = {
     margin: '10px'
   };
 
-
-
   // react arrow function component to create a brew
   const CreateBrew = () => {
     // using react hooks to change states - adapted from https://reactjs.org/docs/hooks-state.html
-    const [productName, setProductName] = useState("");
     const [beer, setBeer] = useState("");
     const [batchNo, setBatchNo] = useState("");
     const [brewDate, setBrewDate] = useState("");
     const [og, setOG] = useState("");
     const [pg, setPG] = useState("");
-    //OG-PG is a also a variable, calculate using above values
     const [postConditionDate, setPCD] = useState("");
     const [kegNo, setKegNo] = useState("");
     const [bottleNo500, setBottleNo500] = useState("");
@@ -43,12 +38,12 @@ const divStyle = {
     const [routeRedirect, setRedirect] = useState(false); 
     const [showAlert, setAlertShow] = useState(false);
 
+    //function to create a brew and send to server
     const create = (event) => {
             event.preventDefault();   
 
             //brew values to be sent to server
             const brew = {
-                productName: productName,
                 beer: beer,
                 batchNo: batchNo,
                 brewDate: brewDate,
@@ -75,12 +70,14 @@ const divStyle = {
             if( beer && batchNo && brewDate && og && pg && postConditionDate && kegNo && bottleNo500 && bottleNo330 && status && packaged){
                 if(status == "Bottled" || status == "Kegged" || status == "Mixed"){
                     if(isNaN(parseFloat(og).toFixed(5)) || isNaN(parseFloat(pg).toFixed(5)) || isNaN(parseInt(kegNo)) || isNaN(parseInt(bottleNo500)) || isNaN(parseInt(bottleNo330))){
+                        // show alert of invalid data
                         setAlertShow(!showAlert);
-                        console.log("Invalid form format, will not be sent to database");
                     }
                     else{
+                        //all data valid, send data to server via url set in enviornment variables
                         fetch(process.env.REACT_APP_API_URL +"api/createbrew", options)
                         .then(res => {
+                            //set redirect true - calls redirect method
                             setRedirect(true);
                             return res.json();
                         }).catch(err => {
@@ -89,20 +86,21 @@ const divStyle = {
                     }   
                 }            
             }else{
+                // show alert of invalid data
                 setAlertShow(!showAlert);
-                console.log("Invalid form format, will not be sent to database");
             }
         
     }
 
     let alertFormError;
+    // when showalert is true then show alert with error data
     if(showAlert){
         alertFormError =
             <React.Fragment>
                 <Alert variant="danger" onClose={() => setAlertShow(false)} dismissible>
                     <Alert.Heading>Invalid Form Format!</Alert.Heading>
                     <p>
-                        Please ensure all form fields are filled out. Also ensure numberical values are displayed for correct fields
+                        Please ensure all form fields are filled out and ensure numberical values are displayed for correct fields
                     </p>
                 </Alert>
             </React.Fragment>
@@ -111,18 +109,19 @@ const divStyle = {
     // Redirect to brew page after creation
     const redirect = routeRedirect;
     if(redirect){
-         return <Redirect to="/brew" />  
+        // Redirect to brew url
+        return <Redirect to="/brew" />  
     }
      
     let newDate;
+    //setup date based on user selection
     const dateChange = (date) => {
-            newDate = format(new Date(date), 'dd-MM-yyyy')
-            setBrewDate(newDate);
-            document.getElementById('dp').placeholder=newDate;
+        newDate = format(new Date(date), 'dd-MM-yyyy')
+        setBrewDate(newDate);
+        document.getElementById('dp').placeholder=newDate;
     }
 
-
-
+    //return fragment with elements to display to user
     return(
         // React Fragment is a way of sending back multiple elements - https://reactjs.org/docs/fragments.html
         <React.Fragment> 
@@ -172,9 +171,7 @@ const divStyle = {
                     <input type="submit" value="Create Brew"/>
                     {alertFormError}
                 </form>
-
         </React.Fragment>)
-}
-    
-
+}   
+// Export create brew for use
 export default CreateBrew;

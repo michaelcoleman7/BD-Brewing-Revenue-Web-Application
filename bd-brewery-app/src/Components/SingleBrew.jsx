@@ -7,7 +7,7 @@ import DatePicker from 'react-date-picker';
 import { format } from 'date-fns';
 import ReactToPrint from "react-to-print";
 
-// Set some styling for div
+// Set some styling for div and form
 const divStyle = {
     width: '48%',
     border: '5px',
@@ -15,7 +15,6 @@ const divStyle = {
     padding: '20px',
     margin: '10px'
   };
-
   const formStyle = {
     width: '100%',
     border: '5px',
@@ -24,7 +23,7 @@ const divStyle = {
     margin: '10px'
   };
 
-  // react arrow function component to create a brew
+  // react arrow function component to show a single brew
   const SingleBrew = (props) => {
     // using react hooks to change states - adapted from https://reactjs.org/docs/hooks-state.html
     const [brewId, setBrewId] = useState("");
@@ -36,7 +35,6 @@ const divStyle = {
     const [og, setOG] = useState("");
     const [pg, setPG] = useState("");
     const [ogMinusPg, setOGMinusPG] = useState("");
-    //OG-PG is a also a variable, calculate using above values
     const [postConditionDate, setPCD] = useState("");
     const [postConditionVol, setPCV] = useState("");
     const [kegNo, setKegNo] = useState("");
@@ -47,22 +45,22 @@ const divStyle = {
     const [routeRedirect, setRedirect] = useState(""); 
     const [showAlert, setAlertShow] = useState(false);
     
-
+    // function to get individual brew using specified id
     const getBrew = () => {
+        //get id from url passed from previous component (props)
         let id = props.match.params.id;
 
         // Remove all the "" from the id - 
         //Note: Adding the /g will mean that all of the matching values are replaced,
-        //otherwise just 1st occurance removed- https://stackoverflow.com/questions/1206911/why-do-i-need-to-add-g-when-using-string-replace-in-javascript
+        //otherwise just 1st occurance removed - https://stackoverflow.com/questions/1206911/why-do-i-need-to-add-g-when-using-string-replace-in-javascript
         let quotationlessId = id.replace(/['"]+/g, "");     
-
         setBrewId(quotationlessId);
-        console.log("quotationlessId "+quotationlessId);
 
+        //get individual brew from api call using url set in enviornemnt variables
         fetch(process.env.REACT_APP_API_URL+"api/brew/"+quotationlessId).then(res => {
             return res.json();
         }).then(res => {
-            console.log("response "+res.data);
+            //set brew data into variables
             let parsed = JSON.parse(res.data);
             setBrew(parsed);
             setBeer(parsed.beer);
@@ -83,10 +81,12 @@ const divStyle = {
         })
     }
 
+    // call function to get single brew from api
     useEffect(() => {
         getBrew();
     },[]);
 
+    // function to allow user to update brew
     const updateBrew = (e) => {
         e.preventDefault();
             //brew values to be sent to server
@@ -122,23 +122,25 @@ const divStyle = {
                             console.log("Invalid form format, will not be sent to database");
                         }
                         else{
+                            //All data is valid, send to server via url saved in enviornment variables
                             fetch(process.env.REACT_APP_API_URL+"api/updateBrew/"+ brewId, options)
                             .then(res => {
                                 return res.json();
                             }).then(res => {
-                                console.log(res)
-                                 setRedirect(true);
+                                //set redirect true - call rediect method to navigate from page
+                                setRedirect(true);
                             }).catch(err => {
                                 console.log(err)
                             });
                         }               
                     }else{
+                        //set alert to show error data
                         setAlertShow(!showAlert);
-                        console.log("Invalid form format, will not be sent to database");
                     }
     }
 
     let alertFormError;
+    // if showalert is true - then display form error data to user
     if(showAlert){
         alertFormError =
             <React.Fragment>
@@ -153,10 +155,12 @@ const divStyle = {
 
     const redirect = routeRedirect;
     let redirectRoute = "/brewlist/"+ beer
+    // if rediect set to true. then navigate to brewlist
     if(redirect){
-         return <Redirect to={redirectRoute} />  
+         return <Redirect to={redirectRoute}/>  
     }
 
+    // function to delete brew from database
     const deleteItem = (brewId) => {
         const options = { 
             method: 'delete',
@@ -165,24 +169,26 @@ const divStyle = {
             },
             body: JSON.stringify({id: brewId})
           } 
+          //send api call with id to delete to server
           fetch(process.env.REACT_APP_API_URL+"api/deleteBrew/"+ brewId , options)
           .then(res => {
             return res.json()
            })
            .then(res => {
-               console.log(res);
+               //set redirect to true - allow navigation
                setRedirect(true);
            }).catch(err => {
                console.log(err)
            })
     }
 
+    // function to show form for updating brew
     const editItem = (brewId) => {
-        console.log(brewId);
         setChangeBrew(!changeBrew);
     }
 
     let newDate;
+    //fnction to set date based on user selection
     const dateChange = (date) => {
             newDate = format(new Date(date), 'dd-MM-yyyy')
             setBrewDate(newDate);
@@ -191,6 +197,7 @@ const divStyle = {
 
 
     let editForm;
+    //if chnagefrom is true, then display form 
     if(changeBrew){
         editForm =
             <React.Fragment>
@@ -243,7 +250,7 @@ const divStyle = {
             </React.Fragment>
     }
     
-    //adapted from - https://www.npmjs.com/package/react-to-print
+    //component to show brew info adapted from - https://www.npmjs.com/package/react-to-print
     class BrewInformation extends React.Component {
         render() {
           return (
@@ -271,8 +278,10 @@ const divStyle = {
             </Card></center>
           );
         }
-      }    
-    class BrewDisplay extends React.Component {
+      }  
+
+      // Component to allow printing of brew
+      class BrewDisplay extends React.Component {
         render() {
         return (
             <div>
@@ -295,6 +304,5 @@ const divStyle = {
             {editForm}
         </React.Fragment>)
 }
-    
-
+//Export component for use
 export default SingleBrew;

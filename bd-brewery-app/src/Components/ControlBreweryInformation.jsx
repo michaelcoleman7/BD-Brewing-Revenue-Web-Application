@@ -4,7 +4,7 @@ import Alert from 'react-bootstrap/Alert';
 import {Card,Button} from 'react-bootstrap';
 import '../Stylesheets/Form.css';
 
-// Set some styling for div
+// Set some styling for div and form
 const divStyle = {
     width: '48%',
     border: '5px',
@@ -12,7 +12,6 @@ const divStyle = {
     padding: '20px',
     margin: '10px'
   };
-
   const formStyle = {
     width: '100%',
     border: '5px',
@@ -21,10 +20,8 @@ const divStyle = {
     margin: '10px'
   };
 
-
-
-  // react arrow function component to create a brew
-  const CreateBrew = () => {
+  // react arrow function component to create brew infomation
+  const ControlBreweryInformation = () => {
     // using react hooks to change states - adapted from https://reactjs.org/docs/hooks-state.html
     const [breweyInfo, setBreweryInfo] = useState("");
     const [brewerName, setBrewerName] = useState("");
@@ -42,10 +39,13 @@ const divStyle = {
     const [editBrewInfo, setEditBrewInfo] = useState(false); 
     const [infoExists, setInfoExists] = useState(false); 
 
+    // Get brew info from api
     const getBreweryInfo = () => { 
+        //fetch info from api using variables
         fetch(process.env.REACT_APP_API_URL+"api/brewinfo").then(res => {
             return res.json();
         }).then(res => {
+            //set data from api into variables
             let parsed = JSON.parse(res.data);
             setBreweryInfo(parsed);
             setBrewerName(parsed.brewerName);
@@ -63,14 +63,16 @@ const divStyle = {
         })
     }
 
+    //call method to api to get brew info
     useEffect(() => {
         getBreweryInfo();
     },[]);
 
+    //function to create brew info and if all info correct send to server
     const create = (event) => {
             event.preventDefault();   
 
-            //brew values to be sent to server
+            //brew info values to be sent to server
             const breweryinfo = {
                 brewerName: brewerName,
                 address: address,
@@ -99,8 +101,10 @@ const divStyle = {
                     console.log("Invalid form format, will not be sent to database");
                 }
                 else{
+                    //post user entered data to server
                     fetch(process.env.REACT_APP_API_URL +"api/createbrewinfo", options)
                     .then(res => {
+                        //set redirect to true - calls redirect method
                         setRedirect(true);
                         return res.json();
                     }).catch(err => {
@@ -108,13 +112,14 @@ const divStyle = {
                     })
                 }            
             }else{
+                //display that user entered info is invalid
                 setAlertShow(!showAlert);
-                console.log("Invalid form format, will not be sent to database");
             }
         
     }
 
     let alertFormError;
+    // when showalert is true then show alert with error data
     if(showAlert){
         alertFormError =
             <React.Fragment>
@@ -127,14 +132,17 @@ const divStyle = {
             </React.Fragment>
     }
 
+    //function to show create form
     const createItem = () => {
         setCreateBrewInfo(!createBrewInfo);
     }
 
+    //function to show edit form
     const editBreweryInfo = () => {
         setEditBrewInfo(!editBrewInfo);
     }
 
+    //function to allow deletion of item
     const deleteItem = () => {
         const options = { 
             method: 'delete',
@@ -155,13 +163,14 @@ const divStyle = {
            })
     }
 
-    // Redirect to brew page after creation
+    // Redirect to home page after creation
     const redirect = routeRedirect;
     if(redirect){
          return <Redirect to="/"/>  
     }
 
     let form;
+    // show form to create brew info
     if(createBrewInfo){
         form =
             <React.Fragment>
@@ -202,6 +211,7 @@ const divStyle = {
                     {alertFormError}
                 </form>
             </React.Fragment>
+    // Display form with api data in fields
     }else if(editBrewInfo){
         form =
         <React.Fragment>
@@ -238,7 +248,7 @@ const divStyle = {
 
 
                 </div>
-                <input type="submit" value="Create Brewery Information"/>
+                <input type="submit" value="Update Brewery Information"/>
                 {alertFormError}
             </form>
         </React.Fragment>
@@ -246,6 +256,7 @@ const divStyle = {
 
 
     let infoDisplay;
+    //if a brew info document exists then show data
     if(infoExists){
         infoDisplay =
             <React.Fragment>
@@ -270,6 +281,7 @@ const divStyle = {
             <Button onClick={(e) => deleteItem()}>Delete Brewery Information</Button>
             </React.Fragment>
     }
+    //otherwise show user option to create data
     else{
         infoDisplay = <React.Fragment>
         <center>
@@ -285,13 +297,13 @@ const divStyle = {
         </React.Fragment>
     }
 
+    //return binded elements for display based on api call's return info
     return(
-        // React Fragment is a way of sending back multiple elements - https://reactjs.org/docs/fragments.html
         <React.Fragment> 
             {infoDisplay}
             {form}
         </React.Fragment>)
 }
     
-
-export default CreateBrew;
+// Export component for use
+export default ControlBreweryInformation;

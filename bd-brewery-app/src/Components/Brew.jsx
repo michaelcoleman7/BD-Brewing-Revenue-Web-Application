@@ -1,22 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {Link} from 'react-router-dom';
-import Card from 'react-bootstrap/Card'
+import Card from 'react-bootstrap/Card';
 
+// Brew component to display user options for brews
 const Brew = () => {
-
-  const divStyle = {
-    width: '18rem'
-  };
-
-  const header = {
-    color: 'white'
-  };
-
 return(
     <React.Fragment> 
-      <h1 style={header}>Brew Management</h1>
+      <h1 style={{color: "white"}}>Brew Management</h1>
       <div className="d-flex justify-content-around">
-            <Card bg="primary" style={divStyle}>          
+            <Card bg="primary" style={{width: '18rem'}}>          
               <Link to="/createbrew"> <Card.Img src={require("../Images/Background3.jpg")} height="300"/></Link>
               <Card.Body>
                 <Card.Title>Create Brew</Card.Title>
@@ -26,7 +18,7 @@ return(
               </Card.Body>
             </Card>
 
-            <Card bg="success" style={divStyle}>          
+            <Card bg="success" style={{width: '18rem'}}>          
               <Link to="/brew"> <Card.Img src={require("../Images/createbeer.jpg")} height="300"/></Link>
               <Card.Body>
                 <Card.Title>View Brews</Card.Title>
@@ -38,5 +30,5 @@ return(
       </div>
     </React.Fragment>)
   }
-
+// export component for use
 export default Brew;
