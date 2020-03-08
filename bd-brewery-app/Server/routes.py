@@ -18,7 +18,8 @@ class JSONEncoder(json.JSONEncoder):
 
 # Configure MongoDB with mlab connection
 # Set up connection with user and password of database 
-#- retrywrites needs to be set to default as not supported in enviornment - https://stackoverflow.com/questions/57836252/how-to-fix-retrywrites-in-mongo
+# retrywrites needs to be set to default as not supported in enviornment - https://stackoverflow.com/questions/57836252/how-to-fix-retrywrites-in-mongo
+# env.Test_... is accessing variables in an enviornment variables file to protect usernames and passwords
 connection = "mongodb://"+env.USER+":"+env.PASSWORD+"@ds241968.mlab.com:41968/"+env.DB+"?retryWrites=false"
 # get a connecion with the database in mlab
 client = MongoClient(connection)
@@ -30,8 +31,7 @@ inventoryCollection = db["inventory"]
 stockReturnCollection = db["stockReturns"]
 breweryInformationCollection = db["breweryInfo"]
 
-
-#Blueprints
+# Blueprints - used to build API routes into the flask application
 indexBrewRoute = Blueprint("indexBrew", __name__)
 createBrewRoute = Blueprint("createBrew", __name__)
 updateBrewRoute = Blueprint("updateBrew", __name__)
@@ -53,7 +53,7 @@ indexBreweryInfoRoute = Blueprint("indexBreweryInfo", __name__)
 createBreweryInfoRoute = Blueprint("createBreweryInfo", __name__)
 deleteBreweryinfoRoute = Blueprint("deleteBreweryInfo", __name__)
 
-#routes 
+# Route for accessing all brews
 @indexBrewRoute.route("/api/brew")
 def indexBrew():
     brews = []
@@ -61,9 +61,10 @@ def indexBrew():
     retrieval = brewCollection.find({})
 
     for document in retrieval:
+        # Search for specified data to return
         brews.append({"_id": JSONEncoder().encode(document["_id"]), "batchNo":document["batchNo"], "beer":document["beer"],"brewDate":document["brewDate"]})
+    # Return list of brews found
     return jsonify(data=brews)
-
 
 # Route to handle individual brews
 @brewRoute.route("/api/brew/<id>", methods=["GET"])
@@ -71,7 +72,7 @@ def brewSingle(id):
     # Find one object from mongo using the object id
     cursor = brewCollection.find_one({"_id":ObjectId(id)})
 
-    # Prevemt serializable error being thrown
+    # Prevent serializable error being thrown
     return jsonify(data=JSONEncoder().encode(cursor))
 
 # Route to handle creation of a brew
@@ -90,11 +91,12 @@ def createBrew():
     status = request.json.get("status")
     packaged = request.json.get("packaged")
 
+    # Carry out caqlculations for a brew using calculations.py file
     abv = calculations.calculateABV(og, pg)
     postConditionVol= calculations.calculatePCV(bottleNo330, bottleNo500, kegNo)
     duty= calculations.calculateDuty(postConditionVol,abv)
 
-    # create json format of data to send to MongoDB
+    # Create json format of data to send to MongoDB
     brew = {
         "beer": beer,
         "batchNo": batchNo,
@@ -116,9 +118,10 @@ def createBrew():
     # Insert the brew into the mongoDB in mlabs, adapted from - https://docs.mongodb.com/manual/reference/method/db.collection.insertOne/
     brewCollection.insert_one(brew)
 
+    # Return that creation of brew was a success
     return jsonify(data="Brew created successfully")
 
-# Update a brew 
+# Route to handle update of a brew 
 @updateBrewRoute.route("/api/updateBrew/<id>", methods=["PUT"])
 # Added cross origin to prevent blocking of requests
 #@cross_origin(origin='localhost',headers=['Content-Type','Authorization']) 
@@ -137,12 +140,13 @@ def updateBrew(id):
     status = request.json.get("status")
     packaged = request.json.get("packaged")
 
+    # Carry out caqlculations for a brew using calculations.py file
     abv = calculations.calculateABV(og, pg)
     postConditionVol= calculations.calculatePCV(bottleNo330, bottleNo500, kegNo)
     duty= calculations.calculateDuty(postConditionVol,abv)
 
 
-    # create json format of data to send to MongoDB
+    # Create json format of data to send to MongoDB
     updatedBrew = {
         "beer": beer,
         "batchNo": batchNo,
@@ -161,38 +165,45 @@ def updateBrew(id):
         "packaged": packaged
     }
 
-    # need to parse id so that mongo gets correct instance of id, otherwise will take it as invalid - {"_id": ObjectId(brewId)}
+    # Need to parse id so that mongo gets correct instance of id, otherwise will take it as invalid - {"_id": ObjectId(brewId)}
     # Set the contents of the id in mongo to the updated data above - {"$set": updatedBrew}
     brewCollection.update_one({"_id": ObjectId(brewId)}, {"$set": updatedBrew})
 
     response = jsonify(data = "update response")
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    return response
-    #return jsonify(data = "update response")   
+    response.headers.add('Access-Control-Allow-Origin', '*') # Add cross origins headers to response
+    return response 
 
+# Route to handle deletion of a brew
 @deleteBrewRoute.route("/api/deleteBrew/<id>", methods = ["DELETE"])
 def delete(id):
     brewId = request.json.get("id")
+    # Remove document with specified id from database
     brewCollection.remove({"_id": ObjectId(brewId)})
 
+    # Return that delete was a success
     return jsonify(data= "brew delete successfully") 
 
+# Route to handle return of all inventories
 @indexInventoryRoute.route("/api/inventory")
 def indexInventory():
     inventories = []
 
+    # Find all inventory documents in database
     retrieval = inventoryCollection.find({})
 
     for document in retrieval:
+        # Search for specified data to return
         inventories.append({"_id": JSONEncoder().encode(document["_id"]), "batchNo":document["batchNo"], "beer":document["beer"],"brewDate":document["brewDate"]})
+    # Return collection of inventories found
     return jsonify(data=inventories)
+
 # Route to handle individual inventories
 @indexInventoryRoute.route("/api/inventory/<id>", methods=["GET"])
 def inventorySingle(id):
     # Find one object from mongo using the object id
     cursor = inventoryCollection.find_one({"_id":ObjectId(id)})
 
-    # Prevemt serializable error being thrown
+    # Prevent serializable error being thrown
     return jsonify(data=JSONEncoder().encode(cursor))
 
 # Route to handle creation of a Inventory
@@ -212,12 +223,15 @@ def createInventory():
     openingStockKegs = request.json.get("openingStockKegs")
     openingStockPercentage = request.json.get("openingStockPercentage")
 
+    # Set up array of calculations that are needed in inventory calculations
     calculationVariables = [batchNo, remainingCases500,remainingCases330, remainingKegs,totalCasesSold500Month,totalCasesSold330Month, totalKegsSoldMonth]
 
+    # Carry out inventory calculations
     invCalculations = calculations.inventoryCalculations(brewCollection, calculationVariables)
+    # Initialise brew date to put in inventory and usage in totals calculations
     brewDate = invCalculations[8]
 
-    # create json format of data to send to MongoDB
+    # Create json format of data to send to MongoDB
     inventory = {
         "batchNo": batchNo,
         "beer": beer,
@@ -244,19 +258,25 @@ def createInventory():
 
     # Insert the Inventory into the mongoDB in mlabs, adapted from - https://docs.mongodb.com/manual/reference/method/db.collection.insertOne/
     inventoryCollection.insert_one(inventory)
+    # Calculate totals for inventory
     totalsInventory = calculations.calculateTotalUnits(brewCollection,inventoryCollection, beer, False, brewDate[3:])
 
+    # Find all inventory documents
     invRetrieval = inventoryCollection.find({})
     for document in invRetrieval:
+        # Find document with same batch Number amd get its id in mongo
         if batchNo == document["batchNo"]:
             id = document["_id"]
 
+    # Update inventory with id found in search
     inventoryCollection.update_one({"_id": ObjectId(id)}, {"$set":  {
         'totalsInventory': totalsInventory
     }})
 
+    # Return that creation of inventory was a success
     return jsonify(data="inventory created successfully")
-# Update an Inventory 
+
+# Route to handle update an Inventory 
 @updateInventoryRoute.route("/api/updateInventory/<id>", methods=["PUT"])
 def updateInventory(id):
     # Request all information and store in variables
@@ -274,12 +294,15 @@ def updateInventory(id):
     openingStockKegs = request.json.get("openingStockKegs")
     openingStockPercentage = request.json.get("openingStockPercentage")
 
+    # Set up array of calculations that are needed in inventory calculations
     calculationVariables = [batchNo, remainingCases500,remainingCases330, remainingKegs,totalCasesSold500Month,totalCasesSold330Month, totalKegsSoldMonth]
 
+    # Carry out inventory calculations
     invCalculations = calculations.inventoryCalculations(brewCollection,calculationVariables)
+    # Initialise brew date to put in inventory and usage in totals calculations
     brewDate = invCalculations[8]
 
-    # create json format of data to send to MongoDB
+    # Create json format of data to send to MongoDB
     updatedInventory = {
         "batchNo": batchNo,
         "beer": beer,
@@ -304,12 +327,14 @@ def updateInventory(id):
         "brewDate": brewDate
     }
 
-    # need to parse id so that mongo gets correct instance of id, otherwise will take it as invalid - {"_id": ObjectId(inventoryId)}
+    # Need to parse id so that mongo gets correct instance of id, otherwise will take it as invalid - {"_id": ObjectId(inventoryId)}
     # Set the contents of the id in mongo to the updated data above - {"$set": updatedInventory}
     inventoryCollection.update_one({"_id": ObjectId(inventoryId)}, {"$set": updatedInventory})
 
+    # Calculate totals for inventory
     totalsInventory = calculations.calculateTotalUnits(brewCollection,inventoryCollection, beer, False, brewDate[3:])
 
+    # Update inventory with inventory id
     inventoryCollection.update_one({"_id": ObjectId(inventoryId)}, {"$set":  {
         'totalsInventory': totalsInventory
     }})
@@ -317,31 +342,38 @@ def updateInventory(id):
     response = jsonify(data = "update response")
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
-    #return jsonify(data = "update response")   
 
+# Route to handle deletion of an inventory
 @deleteInventoryRoute.route("/api/deleteInventory/<id>", methods = ["DELETE"])
 def delete(id):
     inventoryId = request.json.get("id")
+    # Remove document with specified id from database
     inventoryCollection.remove({"_id": ObjectId(inventoryId)})
 
+    # Return that delete was a success
     return jsonify(data= "inventory delete successfully") 
 
+# Route to handle return of all stock return info
 @indexStockReturnRoute.route("/api/stockreturn")
 def indexStockReturn():
     stockReturn = []
 
+    # Find stock return returns in Database
     retrieval = stockReturnCollection.find({})
 
     for document in retrieval:
+        # Search for specified data to return
         stockReturn.append({"_id": JSONEncoder().encode(document["_id"]), "beer":document["beer"], "stockReturnDate":document["stockReturnDate"]})
+    # Return list of stock returns found
     return jsonify(data=stockReturn)
-# Route to handle individual stock returns
+
+# Route to handle return stock return of a stock return by id
 @indexStockReturnRoute.route("/api/stockreturn/<id>", methods=["GET"])
 def stockReturnSingle(id):
     # Find one object from mongo using the object id
     cursor = stockReturnCollection.find_one({"_id":ObjectId(id)})
 
-    # Prevemt serializable error being thrown
+    # Prevent serializable error being thrown
     return jsonify(data=JSONEncoder().encode(cursor))
 
 # Route to handle creation of a stock return
@@ -355,9 +387,10 @@ def createStockReturn():
     otherCountryCheckDel = request.json.get("otherCountryCheckDel")
     stockReturnDate = request.json.get("monthDate")
 
+    # Calculate total units
     totalsInventory = calculations.calculateTotalUnits(brewCollection,inventoryCollection, beer, True, stockReturnDate)
 
-    totalCalculations = {
+    stockReturn = {
         "beer": beer,
         "otherBreweryCheckRec": otherBreweryCheckRec,
         "otherCountryCheckRec": otherCountryCheckRec,
@@ -367,7 +400,7 @@ def createStockReturn():
         "stockReturnDate": stockReturnDate
     }
 
-    stockReturnCollection.insert_one(totalCalculations)
+    stockReturnCollection.insert_one(stockReturn)
 
     stockReturnRetrieval = stockReturnCollection.find({})
     totalStockReturnVals = calculations.calculateStockReturnTotalHL(stockReturnRetrieval, stockReturnDate)
@@ -379,22 +412,32 @@ def createStockReturn():
             'totalDutyOwed': round(totalStockReturnVals[1], 2)
         }})
 
+    # Return that creation of stock return was a success
     return jsonify(data="Stock Return created successfully")
 
+# Route to handle delete of a stock return
 @deleteStockReturnRoute.route("/api/deletestockreturn/<id>", methods = ["DELETE"])
 def delete(id):
+    # Get id from url param
     stockReturnId = request.json.get("id")
+
+    # Remove document with id found
     stockReturnCollection.remove({"_id": ObjectId(stockReturnId)})
 
+    # Return that a successful delete occured
     return jsonify(data= "stock return delete successfully") 
 
+# Route to handle return brew info 
 @indexBreweryInfoRoute.route("/api/brewinfo")
 def indexBreweryInfo():
     # findone will return the first document that matches the specified criteria, so when no criteria given returns first document
     # only one brew info document at one time so will always match info
     cursor = breweryInformationCollection.find_one()
 
+    # Prevent serializable error being thrown
     return jsonify(data=JSONEncoder().encode(cursor))
+
+# Route to handle creation of brew info 
 @createBreweryInfoRoute.route("/api/createbrewinfo", methods=["POST"])
 def createBreweryInfo():
     # Request all information and store in variables
@@ -408,7 +451,7 @@ def createBreweryInfo():
     phoneNumber = request.json.get("phoneNumber")
     designationofSignatory = request.json.get("designationofSignatory")
 
-
+    # Setup brew info as json
     brewInfo = {
         "brewerName": brewerName,
         "address": address,
@@ -421,12 +464,16 @@ def createBreweryInfo():
         "designationofSignatory": designationofSignatory
     }
 
+    # Search database for count, if count = 0, thn none exists, create a new document
     if breweryInformationCollection.count() == 0:
         breweryInformationCollection.insert_one(brewInfo)
+    # else document already exists, then overwrite document already in database
     else:
         breweryInformationRetrieval = breweryInformationCollection.find({})
         for document in breweryInformationRetrieval:
+            # Search for the id in the database
             id = document["_id"]
+            # Update the document with found id with new info
             breweryInformationCollection.update_one({"_id": ObjectId(id)}, {"$set":  {
                 "brewerName": brewerName,
                 "address": address,
@@ -438,13 +485,16 @@ def createBreweryInfo():
                 "phoneNumber": phoneNumber,
                 "designationofSignatory": designationofSignatory
             }})
-
+    # Return that creation of Brew Information was a success
     return jsonify(data="Brew Information created successfully")
+
+# Route to handle deletion of brew info 
 @deleteBreweryinfoRoute.route("/api/deletebrewinfo", methods = ["DELETE"])
 def deletebreweryInfo():
     # Remove all documents from collection
     breweryInformationCollection.remove({})
 
+    # Return success of brew deleted
     return jsonify(data= "brewery info delete successfully") 
     
 

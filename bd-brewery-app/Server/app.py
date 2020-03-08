@@ -1,9 +1,9 @@
 from flask import Flask
-
-# Routes
 from flask_cors import CORS
+# Import blueprints from routes.py file
 from routes import indexBrewRoute, createBrewRoute, updateBrewRoute, deleteBrewRoute, brewRoute, indexInventoryRoute, createInventoryRoute, updateInventoryRoute, deleteInventoryRoute, inventoryRoute,indexStockReturnRoute,createStockReturnRoute,stockReturnRoute,deleteStockReturnRoute,indexBreweryInfoRoute,createBreweryInfoRoute,deleteBreweryinfoRoute
 
+# Set up app
 app = Flask(__name__)
 CORS(app)
 
@@ -32,4 +32,5 @@ app.register_blueprint(indexBreweryInfoRoute)
 app.register_blueprint(deleteBreweryinfoRoute)
 
 if __name__ == "__main__":
+    # Run app
     app.run(debug=True)
