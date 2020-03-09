@@ -6,18 +6,18 @@ import { Redirect } from 'react-router';
 
 //component to show user the current warrent
 const Warrant = () => {
-  const [totalDutyOwed, setTotalDutyOwed] = useState([]);
-  const [totalHLPercent, setTotalHLPercent] = useState([]);
-  const [repaymentsAllowed, setRepaymentsAllowed] = useState([]);
+  const [repaymentsAllowed, setRepaymentsAllowed] = useState("");
+  const [stockReturns, setStockReturns] = useState([]);
+  const [totalDutyOwed, setTotalDutyOwed] = useState("");
+  const [totalHLPercent, setTotalHLPercent] = useState("");
   const [routeRedirect, setRedirect] = useState(false); 
   const getStockReturns = () => {
     // fetch stock return data from api
     fetch(process.env.REACT_APP_API_URL+"api/stockreturn").then(res =>{
       return res.json();
     }).then(stockReturns => {
+      setStockReturns(stockReturns.data);
       // [stockReturns.data.length-1] - Get the latest stock return which was created - newest totals incase old ones are outdated
-      setTotalDutyOwed(stockReturns.data[stockReturns.data.length-1].totalDutyOwed);
-      setTotalHLPercent(stockReturns.data[stockReturns.data.length-1].totalHLPercent);
     }).catch(err => {
       console.log(err);
     })
@@ -31,7 +31,10 @@ const Warrant = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const handleConfirm = (event) => { 
-    setRedirect(true);
+    if(totalDutyOwed != ""  && totalHLPercent !="" && repaymentsAllowed !=""){
+      setRedirect(true);
+    }
+    setShow(false);
   }
 
   const redirect = routeRedirect;
@@ -44,16 +47,43 @@ const Warrant = () => {
     }}/>  
   }
 
+  let stockreturnlist = []
+  for (var i = 0; i < stockReturns.length; i++) {
+    var infoconcat = stockReturns[i].beer +" : "+ stockReturns[i].stockReturnDate
+    stockreturnlist.push(infoconcat);
+  }
+
+
+  //function to set stock return to user selected stock return
+  const setSelectedStockReturn= (event) => {
+    for (var i = 0; i < stockReturns.length; i++) {
+        if(stockReturns[i].beer +" : "+ stockReturns[i].stockReturnDate == event.target.value ){
+            setTotalDutyOwed(stockReturns[i].totalDutyOwed);
+            setTotalHLPercent(stockReturns[i].totalHLPercent);
+        }
+    }   
+  }
+    
+    
+    //set up beers as dropdown options for user in creation via mapping
+    const stockReturnOptions = stockreturnlist.map((beer) =>
+    <option>{beer}</option>
+  );
+
   //set modal up for when user clicks create warrent, it pops up with user creation options
   let modal =       
   <div>
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Enter Warrant Less Repayments Allowed</Modal.Title>
+        <Modal.Title><b>Enter Repayments Allowed</b></Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <div>
-        <label>Hectolitre %</label>
+        <select onChange={event => setSelectedStockReturn(event)}>
+          <option>Select a Stock Return...</option>
+          {stockReturnOptions}
+        </select><br/>
+        <label>Repayments - Hectolitre %</label>
         <input type="text" onChange={event => setRepaymentsAllowed(event.target.value)}/></div>
       </Modal.Body>
       <Modal.Footer>
