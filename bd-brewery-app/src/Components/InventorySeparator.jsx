@@ -33,7 +33,6 @@ const InventorySeparator = () => {
       background: 'rgba(144, 84, 23, 0.5)'
     };
   
-  
     let inventorylist = []
     // loop over inventories and add beers by name into a list
     for (var i = 0; i < inventories.length; i++) {
@@ -42,6 +41,7 @@ const InventorySeparator = () => {
           inventorylist.push(inventories[i].beer);
         }
     }
+
     let inventoriesArray;
     //for each beer added to list then map to a link and display to user
     if(inventorylist.length > 0){
@@ -72,7 +72,7 @@ const InventorySeparator = () => {
   return(
       <React.Fragment> 
         <div>
-          <h1 style={{color: "white"}}>Inventory: Beers</h1>
+          <h2 style={{color: "white"}}>Inventories: By Beer Name</h2>
           {inventoriesArray}
         </div>
       </React.Fragment>)

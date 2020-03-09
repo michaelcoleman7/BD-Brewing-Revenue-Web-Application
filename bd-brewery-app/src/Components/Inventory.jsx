@@ -18,7 +18,7 @@ return(
               </Card.Body>
             </Card>
 
-            <Card bg="success" style={{color: 'white'}}>          
+            <Card bg="success" style={{width: '18rem'}}>          
               <Link to="/inventory"> <Card.Img src={require("../Images/BeerPour.PNG")} height="300"/></Link>
               <Card.Body>
                 <Card.Title>View Inventorys</Card.Title>

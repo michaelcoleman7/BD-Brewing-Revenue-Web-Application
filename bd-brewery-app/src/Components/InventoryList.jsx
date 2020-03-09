@@ -102,7 +102,7 @@ return(
       <div>
       <h5 style={{color: "white"}}>Select a Date in the month you wish to sort by: {selectedMonth}</h5>
       <DatePicker format="MM/yyyy" onChange={event => dateChange(event)}/>
-      <h1 style={{color: "white"}}>Inventories List</h1>
+      <h2 style={{color: "white"}}>Inventories List</h2>
         {inventoriesArray}
       </div>
     </React.Fragment>)
