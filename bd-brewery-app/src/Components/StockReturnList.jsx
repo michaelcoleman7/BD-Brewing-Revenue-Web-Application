@@ -69,7 +69,7 @@ const StockReturnList = () => {
               <Link to={"../stockreturn/"+stockReturn._id}>
                 <ListGroup>
                 <center>
-                    <ListGroup.Item style={listItem}>{stockReturn.beer}</ListGroup.Item>
+                    <ListGroup.Item style={listItem}>{stockReturn.beer} : {stockReturn.stockReturnDate}</ListGroup.Item>
                 </center>
                 </ListGroup>
               </Link>

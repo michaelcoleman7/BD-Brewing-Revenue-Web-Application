@@ -17,7 +17,6 @@ const Warrant = () => {
       return res.json();
     }).then(stockReturns => {
       setStockReturns(stockReturns.data);
-      // [stockReturns.data.length-1] - Get the latest stock return which was created - newest totals incase old ones are outdated
     }).catch(err => {
       console.log(err);
     })
@@ -31,6 +30,7 @@ const Warrant = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const handleConfirm = (event) => { 
+    //if all are not default values, then all have been entered
     if(totalDutyOwed != ""  && totalHLPercent !="" && repaymentsAllowed !=""){
       setRedirect(true);
     }
@@ -47,8 +47,10 @@ const Warrant = () => {
     }}/>  
   }
 
+  //add stock return info into list for options display
   let stockreturnlist = []
   for (var i = 0; i < stockReturns.length; i++) {
+    //concat beer and date to show identifing information of a stock return - could have multiple of same name with a different month
     var infoconcat = stockReturns[i].beer +" : "+ stockReturns[i].stockReturnDate
     stockreturnlist.push(infoconcat);
   }
@@ -65,8 +67,8 @@ const Warrant = () => {
   }
     
     
-    //set up beers as dropdown options for user in creation via mapping
-    const stockReturnOptions = stockreturnlist.map((beer) =>
+  //set up beers as dropdown options for user in creation via mapping
+  const stockReturnOptions = stockreturnlist.map((beer) =>
     <option>{beer}</option>
   );
 
