@@ -363,7 +363,7 @@ def indexStockReturn():
 
     for document in retrieval:
         # Search for specified data to return
-        stockReturn.append({"_id": JSONEncoder().encode(document["_id"]), "beer":document["beer"], "stockReturnDate":document["stockReturnDate"]})
+        stockReturn.append({"_id": JSONEncoder().encode(document["_id"]), "beer":document["beer"], "stockReturnDate":document["stockReturnDate"], "totalHLPercent":document["totalHLPercent"], "totalDutyOwed":document["totalDutyOwed"]})
     # Return list of stock returns found
     return jsonify(data=stockReturn)
 
