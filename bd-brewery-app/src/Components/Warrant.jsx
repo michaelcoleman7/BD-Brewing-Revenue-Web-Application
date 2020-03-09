@@ -4,12 +4,14 @@ import Card from 'react-bootstrap/Card';
 import {Modal,Button} from 'react-bootstrap';
 import { Redirect } from 'react-router';
 
+//component to show user the current warrent
 const Warrant = () => {
   const [totalDutyOwed, setTotalDutyOwed] = useState([]);
   const [totalHLPercent, setTotalHLPercent] = useState([]);
   const [repaymentsAllowed, setRepaymentsAllowed] = useState([]);
   const [routeRedirect, setRedirect] = useState(false); 
   const getStockReturns = () => {
+    // fetch stock return data from api
     fetch(process.env.REACT_APP_API_URL+"api/stockreturn").then(res =>{
       return res.json();
     }).then(stockReturns => {
@@ -20,19 +22,11 @@ const Warrant = () => {
       console.log(err);
     })
   }
-
   useEffect(() => {
     getStockReturns();
   }, [])
 
-  const divStyle = {
-    width: '28rem'
-  };
-
-  const header = {
-    color: 'white'
-  };
-
+  // set up modal functions
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -41,13 +35,16 @@ const Warrant = () => {
   }
 
   const redirect = routeRedirect;
+  // Set up redirect for navigation
   if(redirect){
        return <Redirect to={{
         pathname: '/Warrantdisplay',
+        //props to send with redirection
         state: { repaymentsAllowed: repaymentsAllowed, totalDutyOwed:totalDutyOwed, totalHLPercent:totalHLPercent }
     }}/>  
   }
 
+  //set modal up for when user clicks create warrent, it pops up with user creation options
   let modal =       
   <div>
     <Modal show={show} onHide={handleClose}>
@@ -70,11 +67,12 @@ const Warrant = () => {
     </Modal>
   </div>
 
+//return elements to display to user
 return(
     <React.Fragment> 
-      <h1 style={header}>Warrant Management</h1>
+      <h1 style={{color: 'white'}}>Warrant Management</h1>
       <div class="d-flex justify-content-around">
-            <Card bg="primary" style={divStyle}>          
+            <Card bg="primary" style={{width: '28rem'}}>          
               <Link onClick={handleShow}> <Card.Img src={require("../Images/warrant.jpg")} height="300"/></Link>
               <Card.Body>
                 <Card.Title>View Current Warrant</Card.Title>

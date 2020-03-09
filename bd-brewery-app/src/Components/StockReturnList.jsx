@@ -4,26 +4,28 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import DatePicker from 'react-date-picker';
 import { format } from 'date-fns';
 
+//component used to display list of stock returns
 const StockReturnList = () => {
-
   const [stockReturns, setStockReturns] = useState([]);
   const [monthDate, setMonthDate] = useState("");
   const [selectedMonth, setSelectedMonth] = useState("None Selected");
   const getStockReturns = () => {
+    //fetch stock return data from api
     fetch(process.env.REACT_APP_API_URL+"api/stockreturn").then(res =>{
       return res.json();
     }).then(stockReturns => {
-      console.log(stockReturns);
+      //set stock returns to returned data
       setStockReturns(stockReturns.data);
     }).catch(err => {
       console.log(err);
     })
   }
-
+  //call function to call api to get stock returns
   useEffect(() => {
     getStockReturns();
   }, [])
 
+  //css for each list item
   const listItem = {
     width: '18rem',
     width: '40%',
@@ -37,26 +39,28 @@ const StockReturnList = () => {
   };
 
   let stockReturnList = []
+  //craete a list of stock returns based on user selected month
   for (var i = 0; i < stockReturns.length; i++) {
-    console.log(stockReturns[i].stockReturnDate);
-    console.log(monthDate);
+    //if stock returns date is equal to month date selected by use, then add to list
     if(stockReturns[i].stockReturnDate == monthDate){
       stockReturnList.push(stockReturns[i]);
     }
+    //no month selected, then display all stock returns
     else if(monthDate == ""){
       stockReturnList.push(stockReturns[i]);
     }
   }
 
   let newDate;
+  //set date based on user selected date
   const dateChange = (date) => {
-      newDate = format(new Date(date), 'MM-yyyy')
-      setMonthDate(newDate);
-      setSelectedMonth("Current selected Month is: "+ newDate);
+    newDate = format(new Date(date), 'MM-yyyy')
+    setMonthDate(newDate);
+    setSelectedMonth("Current selected Month is: "+ newDate);
   }
 
-
   let stockReturnArray;
+  //if stock return list is greater than 0, then map each stock returns to a link and display
   if(stockReturnList.length > 0){
     stockReturnArray = <div>
         {stockReturnList.map(stockReturn => {
@@ -74,12 +78,13 @@ const StockReturnList = () => {
         })}
       </div>
   }else{
+    //if no stock returns in list then display this to user
     stockReturnArray = 
     <div>
       <h1 style={{color: "white"}}>No Stock Returns exist in the database, Please create a Stock Return</h1>
     </div>
   }
-
+//return elements to display to user
 return(
     <React.Fragment> 
       <div>

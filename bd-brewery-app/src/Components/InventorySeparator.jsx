@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import {Link} from 'react-router-dom';
 import ListGroup from 'react-bootstrap/ListGroup';
 
+// Component to sort inventories by beer name
 const InventorySeparator = () => {
-
     const [inventories, setinventories] = useState([]);
     const getInventories = () => {
       fetch(process.env.REACT_APP_API_URL+"api/inventory").then(res =>{
@@ -15,11 +15,12 @@ const InventorySeparator = () => {
         console.log(err);
       })
     }
-  
+    //call function to get inventories from api
     useEffect(() => {
       getInventories();
     }, [])
   
+    //css for each list item
     const listItem = {
       width: '18rem',
       width: '40%',
@@ -34,16 +35,15 @@ const InventorySeparator = () => {
   
   
     let inventorylist = []
+    // loop over inventories and add beers by name into a list
     for (var i = 0; i < inventories.length; i++) {
-        console.log(inventories[i].beer)
-        if(inventorylist.includes(inventories[i].beer)){
-            //console.log("Duplicate found: "+brews[i].beer);
-        }
-        else{
-            inventorylist.push(inventories[i].beer);
+        //if list doesnt already contain beer name, add name to list
+        if(!inventorylist.includes(inventories[i].beer)){
+          inventorylist.push(inventories[i].beer);
         }
     }
     let inventoriesArray;
+    //for each beer added to list then map to a link and display to user
     if(inventorylist.length > 0){
         inventoriesArray = <div>
           {inventorylist.map(inventory => {
@@ -61,12 +61,14 @@ const InventorySeparator = () => {
           })}
         </div>
     }else{
-        inventoriesArray = 
-      <div>
-        <h1 style={{color: "white"}}>No Inventories exist in the database, please create an Inventory</h1>
-      </div>
+      //if list size = 0, then display no beers/inventories exist to user
+      inventoriesArray = 
+        <div>
+          <h1 style={{color: "white"}}>No Inventories exist in the database, please create an Inventory</h1>
+        </div>
     }
   
+  //return list data to be displayed to user
   return(
       <React.Fragment> 
         <div>
@@ -75,5 +77,5 @@ const InventorySeparator = () => {
         </div>
       </React.Fragment>)
     }
-
+//Export component for use
 export default InventorySeparator;

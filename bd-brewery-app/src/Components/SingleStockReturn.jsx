@@ -5,24 +5,7 @@ import Table from 'react-bootstrap/Table';
 import '../Stylesheets/Form.css';
 import ReactToPrint from "react-to-print";
 
-// Set some styling for div
-const divStyle = {
-    width: '48%',
-    border: '5px',
-    background: 'rgba(144, 84, 23, 0.5)',
-    padding: '20px',
-    margin: '10px'
-  };
-
-  const formStyle = {
-    width: '100%',
-    border: '5px',
-    background: 'rgba(144, 84, 23, 0.5)',
-    padding: '20px',
-    margin: '10px'
-  };
-
-  // react arrow function component to create a inventory
+  // Component to setup a single stock return
   const SingleStockReturn = (props) => {
     // using react hooks to change state - adapted from https://reactjs.org/docs/hooks-state.html
     const [otherBreweryCheckRec, setOtherBreweryCheckRec] = useState("");
@@ -66,18 +49,20 @@ const divStyle = {
     const [routeRedirect, setRedirect] = useState(""); 
 
     const getStockReturn = () => {
+        //set id based on props passed in url
         let id = props.match.params.id;
 
         // Remove all the "" from the id - 
         //Note: Adding the /g will mean that all of the matching values are replaced,
         //otherwise just 1st occurance removed- https://stackoverflow.com/questions/1206911/why-do-i-need-to-add-g-when-using-string-replace-in-javascript
         let quotationlessId = id.replace(/['"]+/g, "");     
-
         setStockReturnId(quotationlessId);
 
+        //fetch single stock return from api using id from props
         fetch(process.env.REACT_APP_API_URL+"api/stockreturn/"+quotationlessId).then(res => {
             return res.json();
         }).then(res => {
+            //setup stock return variabels
             let parsed = JSON.parse(res.data);
             setStockReturn(parsed);
             setOpeningStock330Cases(parsed.totalsInventory.openingStock330Cases);
@@ -119,17 +104,19 @@ const divStyle = {
             console.log(err);
         })
     }
-
+    //call function to make call to api to get stock returns
     useEffect(() => {
         getStockReturn();
     },[]);
 
     let redirectRoute = "/stockreturnlist/"
+    //set up redirect route for naviagtion from component
     const redirect = routeRedirect;
     if(redirect){
          return <Redirect to={redirectRoute}/>  
     }
 
+    // function to delete a specific stock return
     const deleteStockReturn = (stockReturnId) => {
         const options = { 
             method: 'delete',
@@ -138,93 +125,96 @@ const divStyle = {
             },
             body: JSON.stringify({id: stockReturnId})
         } 
-          fetch(process.env.REACT_APP_API_URL+"api/deletestockreturn/"+ stockReturnId , options)
-          .then(res => {
-            return res.json()
-           })
-           .then(res => {
-               setRedirect(true);
-           }).catch(err => {
-               console.log(err)
-           })
+        
+        //send api call with id to delete
+        fetch(process.env.REACT_APP_API_URL+"api/deletestockreturn/"+ stockReturnId , options)
+        .then(res => {
+        return res.json()
+        })
+        .then(res => {
+            setRedirect(true);
+        }).catch(err => {
+            console.log(err)
+        })
     }
     
-    //adapted from - https://www.npmjs.com/package/react-to-print
+    //Component with elements to show inventory info
     class StockReturnInformation extends React.Component {
         //method fired when the component is created
         componentDidMount() {
-                    if(otherBreweryCheckRec == false && otherCountryCheckRec == false){
-                    var elems = document.getElementsByClassName("kdmRec");
-                    elems[0].innerHTML = receipts330Cases;
-                    elems[1].innerHTML = receipts500Cases;
-                    elems[2].innerHTML = receiptsKegs;
-                    elems[3].innerHTML = receipts_HL;
-                    elems[4].innerHTML = receiptsPercentage;
-                    elems[5].innerHTML = receipts_HLPercent;
-                }
-                else if(otherBreweryCheckRec == true && otherCountryCheckRec == false){
-                    var elems = document.getElementsByClassName("warehouseRec");
-                    elems[0].innerHTML = receipts330Cases;
-                    elems[1].innerHTML = receipts500Cases;
-                    elems[2].innerHTML = receiptsKegs;
-                    elems[3].innerHTML = receipts_HL;
-                    elems[4].innerHTML = receiptsPercentage;
-                    elems[5].innerHTML = receipts_HLPercent;
-                }
-                else if(otherBreweryCheckRec == false && otherCountryCheckRec == true){
-                    var elems = document.getElementsByClassName("countryRec");
-                    elems[0].innerHTML = receipts330Cases;
-                    elems[1].innerHTML = receipts500Cases;
-                    elems[2].innerHTML = receiptsKegs;
-                    elems[3].innerHTML = receipts_HL;
-                    elems[4].innerHTML = receiptsPercentage;
-                    elems[5].innerHTML = receipts_HLPercent;
-                }
-        
-                //set up delveries columns
-                if(otherBreweryCheckDel == false && otherCountryCheckDel == false){
-                    var elems = document.getElementsByClassName("kdmDel");
-                    elems[0].innerHTML = deliveries330Cases;
-                    elems[1].innerHTML = deliveries500Cases;
-                    elems[2].innerHTML = deliveriesKegs;
-                    elems[3].innerHTML = deliveries_HL;
-                    elems[4].innerHTML = deliveriesPercentage;
-                    elems[5].innerHTML = deliveries_HLPercent;
-                }
-                else if(otherBreweryCheckDel == true && otherCountryCheckDel == false){
-                    var elems = document.getElementsByClassName("warehouseDel");
-                    elems[0].innerHTML = deliveries330Cases;
-                    elems[1].innerHTML = deliveries500Cases;
-                    elems[2].innerHTML = deliveriesKegs;
-                    elems[3].innerHTML = deliveries_HL;
-                    elems[4].innerHTML = deliveriesPercentage;
-                    elems[5].innerHTML = deliveries_HLPercent;
-                }
-                else if(otherBreweryCheckDel == false && otherCountryCheckDel == true){
-                    var elems = document.getElementsByClassName("countryDel");
-                    elems[0].innerHTML = deliveries330Cases;
-                    elems[1].innerHTML = deliveries500Cases;
-                    elems[2].innerHTML = deliveriesKegs;
-                    elems[3].innerHTML = deliveries_HL;
-                    elems[4].innerHTML = deliveriesPercentage;
-                    elems[5].innerHTML = deliveries_HLPercent;
-                }
-                //set up totals - according to stock return sheets
-                var elems = document.getElementsByClassName("totDel");
-                elems[0].innerHTML = deliveries330Cases;
-                elems[1].innerHTML = deliveries500Cases;
-                elems[2].innerHTML = deliveriesKegs;
-                elems[3].innerHTML = deliveries_HL;
-                elems[4].innerHTML = deliveriesPercentage;
-                elems[5].innerHTML = deliveries_HLPercent;
-                var elems = document.getElementsByClassName("totRec");
+            //set up page elements based on data for imports
+            if(otherBreweryCheckRec == false && otherCountryCheckRec == false){
+                var elems = document.getElementsByClassName("kdmRec");
                 elems[0].innerHTML = receipts330Cases;
                 elems[1].innerHTML = receipts500Cases;
                 elems[2].innerHTML = receiptsKegs;
                 elems[3].innerHTML = receipts_HL;
                 elems[4].innerHTML = receiptsPercentage;
                 elems[5].innerHTML = receipts_HLPercent;
-          }
+            }
+            else if(otherBreweryCheckRec == true && otherCountryCheckRec == false){
+                var elems = document.getElementsByClassName("warehouseRec");
+                elems[0].innerHTML = receipts330Cases;
+                elems[1].innerHTML = receipts500Cases;
+                elems[2].innerHTML = receiptsKegs;
+                elems[3].innerHTML = receipts_HL;
+                elems[4].innerHTML = receiptsPercentage;
+                elems[5].innerHTML = receipts_HLPercent;
+            }
+            else if(otherBreweryCheckRec == false && otherCountryCheckRec == true){
+                var elems = document.getElementsByClassName("countryRec");
+                elems[0].innerHTML = receipts330Cases;
+                elems[1].innerHTML = receipts500Cases;
+                elems[2].innerHTML = receiptsKegs;
+                elems[3].innerHTML = receipts_HL;
+                elems[4].innerHTML = receiptsPercentage;
+                elems[5].innerHTML = receipts_HLPercent;
+            }
+    
+            //set up delveries columns
+            if(otherBreweryCheckDel == false && otherCountryCheckDel == false){
+                var elems = document.getElementsByClassName("kdmDel");
+                elems[0].innerHTML = deliveries330Cases;
+                elems[1].innerHTML = deliveries500Cases;
+                elems[2].innerHTML = deliveriesKegs;
+                elems[3].innerHTML = deliveries_HL;
+                elems[4].innerHTML = deliveriesPercentage;
+                elems[5].innerHTML = deliveries_HLPercent;
+            }
+            else if(otherBreweryCheckDel == true && otherCountryCheckDel == false){
+                var elems = document.getElementsByClassName("warehouseDel");
+                elems[0].innerHTML = deliveries330Cases;
+                elems[1].innerHTML = deliveries500Cases;
+                elems[2].innerHTML = deliveriesKegs;
+                elems[3].innerHTML = deliveries_HL;
+                elems[4].innerHTML = deliveriesPercentage;
+                elems[5].innerHTML = deliveries_HLPercent;
+            }
+            else if(otherBreweryCheckDel == false && otherCountryCheckDel == true){
+                var elems = document.getElementsByClassName("countryDel");
+                elems[0].innerHTML = deliveries330Cases;
+                elems[1].innerHTML = deliveries500Cases;
+                elems[2].innerHTML = deliveriesKegs;
+                elems[3].innerHTML = deliveries_HL;
+                elems[4].innerHTML = deliveriesPercentage;
+                elems[5].innerHTML = deliveries_HLPercent;
+            }
+            //set up totals - according to stock return sheets
+            var elems = document.getElementsByClassName("totDel");
+            elems[0].innerHTML = deliveries330Cases;
+            elems[1].innerHTML = deliveries500Cases;
+            elems[2].innerHTML = deliveriesKegs;
+            elems[3].innerHTML = deliveries_HL;
+            elems[4].innerHTML = deliveriesPercentage;
+            elems[5].innerHTML = deliveries_HLPercent;
+            var elems = document.getElementsByClassName("totRec");
+            elems[0].innerHTML = receipts330Cases;
+            elems[1].innerHTML = receipts500Cases;
+            elems[2].innerHTML = receiptsKegs;
+            elems[3].innerHTML = receipts_HL;
+            elems[4].innerHTML = receiptsPercentage;
+            elems[5].innerHTML = receipts_HLPercent;
+        }
         render() {
           return (
             <center><Card style={{ width: '75%' }}>
@@ -411,8 +401,8 @@ const divStyle = {
           );
         }
       } 
-
-      class StockReturnDisplay extends React.Component {
+    // Component to show info and allow ability to print inventory info - adapted from - https://www.npmjs.com/package/react-to-print
+    class StockReturnDisplay extends React.Component {
         render() {
         return (
             <div>
@@ -426,14 +416,12 @@ const divStyle = {
         }
     }
     
-
+    // return fragment with elements to display
     return(
-        // React Fragment is a way of sending back multiple elements - https://reactjs.org/docs/fragments.html
         <React.Fragment> 
             <StockReturnDisplay/>
             <button onClick={(e) => deleteStockReturn(stockReturnId)}>Delete Stock Return</button>
         </React.Fragment>)
-}
-    
-
+}  
+//Export component for use
 export default SingleStockReturn;

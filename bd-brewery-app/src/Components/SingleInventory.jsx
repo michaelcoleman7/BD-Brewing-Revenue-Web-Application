@@ -6,7 +6,7 @@ import Table from 'react-bootstrap/Table';
 import '../Stylesheets/Form.css';
 import ReactToPrint from "react-to-print";
 
-// Set some styling for div
+// Set some styling for div and form
 const divStyle = {
     width: '48%',
     border: '5px',
@@ -14,7 +14,6 @@ const divStyle = {
     padding: '20px',
     margin: '10px'
   };
-
   const formStyle = {
     width: '100%',
     border: '5px',
@@ -23,17 +22,16 @@ const divStyle = {
     margin: '10px'
   };
 
-  // react arrow function component to create a inventory
+  // react arrow function component to setup a single inventory
   const SingleInventory = (props) => {
     // using react hooks to change states - adapted from https://reactjs.org/docs/hooks-state.html
     const [batchNo, setBatchNo] = useState("");
     const [beer, setBeer] = useState("");
     const [inventoryId, setInventoryId] = useState("");
     const [inventory, setInventory] = useState("");
+    const [brews, setbrews] = useState([]);
     const [totalsInventory, setTotalsInventory] = useState("");
     const [changeInventory, setChangeInventory] = useState(false); 
-
-    const [totalLitres, setTotalLitres] = useState("");
     const [totalCasesSold500Month, setTotalCasesSold500Month] = useState("");
     const [remainingCases500, setRemainingCases500] = useState("");
     const [totalCasesSold330Month, setTotalCasesSold330Month] = useState("");
@@ -48,25 +46,25 @@ const divStyle = {
     const [showAlert, setAlertShow] = useState(false);
 
     const getInventory = () => {
+        //get id from props (passed in url with navigation to component)
         let id = props.match.params.id;
 
         // Remove all the "" from the id - 
         //Note: Adding the /g will mean that all of the matching values are replaced,
         //otherwise just 1st occurance removed- https://stackoverflow.com/questions/1206911/why-do-i-need-to-add-g-when-using-string-replace-in-javascript
         let quotationlessId = id.replace(/['"]+/g, "");     
-
         setInventoryId(quotationlessId);
 
+        //fetch singl inventory data from server using id
         fetch(process.env.REACT_APP_API_URL+"api/inventory/"+quotationlessId).then(res => {
             return res.json();
         }).then(res => {
-            //console.log("response "+res.data);
+            //setup single brew info - store in variables
             let parsed = JSON.parse(res.data);
             setBeer(props)
             setInventory(parsed);
             setTotalsInventory(parsed.totalsInventory)
             setBatchNo(parsed.batchNo);
-            setTotalLitres(parsed.totalLitres)
             setTotalCasesSold500Month(parsed.totalCasesSold500Month);
             setRemainingCases500(parsed.remainingCases500);
             setTotalCasesSold330Month(parsed.totalCasesSold330Month);
@@ -81,22 +79,22 @@ const divStyle = {
             console.log(err);
         })
     }
-
     useEffect(() => {
         getInventory();
     },[]);
 
-    const [brews, setbrews] = useState([]);
+    // function to set get brews data needed for editing inventory data
     const getBrews = () => {
+        //fetch brews data from api
         fetch(process.env.REACT_APP_API_URL+"api/brew").then(res =>{
           return res.json();
         }).then(brews => {
+            //set brews data to brews variable
           setbrews(brews.data);
         }).catch(err => {
           console.log(err);
         })
-      }
-    
+      }  
       useEffect(() => {
         getBrews();
       }, [])
@@ -119,9 +117,9 @@ const divStyle = {
             openingStockKegs: openingStockKegs,
             openingStockPercentage: openingStockPercentage
         }
-
-          //console.log(inventory)
-          const options = { 
+        
+        //options to be sent with api call
+        const options = { 
             method: 'put',
             headers: {
               'Content-Type': 'application/json',
@@ -134,31 +132,34 @@ const divStyle = {
             if(batchNo && totalCasesSold500Month && remainingCases500 && totalCasesSold330Month && remainingCases330 && totalKegsSoldMonth && remainingKegs && openingStock330Cases && openingStock500Cases && openingStockKegs && openingStockPercentage){
                 if(isNaN(parseInt(totalCasesSold500Month)) || isNaN(parseInt(remainingCases500)) || isNaN(parseInt(totalCasesSold330Month)) || isNaN(parseInt(remainingCases330)) || 
                 isNaN(parseInt(totalKegsSoldMonth)) || isNaN(parseInt(remainingKegs)) || isNaN(parseInt(openingStock330Cases))|| isNaN(parseInt(openingStock500Cases))  || isNaN(parseInt(openingStockKegs))|| isNaN(parseInt(openingStockPercentage))){
+                    //show alert with error data
                     setAlertShow(!showAlert);
-                    console.log("Invalid form format, will not be sent to database");
                 }
                 else{
+                    //all data valid, then send to server
                     fetch(process.env.REACT_APP_API_URL+"api/updateInventory/"+ inventoryId, options)
                     .then(res => {
                         return res.json();
                     }).then(res => {
-                        console.log(res)
+                        //set redirect to true - for navigation after successful request
                          setRedirect(true);
                     }).catch(err => {
                         console.log(err)
                     });
                 }        
         }else{
+            //show alert with error data
             setAlertShow(!showAlert);
-            console.log("Invalid form format, will not be sent to database");
         }
     }
+    //if redirect is set to true then redirtect to homepage
     let redirectRoute = "/"
     const redirect = routeRedirect;
     if(redirect){
          return <Redirect to={redirectRoute} />  
     }
 
+    //function to delete a specific inventory
     const deleteItem = (inventoryId) => {
         const options = { 
             method: 'delete',
@@ -167,11 +168,13 @@ const divStyle = {
             },
             body: JSON.stringify({id: inventoryId})
           } 
+          //send call to api with id to delete
           fetch(process.env.REACT_APP_API_URL+"api/deleteInventory/"+ inventoryId , options)
           .then(res => {
             return res.json()
            })
            .then(res => {
+               //set redirect to true after deletion
                setRedirect(true);
            }).catch(err => {
                console.log(err)
@@ -179,6 +182,7 @@ const divStyle = {
     }
 
     let alertFormError;
+    //if showalert true then show alert with error data
     if(showAlert){
         alertFormError =
             <React.Fragment>
@@ -191,25 +195,30 @@ const divStyle = {
             </React.Fragment>
     }
 
+    // function to show edit form for user and call set up beer info
     const editItem = (inventoryId) => {
-        console.log(inventoryId)
         setChangeInventory(!changeInventory);
         setBeersInfo();
     }
 
+    //set up options for dropdown to select brew to make inventory with
     const batchNosList = brews.map((brew) =>
         <option>{brew.batchNo}</option>
     );
 
+    //set up brew info
     const setUpBrewInfo = (event) => {
+        //set batch number to user selected batch number
         setBatchNo(event.target.value)
         for (var i = 0; i < brews.length; i++) {
+            // if batch number in brew is qual to user selected then set beer to that brews beer
             if(brews[i].batchNo == event.target.value ){
                 setBeer(brews[i].beer);
             }
         }   
     }
 
+    //function to set default value for beer
     const setBeersInfo = () =>{
         for (var i = 0; i < brews.length; i++) {
             if(brews[i].batchNo == batchNo ){
@@ -219,6 +228,7 @@ const divStyle = {
     }
     
     let editForm;
+    //form for editing a single inventory with data from api call of specific inventory
     if(changeInventory){
         editForm =
             <React.Fragment>
@@ -267,7 +277,7 @@ const divStyle = {
             </React.Fragment>
     }
 
-       //adapted from - https://www.npmjs.com/package/react-to-print
+       //Component with elements to show inventory info
        class InventoryInformation extends React.Component {
         render() {
           return (
@@ -374,6 +384,7 @@ const divStyle = {
           );
         }
       }    
+      // Component to show info and allow ability to print inventory info - adapted from - https://www.npmjs.com/package/react-to-print
     class InventoryDisplay extends React.Component {
         render() {
         return (
@@ -388,6 +399,7 @@ const divStyle = {
         }
     }
 
+    //return elements for inventory display to user
     return(
         // React Fragment is a way of sending back multiple elements - https://reactjs.org/docs/fragments.html
         <React.Fragment> 
@@ -396,7 +408,6 @@ const divStyle = {
             <button onClick={(e) => deleteItem(inventoryId)}>Delete Inventory</button>
             {editForm}
         </React.Fragment>)
-}
-    
-
+}  
+//Export component for use
 export default SingleInventory;

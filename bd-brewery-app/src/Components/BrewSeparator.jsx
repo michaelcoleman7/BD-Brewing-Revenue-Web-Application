@@ -44,7 +44,7 @@ const BrewSeparator = () => {
     }
   }
   let brewsArray;
-  // for each beer added to list then map to a link and dispaly to user
+  // for each beer added to list then map to a link and display to user
   if(beerlist.length > 0){
       brewsArray = <div>
         {beerlist.map(beer => {

@@ -34,7 +34,6 @@ const divStyle = {
     const [brewDate, setBrewDate] = useState("");
     const [og, setOG] = useState("");
     const [pg, setPG] = useState("");
-    const [ogMinusPg, setOGMinusPG] = useState("");
     const [postConditionDate, setPCD] = useState("");
     const [postConditionVol, setPCV] = useState("");
     const [kegNo, setKegNo] = useState("");
@@ -68,7 +67,6 @@ const divStyle = {
             setBrewDate(parsed.brewDate);
             setOG(parsed.og);
             setPG(parsed.pg);
-            setOGMinusPG(parsed.ogMinuspg);
             setPCD(parsed.postConditionDate);
             setPCV(parsed.postConditionVol);
             setKegNo(parsed.kegNo);
@@ -250,7 +248,7 @@ const divStyle = {
             </React.Fragment>
     }
     
-    //component to show brew info adapted from - https://www.npmjs.com/package/react-to-print
+    //component with elements to show brew info
     class BrewInformation extends React.Component {
         render() {
           return (
@@ -280,7 +278,7 @@ const divStyle = {
         }
       }  
 
-      // Component to allow printing of brew
+      // Component to display brew info and allow printing of brew - adapted from - https://www.npmjs.com/package/react-to-print
       class BrewDisplay extends React.Component {
         render() {
         return (

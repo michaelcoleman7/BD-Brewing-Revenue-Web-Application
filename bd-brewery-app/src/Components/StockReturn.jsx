@@ -6,6 +6,7 @@ import {Modal,Button} from 'react-bootstrap';
 import DatePicker from 'react-date-picker';
 import { format } from 'date-fns';
 
+//Component to create stock returns aswell as ability to navigate to viewing stock returns
 const StockReturn = () => {
   const [inventories, setinventories] = useState([]);
   const [beer, setBeer] = useState([]);
@@ -19,11 +20,15 @@ const StockReturn = () => {
   const [monthDate, setMonthDate] = useState("");
   const [selectedMonth, setSelectedMonth] = useState("None Selected");
 
+  //function to get inventories - used to create a stock return
   const getInventories = () => {
+    //fetch inventory data from api
     fetch(process.env.REACT_APP_API_URL+"api/inventory").then(res =>{
       return res.json();
     }).then(inventories => {
+      //set inventories
       setinventories(inventories.data);
+
       //set initial values for data
       setBeer(null);
       setHiddenValRec(true);
@@ -36,19 +41,19 @@ const StockReturn = () => {
       console.log(err);
     })
   }
-
   useEffect(() => {
     getInventories();
   }, [])
 
   let inventorylist = []
+  //set up beers into a list to allow beer selection used in stock return
   for (var i = 0; i < inventories.length; i++) {
-      if(inventorylist.includes(inventories[i].beer)){}
-      else{
-          inventorylist.push(inventories[i].beer);
+      if(!inventorylist.includes(inventories[i].beer)){
+        inventorylist.push(inventories[i].beer);
       }
   }
 
+  //function to set beer to user selected beer
   const setUpBeers= (event) => {
     for (var i = 0; i < inventorylist.length; i++) {
         if(inventorylist[i] == event.target.value ){
@@ -56,19 +61,19 @@ const StockReturn = () => {
         }
     }   
   }
-
+  //set up beers as dropdown options for user in creation via mapping
   const beersList = inventorylist.map((beer) =>
-  <option>{beer}</option>
+    <option>{beer}</option>
   );
 
+  //set up values used for modal show and confirmation of creation of stock return
   const [show, setShow] = useState(false);
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const handleConfirm = (event) => {
     event.preventDefault();   
 
-    //brew values to be sent to server
+    //stock return values to be sent to server
     const stockreturn = {
         beer: beer,
         otherBreweryCheckRec: otherBreweryCheckRec,
@@ -88,7 +93,6 @@ const StockReturn = () => {
     }
 
     //if all data is valid, then post to server
-
     if(beer && monthDate){
       fetch(process.env.REACT_APP_API_URL +"api/createstockreturn", options)
       .then(res => {
@@ -99,7 +103,8 @@ const StockReturn = () => {
       })    
     }
     setShow(false);
-  }
+  } 
+  //function for showing import values to user based on user selection - Reciepts
   const importRecChecked = () => {
     if(hiddenValRec){
       setHiddenValRec(false);
@@ -111,6 +116,7 @@ const StockReturn = () => {
     }
   }
 
+  //function for showing import values to user based on user selection - Deliveries
   const importDelChecked = () => {
     if(hiddenValDel){
       setHiddenValDel(false);
@@ -122,6 +128,7 @@ const StockReturn = () => {
     }
   }
 
+  //function for setting up import values based on user selection - Reciepts
   const swapRadiosRec = (event) => {
     if(otherBreweryCheckRec){
       setOtherCountryCheckRec(true);
@@ -133,6 +140,7 @@ const StockReturn = () => {
     }
   }
 
+  //function for setting up import values based on user selection - Deliveries
   const swapRadiosDel = (event) => {
     if(otherBreweryCheckDel){
       setOtherCountryCheckDel(true);
@@ -144,31 +152,22 @@ const StockReturn = () => {
     }
   }
 
-  const divStyle = {
-    width: '28rem'
-  };
-
-  const header = {
-    color: 'white'
-  };
-
-  const textStyle = {
-    display: "inline-block"
-  };
-
+  //setup redirection to allow navigation from page
   const redirect = routeRedirect;
   let redirectRoute = "/stockreturnlist"
   if(redirect){
-       return <Redirect to={redirectRoute} />  
+    return <Redirect to={redirectRoute} />  
   }
 
   let newDate;
+  //function to set up dates based on user selection
   const dateChange = (date) => {
-          newDate = format(new Date(date), 'MM-yyyy')
-          setMonthDate(newDate);
-          setSelectedMonth(newDate);
+    newDate = format(new Date(date), 'MM-yyyy')
+    setMonthDate(newDate);
+    setSelectedMonth(newDate);
   }
 
+  //set modal up for when user clicks create stock reurn, it pops up with user creation options
   let modal =       
   <div>
     <Modal show={show} onHide={handleClose}>
@@ -181,12 +180,12 @@ const StockReturn = () => {
           {beersList}
         </select><br/>
         <input type="checkbox" id="importRec" onChange={importRecChecked}></input> Receipts External Brewery import<br/>
-        <label hidden={hiddenValRec}>Receipts: </label> <input type="radio" hidden={hiddenValRec} name="importRec" checked={otherBreweryCheckRec} onChange={event =>swapRadiosRec(event)}></input>&nbsp;<p style={textStyle} hidden={hiddenValRec}>Other Brewery</p> &nbsp;
-        <input type="radio"  hidden={hiddenValRec} name="importRec" checked={otherCountryCheckRec} onChange={event =>swapRadiosRec(event)}></input>&nbsp;<p style={textStyle} hidden={hiddenValRec}>Imported from Abroad</p>
+        <label hidden={hiddenValRec}>Receipts: </label> <input type="radio" hidden={hiddenValRec} name="importRec" checked={otherBreweryCheckRec} onChange={event =>swapRadiosRec(event)}></input>&nbsp;<p style={{display: "inline-block"}} hidden={hiddenValRec}>Other Brewery</p> &nbsp;
+        <input type="radio"  hidden={hiddenValRec} name="importRec" checked={otherCountryCheckRec} onChange={event =>swapRadiosRec(event)}></input>&nbsp;<p style={{display: "inline-block"}} hidden={hiddenValRec}>Imported from Abroad</p>
         <br/>
         <input type="checkbox" id="importDel" onChange={importDelChecked}></input> Deliveries External Brewery import<br/>
-        <label hidden={hiddenValDel}>Deliveries: </label> <input type="radio" hidden={hiddenValDel} name="importDel" checked={otherBreweryCheckDel} onChange={event =>swapRadiosDel(event)}></input>&nbsp;<p style={textStyle} hidden={hiddenValDel}>Other Brewery</p> &nbsp;
-        <input type="radio"  hidden={hiddenValDel} name="importDel" checked={otherCountryCheckDel} onChange={event =>swapRadiosDel(event)}></input>&nbsp;<p style={textStyle} hidden={hiddenValDel}>Imported from Abroad</p>
+        <label hidden={hiddenValDel}>Deliveries: </label> <input type="radio" hidden={hiddenValDel} name="importDel" checked={otherBreweryCheckDel} onChange={event =>swapRadiosDel(event)}></input>&nbsp;<p style={{display: "inline-block"}} hidden={hiddenValDel}>Other Brewery</p> &nbsp;
+        <input type="radio"  hidden={hiddenValDel} name="importDel" checked={otherCountryCheckDel} onChange={event =>swapRadiosDel(event)}></input>&nbsp;<p style={{display: "inline-block"}} hidden={hiddenValDel}>Imported from Abroad</p>
         <DatePicker format="MM/yyyy" onChange={event => dateChange(event)}/> Date Selected: {selectedMonth}
       </Modal.Body>
       <Modal.Footer>
@@ -200,11 +199,12 @@ const StockReturn = () => {
     </Modal>
   </div>
 
+//return elements to display to user
 return(
     <React.Fragment> 
-      <h1 style={header}>Stock Returns</h1>
+      <h1 style={{color: 'white'}}>Stock Returns</h1>
       <div class="d-flex justify-content-around">
-            <Card bg="primary" style={divStyle}>          
+            <Card bg="primary" style={{width: '28rem'}}>          
               <Link onClick={handleShow}> <Card.Img src={require("../Images/stein.PNG")} height="300"/></Link>
               <Card.Body>
                 <Card.Title>Create Stock Return</Card.Title>
@@ -213,7 +213,7 @@ return(
                 </Card.Text>
               </Card.Body>
             </Card>
-            <Card bg="success" style={divStyle}>          
+            <Card bg="success" style={{width: '28rem'}}>          
               <Link to="/stockreturnlist"> <Card.Img src={require("../Images/Cheers.PNG")} height="300"/></Link>
               <Card.Body>
                 <Card.Title>View Stock Returns</Card.Title>
@@ -226,5 +226,5 @@ return(
       {modal}
     </React.Fragment>)
   }
-
+//Export component for use
 export default StockReturn;

@@ -4,15 +4,14 @@ import '../Stylesheets/Form.css';
 import ReactToPrint from "react-to-print";
 import Table from 'react-bootstrap/Table';
 
-
-  const WarrentDisplay = (props) => {
+// Component used to display a warrent
+const WarrentDisplay = (props) => {
     const [repaymentsAllowed, setRepaymentsAllowed] = useState("");
     const [totalDutyOwed, setTotalDutyOwed] = useState("");
     const [totalHLPercent, setTotalHLPercent] = useState("");
     const [totalDutyOwedLessRepayents, setTotalDutyOwedLessRepayents] = useState("");
     const [lessRepaymentsDuty, setLessRepaymentsDuty] = useState("");
     const dutyPayable = 22.55;
-
     const [brewerName, setBrewerName] = useState("");
     const [address, setAddress] = useState("");
     const [warehouseName, setWarehouseName] = useState("");
@@ -26,7 +25,7 @@ import Table from 'react-bootstrap/Table';
     const [currentMonth, setCurrentMonth] = useState("");
     const [currentYear, setCurrentYear] = useState("");
 
-    // format date in required form, could also have used a react package to accomplish this - adpated from: https://stackoverflow.com/a/23593099
+    // function to format date in required form, could also have used a react package to accomplish this - adpated from: https://stackoverflow.com/a/23593099
     function formatCurrentDate() {
         var d = new Date(),
             month = '' + (d.getMonth() + 1),
@@ -41,7 +40,9 @@ import Table from 'react-bootstrap/Table';
         return [day, month, year].join('-');
     }
 
+    //function to get brewery information from api
     const getBreweryInfo = () => { 
+        //fetch brew info from api
         fetch(process.env.REACT_APP_API_URL+"api/brewinfo").then(res => {
             return res.json();
         }).then(res => {
@@ -66,12 +67,11 @@ import Table from 'react-bootstrap/Table';
             console.log(err);
         })
     }
-
     useEffect(() => {
         getBreweryInfo();
     },[]);
     
-    //calcvul;ate values needed based on repayment values sent via props
+    //calculate values needed based on repayment values sent via props
     const setupCalculations = () => {
         setRepaymentsAllowed(props.location.state.repaymentsAllowed);
         setTotalHLPercent(props.location.state.totalHLPercent);
@@ -83,17 +83,8 @@ import Table from 'react-bootstrap/Table';
     useEffect(() => {
         setupCalculations();
     },[]);
-
-    //style divs for paragraphs
-    const pStyle = {
-        float: 'left'
-      };
-      const pStyle2 = {
-        float: 'right',
-        display : 'inline-block'
-      };
     
-    //adapted from - https://www.npmjs.com/package/react-to-print
+    //component with elements to show brew info
     class BrewInformation extends React.Component {
         render() {
           return (
@@ -185,8 +176,8 @@ import Table from 'react-bootstrap/Table';
                     <br/>
                     <Card.Text>
                         <p>I <b>{brewerName}</b> declare that the particulars herin and on the attached schedules are true and complete and that the above amount will be paid by Direct Debit under the Revenue Number shown herein</p>
-                        <p style={pStyle}><b>Signature:</b> _______________________________________</p><br/> <p style={pStyle2}><b>Date: </b>{currentDate}</p><br/>
-                        <p style={pStyle}><b>Designation of Signatory:</b> {designationofSignatory}</p><br/> <p style={pStyle2}><b>Phone Number:</b> {phoneNumber}</p><br/><br/>
+                        <p style={{float: 'left'}}><b>Signature:</b> _______________________________________</p><br/> <p style={{float: 'right', display : 'inline-block'}}><b>Date: </b>{currentDate}</p><br/>
+                        <p style={{float: 'left'}}><b>Designation of Signatory:</b> {designationofSignatory}</p><br/> <p style={{float: 'right', display : 'inline-block'}}><b>Phone Number:</b> {phoneNumber}</p><br/><br/>
 
                         <p>(1) The quantity of beer to be entered here is the quantity delivered from warehouse for home consumption, 
                             including any beer consumed on the brewery premises, plus any additions for previous underdeclarations.</p>
@@ -199,7 +190,7 @@ import Table from 'react-bootstrap/Table';
         }
       } 
       
-      
+    //Component to display brew info and allow printing of brew - adapted from - https://www.npmjs.com/package/react-to-print
     class BrewDisplay extends React.Component {
         render() {
         return (
@@ -220,5 +211,5 @@ import Table from 'react-bootstrap/Table';
             <BrewDisplay/>
         </React.Fragment>)
 }
-    
+//Export component for use  
 export default WarrentDisplay;

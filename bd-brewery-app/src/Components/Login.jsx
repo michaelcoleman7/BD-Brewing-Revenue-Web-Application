@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Redirect } from 'react-router';
-import {Button, Card} from 'react-bootstrap';
+import {Card} from 'react-bootstrap';
 import { withAuth } from '@okta/okta-react';
 
 //Login in component which uses Okta to ensure user logs in before being allowed access to data
 // adapted from https://developer.okta.com/blog/2018/12/20/crud-app-with-python-flask-react
-
 class Login extends React.Component {
+    //setup constructor
     constructor(props) {
       super(props);
       this.state = { authenticated: null };
       this.checkAuthentication = this.checkAuthentication.bind(this);
       this.login = this.login.bind(this);
     }
+
     // Method to check if user is authenticated
     async checkAuthentication() {
       const authenticated = await this.props.auth.isAuthenticated();
@@ -25,11 +26,12 @@ class Login extends React.Component {
     async componentDidMount() {
       this.checkAuthentication()
     }
-   
+
+    //function to set login route
     async login(e) {
       this.props.auth.login('/home');
     }
-   
+    //elements to display to user
     render() {
       if (this.state.authenticated) {
         return <Redirect to='/home'/>
@@ -47,5 +49,5 @@ class Login extends React.Component {
       }
     }
    }
-   
+   //Export component for use
    export default withAuth(Login);

@@ -8,6 +8,7 @@ import StockReturn from './StockReturn';
 import Warrant from './Warrant';
 import BreweryInformation from './BreweryInformation';
 
+//Component to display all tab options to user
 class Home extends React.Component {
     render() {
       return <div>
@@ -31,5 +32,5 @@ class Home extends React.Component {
     </div>
     }
   }
-
+//export component for use
 export default Home;
