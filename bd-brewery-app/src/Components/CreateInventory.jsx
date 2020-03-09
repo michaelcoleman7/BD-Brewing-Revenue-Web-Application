@@ -38,19 +38,18 @@ const divStyle = {
     const [showAlert, setAlertShow] = useState(false);
     const [brews, setbrews] = useState([]);
 
-    //Function to get brews from api - used to craete an inventory
+    //Function to get brews from api - used to create an inventory
     const getBrews = () => {
         fetch(process.env.REACT_APP_API_URL+"api/brew").then(res =>{
           return res.json();
         }).then(brews => {
-          console.log(brews);
           setbrews(brews.data);
         }).catch(err => {
           console.log(err);
         })
       }
       
-      //call function to get brews info fromapi
+      //call function to get brews info from api
       useEffect(() => {
         getBrews();
       }, [])

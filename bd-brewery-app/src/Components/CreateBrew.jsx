@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Redirect } from 'react-router';
 import Alert from 'react-bootstrap/Alert';
 import '../Stylesheets/Form.css';
@@ -37,6 +37,25 @@ const divStyle = {
     const [packaged, setPackaged] = useState("");
     const [routeRedirect, setRedirect] = useState(false); 
     const [showAlert, setAlertShow] = useState(false);
+    const [brews, setbrews] = useState([]);
+    const [invalidBatch, setInvalidBatch] = useState(false);
+
+
+    //Function to get brews from api - used to check if batchNo already exists
+    const getBrews = () => {
+        fetch(process.env.REACT_APP_API_URL+"api/brew").then(res =>{
+            return res.json();
+        }).then(brews => {
+            setbrews(brews.data);
+        }).catch(err => {
+            console.log(err);
+        })
+        }
+        
+        //call function to get brews info fromapi
+        useEffect(() => {
+        getBrews();
+        }, [])
 
     //function to create a brew and send to server
     const create = (event) => {
@@ -66,8 +85,16 @@ const divStyle = {
                 body: JSON.stringify(brew)
             }
 
+            let invalidBatch = false
+            for (var i = 0; i < brews.length; i++) {
+                if(brews[i].batchNo == batchNo){
+                    invalidBatch = true;
+                    setInvalidBatch(true);
+                }
+            }
+
             //if all data is valid, then post to server
-            if( beer && batchNo && brewDate && og && pg && postConditionDate && kegNo && bottleNo500 && bottleNo330 && status && packaged){
+            if( beer && batchNo && brewDate && og && pg && postConditionDate && kegNo && bottleNo500 && bottleNo330 && status && packaged && invalidBatch == false){
                 if(status == "Bottled" || status == "Kegged" || status == "Mixed"){
                     if(isNaN(parseFloat(og).toFixed(5)) || isNaN(parseFloat(pg).toFixed(5)) || isNaN(parseInt(kegNo)) || isNaN(parseInt(bottleNo500)) || isNaN(parseInt(bottleNo330))){
                         // show alert of invalid data
@@ -95,7 +122,19 @@ const divStyle = {
     let alertFormError;
     // when showalert is true then show alert with error data
     if(showAlert){
-        alertFormError =
+        if(invalidBatch){
+            alertFormError =
+            <React.Fragment>
+                <Alert variant="danger" onClose={() => setAlertShow(false)} dismissible>
+                    <Alert.Heading>Invalid Form Format!</Alert.Heading>
+                    <p>
+                        The batch Number entered already exists in the database, Please try another batch number
+                    </p>
+                </Alert>
+            </React.Fragment>
+        }
+        else{
+            alertFormError =
             <React.Fragment>
                 <Alert variant="danger" onClose={() => setAlertShow(false)} dismissible>
                     <Alert.Heading>Invalid Form Format!</Alert.Heading>
@@ -104,6 +143,7 @@ const divStyle = {
                     </p>
                 </Alert>
             </React.Fragment>
+        }
     }
 
     // Redirect to brew page after creation
