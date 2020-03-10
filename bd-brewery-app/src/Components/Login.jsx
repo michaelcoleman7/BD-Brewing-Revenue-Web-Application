@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router';
-import {Card} from 'react-bootstrap';
+import {Image} from 'react-bootstrap';
 import { withAuth } from '@okta/okta-react';
 
 //Login in component which uses Okta to ensure user logs in before being allowed access to data
@@ -37,13 +37,10 @@ class Login extends React.Component {
         return <Redirect to='/home'/>
       } else {
         return (
-          <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                <Card bg="light" onClick={this.login}>  
-                <Card.Title>Login with OKTA</Card.Title>        
-                <Card.Body>
-                    <Card.Img src={require("../Images/login.png")} height="275"/>
-                </Card.Body>
-                </Card>
+          <div>
+            <h1 style={{color: "white"}}>Login with OKTA</h1>
+            <Image bg="light" onClick={this.login} src={require("../Images/okta.png")} height="275"></Image>
+            <h2 style={{color: "white"}}>Press above logo to login</h2>
           </div>
         )
       }

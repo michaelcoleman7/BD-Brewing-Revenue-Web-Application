@@ -90,7 +90,7 @@ return(
       <div>
       <h5 style={{color: "white"}}>Select a Date in the month you wish to sort by: {selectedMonth}</h5>
       <DatePicker format="MM/yyyy" onChange={event => dateChange(event)}/>
-      <h1 style={{color: "white"}}>Stock Return List</h1>
+      <h2 style={{color: "white"}}>Stock Return List</h2>
         {stockReturnArray}
       </div>
     </React.Fragment>)
