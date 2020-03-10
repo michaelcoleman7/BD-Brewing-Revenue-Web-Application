@@ -2,6 +2,8 @@ import React from 'react';
 import { Redirect } from 'react-router';
 import {Image} from 'react-bootstrap';
 import { withAuth } from '@okta/okta-react';
+import '../index.css';
+
 
 //Login in component which uses Okta to ensure user logs in before being allowed access to data
 // adapted from https://developer.okta.com/blog/2018/12/20/crud-app-with-python-flask-react
@@ -38,7 +40,7 @@ class Login extends React.Component {
       } else {
         return (
           <div>
-            <h1 style={{color: "white"}}>Login with OKTA</h1>
+            <h2 style={{color: "white"}}>Login with OKTA</h2>
             <Image bg="light" onClick={this.login} src={require("../Images/okta.png")} height="275"></Image>
             <h2 style={{color: "white"}}>Press above logo to login</h2>
           </div>
