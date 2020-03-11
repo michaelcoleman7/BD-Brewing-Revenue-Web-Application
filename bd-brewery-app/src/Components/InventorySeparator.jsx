@@ -26,7 +26,7 @@ const InventorySeparator = () => {
       width: '40%',
       color: 'white',
       marginTop: '10px',
-      fontFamily: 'Cursive',
+      fontFamily: 'Artifika',
       fontSize: '20px',
       borderStyle: 'solid',
       borderColor: 'brown',

@@ -8,8 +8,8 @@ return(
     <React.Fragment> 
       <h1 style={{color: "white"}}>Brew Management</h1>
       <div className="d-flex justify-content-around">
-            <Card bg="primary" style={{width: '18rem'}}>          
-              <Link to="/createbrew"> <Card.Img src={require("../Images/Background3.jpg")} height="300"/></Link>
+            <Card bg="primary" style={{width: '28rem'}}>          
+              <Link to="/createbrew"> <Card.Img src={require("../Images/createbrews.jpg")} height="300"/></Link>
               <Card.Body>
                 <Card.Title className="custom-card">Create Brew</Card.Title>
                 <Card.Text className="custom-card-text">
@@ -18,8 +18,8 @@ return(
               </Card.Body>
             </Card>
 
-            <Card bg="success" style={{width: '18rem'}}>          
-              <Link to="/brew"> <Card.Img src={require("../Images/createbeer.jpg")} height="300"/></Link>
+            <Card bg="success" style={{width: '28rem'}}>          
+              <Link to="/brew"> <Card.Img src={require("../Images/viewbrew.jpg")} height="300"/></Link>
               <Card.Body>
                 <Card.Title className="custom-card">View Brews</Card.Title>
                 <Card.Text className="custom-card-text">

@@ -8,8 +8,8 @@ return(
     <React.Fragment> 
       <h1 style={{color: 'white'}}>Inventory Management</h1>
       <div class="d-flex justify-content-around">
-            <Card bg="primary" style={{width: '18rem'}}>          
-              <Link to="/createinventory"> <Card.Img src={require("../Images/kegs.PNG")} height="300"/></Link>
+            <Card bg="primary" style={{width: '28rem'}}>          
+              <Link to="/createinventory"> <Card.Img src={require("../Images/barrels.jpg")} height="300"/></Link>
               <Card.Body>
                 <Card.Title className="custom-card">Create Inventory Track</Card.Title>
                 <Card.Text className="custom-card-text">
@@ -18,8 +18,8 @@ return(
               </Card.Body>
             </Card>
 
-            <Card bg="success" style={{width: '18rem'}}>          
-              <Link to="/inventory"> <Card.Img src={require("../Images/BeerPour.PNG")} height="300"/></Link>
+            <Card bg="success" style={{width: '28rem'}}>          
+              <Link to="/inventory"> <Card.Img src={require("../Images/viewinv.jpg")} height="300"/></Link>
               <Card.Body>
                 <Card.Title className="custom-card">View Inventorys</Card.Title>
                 <Card.Text className="custom-card-text">
