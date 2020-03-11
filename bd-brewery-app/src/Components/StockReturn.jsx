@@ -207,8 +207,8 @@ return(
             <Card bg="primary" style={{width: '28rem'}}>          
               <Link onClick={handleShow}> <Card.Img src={require("../Images/stein.PNG")} height="300"/></Link>
               <Card.Body>
-                <Card.Title>Create Stock Return</Card.Title>
-                <Card.Text>
+                <Card.Title className="custom-card">Create Stock Return</Card.Title>
+                <Card.Text className="custom-card-text">
                   Create a new Stock return based on an existing Inventory.
                 </Card.Text>
               </Card.Body>
@@ -216,8 +216,8 @@ return(
             <Card bg="success" style={{width: '28rem'}}>          
               <Link to="/stockreturnlist"> <Card.Img src={require("../Images/Cheers.PNG")} height="300"/></Link>
               <Card.Body>
-                <Card.Title>View Stock Returns</Card.Title>
-                <Card.Text>
+                <Card.Title className="custom-card">View Stock Returns</Card.Title>
+                <Card.Text className="custom-card-text">
                   View all existing Stock Returns.
                 </Card.Text>
               </Card.Body>

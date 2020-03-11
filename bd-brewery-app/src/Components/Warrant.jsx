@@ -85,7 +85,7 @@ const Warrant = () => {
           <option>Select a Stock Return...</option>
           {stockReturnOptions}
         </select><br/>
-        <label>Repayments - Hectolitre %</label>
+        <label style={{color: "black"}}>Repayments - Hectolitre %</label>
         <input type="text" onChange={event => setRepaymentsAllowed(event.target.value)}/></div>
       </Modal.Body>
       <Modal.Footer>
@@ -107,8 +107,8 @@ return(
             <Card bg="primary" style={{width: '28rem'}}>          
               <Link onClick={handleShow}> <Card.Img src={require("../Images/warrant.jpg")} height="300"/></Link>
               <Card.Body>
-                <Card.Title>View Current Warrant</Card.Title>
-                <Card.Text>
+                <Card.Title className="custom-card">View Current Warrant</Card.Title>
+                <Card.Text className="custom-card-text">
                   View Warrant to be sent to revenue.
                 </Card.Text>
               </Card.Body>

@@ -84,7 +84,7 @@ const InventoryList = (props) => {
     // if no inevntories in list, display to user
     inventoriesArray = 
     <div>
-      <h3 style={{color: "white"}}>No Inventories exist in the database, please create an inventory or ensure Inventory exists in month selected</h3>
+      <h3 style={{color: "lightgrey", fontFamily: "FFF_Tusj"}}>No Inventories exist in the database, please create an inventory or ensure Inventory exists in month selected</h3>
     </div>
   }
 

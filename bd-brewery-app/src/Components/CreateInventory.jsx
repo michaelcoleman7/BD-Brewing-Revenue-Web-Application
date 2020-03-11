@@ -148,48 +148,49 @@ const divStyle = {
     return(
         // React Fragment is a way of sending back multiple elements - https://reactjs.org/docs/fragments.html
         <React.Fragment> 
-                <form style={formStyle} onSubmit={create}>
-                    <label>Batch Number</label>
-                    <select onChange={event => setUpBrewInfo(event)}>
-                        <option>Select a Batch Number...</option>
-                        {batchNosList}
-                    </select>
-                    <div style={divStyle} className="float-left">
+            <h1 style={{color : "white"}}>Create an Inventory</h1>
+            <form style={formStyle} onSubmit={create}>
+                <label>Batch Number</label>
+                <select onChange={event => setUpBrewInfo(event)}>
+                    <option>Select a Batch Number...</option>
+                    {batchNosList}
+                </select>
+                <div style={divStyle} className="float-left">
 
-                        <label>500 Cases Sold this Month</label>
-                        <input type="text" placeholder="Enter 500 Cases Sold this Month" onChange={event => setTotalCasesSold500Month(event.target.value)}/>
+                    <label>500 Cases Sold this Month</label>
+                    <input type="text" placeholder="Enter 500 Cases Sold this Month" onChange={event => setTotalCasesSold500Month(event.target.value)}/>
 
-                        <label>Remaining 500 Cases</label>
-                        <input type="text" placeholder="Enter Remaining 500 Cases" onChange={event => setRemainingCases500(event.target.value)}/>
+                    <label>Remaining 500 Cases</label>
+                    <input type="text" placeholder="Enter Remaining 500 Cases" onChange={event => setRemainingCases500(event.target.value)}/>
 
-                        <label>330 Cases Sold this Month</label>
-                        <input type="text" placeholder="Enter 330 Cases Sold this Month" onChange={event => setTotalCasesSold330Month(event.target.value)}/>
+                    <label>330 Cases Sold this Month</label>
+                    <input type="text" placeholder="Enter 330 Cases Sold this Month" onChange={event => setTotalCasesSold330Month(event.target.value)}/>
 
-                        <label>Remaining 330 Cases</label>
-                        <input type="text"  placeholder="Enter Remaining 330 Cases" onChange={event => setRemainingCases330(event.target.value)}/>
+                    <label>Remaining 330 Cases</label>
+                    <input type="text"  placeholder="Enter Remaining 330 Cases" onChange={event => setRemainingCases330(event.target.value)}/>
 
-                        <label>Total Kegs Sold this Month</label>
-                        <input type="text" placeholder="Enter Kegs Sold this Month" onChange={event => setTotalKegsSold(event.target.value)}/>
-                    </div>
-                    <div className="float-right" style={divStyle}>
-                        <label>Remaining Kegs</label>
-                        <input type="text"placeholder="Enter Remaining Kegs" onChange={event => setRemainingKegs(event.target.value)}/>
+                    <label>Total Kegs Sold this Month</label>
+                    <input type="text" placeholder="Enter Kegs Sold this Month" onChange={event => setTotalKegsSold(event.target.value)}/>
+                </div>
+                <div className="float-right" style={divStyle}>
+                    <label>Remaining Kegs</label>
+                    <input type="text"placeholder="Enter Remaining Kegs" onChange={event => setRemainingKegs(event.target.value)}/>
 
-                        <label>Opening Stock 500ml Cases</label>
-                        <input type="text" placeholder="Enter Opening Stock 500ml Cases" onChange={event => setOpeningStock500Cases(event.target.value)}/>
+                    <label>Opening Stock 500ml Cases</label>
+                    <input type="text" placeholder="Enter Opening Stock 500ml Cases" onChange={event => setOpeningStock500Cases(event.target.value)}/>
 
-                        <label>Opening Stock 330ml Cases</label>
-                        <input type="text" placeholder="Enter Opening Stock 330ml Cases" onChange={event => setOpeningStock330Cases(event.target.value)}/>
+                    <label>Opening Stock 330ml Cases</label>
+                    <input type="text" placeholder="Enter Opening Stock 330ml Cases" onChange={event => setOpeningStock330Cases(event.target.value)}/>
 
-                        <label>Opening Stock Kegs</label>
-                        <input type="text" placeholder="Enter Opening Stock Kegs" onChange={event => setOpeningStockKegs(event.target.value)}/>
+                    <label>Opening Stock Kegs</label>
+                    <input type="text" placeholder="Enter Opening Stock Kegs" onChange={event => setOpeningStockKegs(event.target.value)}/>
 
-                        <label>Opening Stock Percentage</label>
-                        <input type="text" placeholder="Enter Opening Stock Percentage" onChange={event => setOpeningStockPercentage(event.target.value)}/>
-                    </div>
-                    <input type="submit" value="Create Inventory"/>
-                    {alertFormError}
-                </form>
+                    <label>Opening Stock Percentage</label>
+                    <input type="text" placeholder="Enter Opening Stock Percentage" onChange={event => setOpeningStockPercentage(event.target.value)}/>
+                </div>
+                <input type="submit" value="Create Inventory"/>
+                {alertFormError}
+            </form>
         </React.Fragment>)
 }  
 // Export component for use

@@ -33,3 +33,7 @@ input[type=submit]:active {
 	position:relative;
 	top:1px;
 }
+
+label {
+	color: white;
+}

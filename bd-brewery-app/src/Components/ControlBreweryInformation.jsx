@@ -276,7 +276,7 @@ const divStyle = {
                         <b>Designation of Signatory (for signing warrent):</b>  {breweyInfo.designationofSignatory}<br/>
                     </Card.Text>
                 </Card.Body>
-            </Card></center>
+            </Card></center><br/>
             <Button onClick={(e) => editBreweryInfo()}>Edit Brewery Information</Button>&nbsp;
             <Button onClick={(e) => deleteItem()}>Delete Brewery Information</Button>
             </React.Fragment>

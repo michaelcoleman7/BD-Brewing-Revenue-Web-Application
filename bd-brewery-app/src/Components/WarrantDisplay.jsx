@@ -3,6 +3,7 @@ import Card from 'react-bootstrap/Card';
 import '../Stylesheets/Form.css';
 import ReactToPrint from "react-to-print";
 import Table from 'react-bootstrap/Table';
+import '../Stylesheets/textinfo.css';
 
 // Component used to display a warrent
 const WarrentDisplay = (props) => {
@@ -195,9 +196,9 @@ const WarrentDisplay = (props) => {
         render() {
         return (
             <div>
-            <BrewInformation ref={el => (this.componentRef = el)} />
+            <BrewInformation ref={el => (this.componentRef = el)} /><br/>
             <ReactToPrint
-                trigger={() => <button href="#">Print Warrent</button>}
+                trigger={() => <button className="button" href="#">Print Warrent</button>}
                 content={() => this.componentRef}
             />
             </div>

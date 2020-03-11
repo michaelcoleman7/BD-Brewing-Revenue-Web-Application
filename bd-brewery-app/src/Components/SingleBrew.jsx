@@ -6,6 +6,8 @@ import '../Stylesheets/Form.css';
 import DatePicker from 'react-date-picker';
 import { format } from 'date-fns';
 import ReactToPrint from "react-to-print";
+import '../Stylesheets/textinfo.css';
+import '../Stylesheets/button.css';
 
 // Set some styling for div and form
 const divStyle = {
@@ -40,7 +42,7 @@ const divStyle = {
     const [bottleNo500, setBottleNo500] = useState("");
     const [bottleNo330, setBottleNo330] = useState("");
     const [status, setStatus] = useState("");
-    const [packaged, setPackaged] = useState("");
+    const [packaged, setPackaged] = useState(false);
     const [routeRedirect, setRedirect] = useState(""); 
     const [showAlert, setAlertShow] = useState(false);
     
@@ -219,7 +221,7 @@ const divStyle = {
                         <label>PG (Present Gravity)</label>
                         <input type="text" name="pg" placeholder="Enter PG" onChange={event => setPG(event.target.value)} defaultValue={brew.pg}/>
 
-                        <input type="checkbox" name="brewpackaged" value="true" checked = {packaged} onChange={(e) => setPackaged(!packaged)} /> Packaged <br/>
+                        <input type="checkbox" name="brewpackaged" value="true" checked = {packaged} onChange={(e) => setPackaged(!packaged)} /> <label>Packaged</label> <br/>
                     </div>
                     <div className="float-right" style={divStyle}>
                         <label>Post Conditioning Date</label>
@@ -283,11 +285,13 @@ const divStyle = {
         render() {
         return (
             <div>
-            <BrewInformation ref={el => (this.componentRef = el)} />
+            <BrewInformation ref={el => (this.componentRef = el)} /><br/>
+            <button className="button" onClick={(e) => editItem(brewId)}>Edit Brew</button>&nbsp; &nbsp; 
             <ReactToPrint
-                trigger={() => <button href="#">Print Brew</button>}
+                trigger={() => <button className="button" href="#">Print Brew</button>}
                 content={() => this.componentRef}
-            />
+            />&nbsp; &nbsp;
+            <button className="button" onClick={(e) => deleteItem(brewId)}>Delete Brew</button>
             </div>
         );
         }
@@ -297,8 +301,6 @@ const divStyle = {
         // React Fragment is a way of sending back multiple elements - https://reactjs.org/docs/fragments.html
         <React.Fragment> 
             <BrewDisplay/>
-            <button className="edit" onClick={(e) => editItem(brewId)}>Edit Brew</button>
-            <button onClick={(e) => deleteItem(brewId)}>Delete Brew</button>
             {editForm}
         </React.Fragment>)
 }

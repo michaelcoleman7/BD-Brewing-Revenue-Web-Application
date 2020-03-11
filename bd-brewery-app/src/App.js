@@ -53,7 +53,7 @@ function App() {
 
         <SecureRoute  exact path={"/controlbreweryinfo"} component={ControlBreweryInformation}/>
 
-        <SecureRoute path="*" exact component={() => <h1>404 NOT FOUND</h1>}/>
+        <SecureRoute path="*" exact component={() => <h1 style={{color : "white"}}>404 NOT FOUND</h1>}/>
       </Switch>
       </Security>
   </Router>

@@ -40,9 +40,9 @@ class Login extends React.Component {
       } else {
         return (
           <div>
-            <h2 style={{color: "white"}}>Login with OKTA</h2>
+            <h1 style={{color: "white", fontFamily: 'Archivo-Regular'}}>Login with OKTA</h1>
             <Image bg="light" onClick={this.login} src={require("../Images/okta.png")} height="275"></Image>
-            <h2 style={{color: "white"}}>Press above logo to login</h2>
+            <h2 style={{color: "white", fontFamily: 'Archivo-Regular'}}>Press above logo to login</h2>
           </div>
         )
       }

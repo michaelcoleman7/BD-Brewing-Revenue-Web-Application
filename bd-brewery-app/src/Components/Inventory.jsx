@@ -11,8 +11,8 @@ return(
             <Card bg="primary" style={{width: '18rem'}}>          
               <Link to="/createinventory"> <Card.Img src={require("../Images/kegs.PNG")} height="300"/></Link>
               <Card.Body>
-                <Card.Title>Create Inventory Track</Card.Title>
-                <Card.Text>
+                <Card.Title className="custom-card">Create Inventory Track</Card.Title>
+                <Card.Text className="custom-card-text">
                   Create a new Inventory to keep track of stock.
                 </Card.Text>
               </Card.Body>
@@ -21,8 +21,8 @@ return(
             <Card bg="success" style={{width: '18rem'}}>          
               <Link to="/inventory"> <Card.Img src={require("../Images/BeerPour.PNG")} height="300"/></Link>
               <Card.Body>
-                <Card.Title>View Inventorys</Card.Title>
-                <Card.Text>
+                <Card.Title className="custom-card">View Inventorys</Card.Title>
+                <Card.Text className="custom-card-text">
                   View Inventories of all Products.
                 </Card.Text>
               </Card.Body>

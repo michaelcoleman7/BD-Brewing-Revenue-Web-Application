@@ -85,7 +85,7 @@ const BrewList = (props) => {
     // if length is 0, then display that brews dont exist
     brewsArray = 
     <div>
-      <h3 style={{color: "white"}}>No Brews exist  for this beer in the database, please create a brew of this beer type or check if beer in month exists</h3>
+      <h3 style={{color: "grey", fontFamily: "FFF_Tusj"}}>No Brews exist  for this beer in the database, please create a brew of this beer type or check if beer in month exists</h3>
     </div>
   }
 

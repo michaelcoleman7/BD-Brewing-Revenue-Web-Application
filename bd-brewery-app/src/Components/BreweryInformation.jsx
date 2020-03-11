@@ -6,13 +6,13 @@ import Card from 'react-bootstrap/Card';
 const BreweryInformation = () => {
 return(
     <React.Fragment> 
-      <h1 style={{color: "white"}}>Brewery Information Management</h1>
+      <h2 style={{color: "white", fontFamily: "FFF_Tusj"}}>Brewery Information Management</h2>
       <div className="d-flex justify-content-around">
             <Card bg="success" style={{width: '30rem'}}>          
               <Link to="/controlbreweryinfo"> <Card.Img src={require("../Images/createbreweryinfo.jpg")} height="300"/></Link>
               <Card.Body>
-                <Card.Title>View Your Brewery information</Card.Title>
-                <Card.Text>
+                <Card.Title className="custom-card">View Your Brewery information</Card.Title>
+                <Card.Text className="custom-card-text">
                   View the current Brewery information used for warrents.
                 </Card.Text>
               </Card.Body>

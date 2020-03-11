@@ -4,6 +4,8 @@ import { Redirect } from 'react-router';
 import Table from 'react-bootstrap/Table';
 import '../Stylesheets/Form.css';
 import ReactToPrint from "react-to-print";
+import '../Stylesheets/textinfo.css';
+import '../Stylesheets/button.css';
 
   // Component to setup a single stock return
   const SingleStockReturn = (props) => {
@@ -219,7 +221,7 @@ import ReactToPrint from "react-to-print";
           return (
             <center><Card style={{ width: '75%' }}>
                 <Card.Body>
-                    <Card.Title><b>Stock Return For:</b>  {stockReturn.beer}</Card.Title>
+                    <Card.Title><p><b>Stock Return For:</b> {stockReturn.beer}</p></Card.Title>
                     <Card.Text>
                         <Table striped bordered hover>
                         <thead>
@@ -387,12 +389,12 @@ import ReactToPrint from "react-to-print";
                     <Table striped bordered hover>
                         <tbody>
                             <tr>
-                                <td><b>Total HL across all stock returns:</b></td>
-                                <th>{totalHlPercent}%</th>
+                                <td><p><b>Total HL across all stock returns:</b></p></td>
+                                <th><p>{totalHlPercent}%</p></th>
                             </tr>
                             <tr>
-                                <td><b>Total Duty across all stock returns:</b></td>
-                                <th>€{totalDuty}</th>
+                                <td><p><b>Total Duty across all stock returns:</b></p></td>
+                                <th><p>€{totalDuty}</p></th>
                             </tr>
                         </tbody>
                     </Table>
@@ -406,11 +408,12 @@ import ReactToPrint from "react-to-print";
         render() {
         return (
             <div>
-            <StockReturnInformation ref={el => (this.componentRef = el)} />
+            <StockReturnInformation ref={el => (this.componentRef = el)} /><br/>
             <ReactToPrint
-                trigger={() => <button href="#">Print Stock Return</button>}
+                trigger={() => <button className="button" href="#">Print Stock Return</button>}
                 content={() => this.componentRef}
-            />
+            />&nbsp;&nbsp;&nbsp;&nbsp;
+            <button className="button" onClick={(e) => deleteStockReturn(stockReturnId)}>Delete Stock Return</button>
             </div>
         );
         }
@@ -419,8 +422,9 @@ import ReactToPrint from "react-to-print";
     // return fragment with elements to display
     return(
         <React.Fragment> 
+            <center>
             <StockReturnDisplay/>
-            <button onClick={(e) => deleteStockReturn(stockReturnId)}>Delete Stock Return</button>
+            </center>
         </React.Fragment>)
 }  
 //Export component for use

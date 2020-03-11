@@ -12,7 +12,7 @@ import BreweryInformation from './BreweryInformation';
 class Home extends React.Component {
     render() {
       return <div>
-        <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example">
+        <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example" className="custom-nav-bg">
           <Tab eventKey="Brew" title="Brew Managment">
             <Brew/>
           </Tab>

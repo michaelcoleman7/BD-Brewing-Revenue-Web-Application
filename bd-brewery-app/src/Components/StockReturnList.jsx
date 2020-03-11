@@ -31,7 +31,7 @@ const StockReturnList = () => {
     width: '40%',
     color: 'white',
     marginTop: '10px',
-    fontFamily: 'Cursive',
+    fontFamily: 'Artifika',
     fontSize: '20px',
     borderStyle: 'solid',
     borderColor: 'brown',
@@ -81,7 +81,7 @@ const StockReturnList = () => {
     //if no stock returns in list then display this to user
     stockReturnArray = 
     <div>
-      <h1 style={{color: "white"}}>No Stock Returns exist in the database, Please create a Stock Return</h1>
+      <h1 style={{color: "grey"}}>No Stock Returns exist in the database, Please create a Stock Return</h1>
     </div>
   }
 //return elements to display to user

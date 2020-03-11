@@ -5,6 +5,7 @@ import Alert from 'react-bootstrap/Alert';
 import Table from 'react-bootstrap/Table';
 import '../Stylesheets/Form.css';
 import ReactToPrint from "react-to-print";
+import '../Stylesheets/textinfo.css';
 
 // Set some styling for div and form
 const divStyle = {
@@ -389,11 +390,14 @@ const divStyle = {
         render() {
         return (
             <div>
-            <InventoryInformation ref={el => (this.componentRef = el)} />
+            <InventoryInformation ref={el => (this.componentRef = el)} /><br/>
+            <button className="button" onClick={(e) => editItem(inventoryId)}>Edit Inventory</button>&nbsp;&nbsp; 
             <ReactToPrint
-                trigger={() => <button href="#">Print Inventory</button>}
+                trigger={() => <button className="button" href="#">Print Inventory</button>}
                 content={() => this.componentRef}
-            />
+            />&nbsp;&nbsp; 
+            <button className="button" onClick={(e) => deleteItem(inventoryId)}>Delete Inventory</button>
+            <br/><br/>
             </div>
         );
         }
@@ -404,8 +408,6 @@ const divStyle = {
         // React Fragment is a way of sending back multiple elements - https://reactjs.org/docs/fragments.html
         <React.Fragment> 
             <InventoryDisplay/> 
-            <button className="edit" onClick={(e) => editItem(inventoryId)}>Edit Inventory</button>
-            <button onClick={(e) => deleteItem(inventoryId)}>Delete Inventory</button>
             {editForm}
         </React.Fragment>)
 }  

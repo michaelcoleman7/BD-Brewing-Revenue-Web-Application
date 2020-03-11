@@ -13,10 +13,46 @@ code {
 }
 
 @font-face {
-  font-family: 'Toony';
-  src: local('Toony'), url(./Fonts/Toony.ttf) format('truetype')
+  font-family: 'Archivo-Regular';
+  src: local('Archivo-Regular'), url(./Fonts/Archivo-Regular.ttf) format('truetype')
 }
 
-h2{
-  font-family: 'Toony';
+@font-face {
+  font-family: 'FFF_Tusj';
+  src: local('FFF_Tusj'), url(./Fonts/FFF_Tusj.ttf) format('truetype')
 }
+
+@font-face {
+  font-family: 'american-brewery-regular';
+  src: local('american-brewery-regular'), url(./Fonts/american-brewery-regular.otf) format('opentype')
+}
+
+@font-face {
+  font-family: 'Artifika';
+  src: local('Artifika'), url(./Fonts/Artifika-Regular.ttf) format('truetype')
+}
+
+h1{
+  font-family: 'FFF_Tusj';
+}
+.custom-nav-bg {
+  font-family: 'american-brewery-regular';
+  color: white;
+}
+
+.custom-nav-bg a {
+  color: white;
+}
+
+.custom-nav-bg a:hover {
+  color: red;
+}
+
+.custom-card {
+  font-family: 'Artifika';
+}
+
+.custom-card-text {
+  font-family: 'Archivo-Regular';
+}
+

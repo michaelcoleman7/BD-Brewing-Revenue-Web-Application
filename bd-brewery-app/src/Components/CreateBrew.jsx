@@ -165,52 +165,53 @@ const divStyle = {
     return(
         // React Fragment is a way of sending back multiple elements - https://reactjs.org/docs/fragments.html
         <React.Fragment> 
-                <form style={formStyle} onSubmit={create}>
-                        <label>Batch No</label>
-                        <input type="text" name="batchNo" placeholder="Enter Batch Number" onChange={event => setBatchNo(event.target.value)}/>
-                    <div style={divStyle} className="float-left">
+            <h1 style={{color : "white"}}>Create a Brew</h1>
+            <form style={formStyle} onSubmit={create}>
+                    <label>Batch No</label>
+                    <input type="text" name="batchNo" placeholder="Enter Batch Number" onChange={event => setBatchNo(event.target.value)}/>
+                <div style={divStyle} className="float-left">
 
-                        <label>Beer</label>
-                        <input type="text" name="beer" placeholder="Enter Beer" onChange={event => setBeer(event.target.value)}/>
+                    <label>Beer</label>
+                    <input type="text" name="beer" placeholder="Enter Beer" onChange={event => setBeer(event.target.value)}/>
 
-                        <label>Brew Date</label>
-                        <div><input disabled="true" type="text" id="dp" name="brewDate" placeholder="Select a Date using Date Picker Below"/>
-                        <DatePicker onChange={event => dateChange(event)}/>
-                        </div><br/>
-                        <label>OG (Original Gravity) - Number required</label>
-                        <input type="text" name="og" placeholder="Enter OG" onChange={event => setOG(event.target.value)}/>
+                    <label>Brew Date</label>
+                    <div><input disabled="true" type="text" id="dp" name="brewDate" placeholder="Select a Date using Date Picker Below"/>
+                    <DatePicker className="dateClass" onChange={event => dateChange(event)}/>
+                    </div><br/>
+                    <label>OG (Original Gravity) - Number required</label>
+                    <input type="text" name="og" placeholder="Enter OG" onChange={event => setOG(event.target.value)}/>
 
-                        <label>PG (Present Gravity) - Number required</label>
-                        <input type="text" name="pg" placeholder="Enter PG" onChange={event => setPG(event.target.value)}/>
+                    <label>PG (Present Gravity) - Number required</label>
+                    <input type="text" name="pg" placeholder="Enter PG" onChange={event => setPG(event.target.value)}/>
 
-                        <input type="radio" name="brewpackaged" value="true"  onChange={event => setPackaged(event.target.value)}/> Packaged
-                    </div>
-                    <div className="float-right" style={divStyle}>
-                        <label>Post Conditioning Date</label>
-                        <input type="text" name="postConditionDate" placeholder="Enter Post Conditioning Date" onChange={event => setPCD(event.target.value)}/>
+                    <input type="radio" name="brewpackaged" value="true"  onChange={event => setPackaged(event.target.value)}/> <label>Packaged</label>
+                </div>
+                <div className="float-right" style={divStyle}>
+                    <label>Post Conditioning Date</label>
+                    <input type="text" name="postConditionDate" placeholder="Enter Post Conditioning Date" onChange={event => setPCD(event.target.value)}/>
 
-                        <label>Keg No - Number required</label>
-                        <input type="text" name="kegNo" placeholder="Enter Keg Number" onChange={event => setKegNo(event.target.value)}/>
+                    <label>Keg No - Number required</label>
+                    <input type="text" name="kegNo" placeholder="Enter Keg Number" onChange={event => setKegNo(event.target.value)}/>
 
-                        <label>Bottle Number (500ml) - Number required</label>
-                        <input type="text" name="bottleNo500" placeholder="Enter Bottle Number (500ml)" onChange={event => setBottleNo500(event.target.value)}/>
+                    <label>Bottle Number (500ml) - Number required</label>
+                    <input type="text" name="bottleNo500" placeholder="Enter Bottle Number (500ml)" onChange={event => setBottleNo500(event.target.value)}/>
 
-                        <label>Bottle Number (330ml) - Number required</label>
-                        <input type="text" name="bottleNo330" placeholder="Enter Bottle Number (330ml)" onChange={event => setBottleNo330(event.target.value)}/>
+                    <label>Bottle Number (330ml) - Number required</label>
+                    <input type="text" name="bottleNo330" placeholder="Enter Bottle Number (330ml)" onChange={event => setBottleNo330(event.target.value)}/>
 
-                        <label>Status</label>
-                        <select onChange={event => setStatus(event.target.value)}>
-                            <option>Select Packaging Status...</option>
-                            <option>Bottled</option>
-                            <option>Kegged</option>
-                            <option>Mixed</option>
-                        </select>
+                    <label>Status</label>
+                    <select onChange={event => setStatus(event.target.value)}>
+                        <option>Select Packaging Status...</option>
+                        <option>Bottled</option>
+                        <option>Kegged</option>
+                        <option>Mixed</option>
+                    </select>
 
-                        <input type="radio" name="brewpackaged" value="false" onChange={event => setPackaged(event.target.value)}/> Unpackaged
-                    </div>
-                    <input type="submit" value="Create Brew"/>
-                    {alertFormError}
-                </form>
+                    <input type="radio" name="brewpackaged" value="false" onChange={event => setPackaged(event.target.value)}/> <label>Unpackaged</label>
+                </div>
+                <input type="submit" value="Create Brew"/>
+                {alertFormError}
+            </form>
         </React.Fragment>)
 }   
 // Export create brew for use
