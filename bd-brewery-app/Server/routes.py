@@ -191,6 +191,7 @@ def delete(id):
 
 # Route to handle return of all inventories
 @indexInventoryRoute.route("/api/inventory")
+@login_required # Ensures user is authorized to access api call
 def indexInventory():
     inventories = []
 
@@ -205,6 +206,7 @@ def indexInventory():
 
 # Route to handle individual inventories
 @indexInventoryRoute.route("/api/inventory/<id>", methods=["GET"])
+@login_required # Ensures user is authorized to access api call
 def inventorySingle(id):
     # Find one object from mongo using the object id
     cursor = inventoryCollection.find_one({"_id":ObjectId(id)})
@@ -214,6 +216,7 @@ def inventorySingle(id):
 
 # Route to handle creation of a Inventory
 @createInventoryRoute.route("/api/createinventory", methods=["POST"])
+@login_required # Ensures user is authorized to access api call
 def createInventory():
     # Request all information and store in variables
     batchNo = request.json.get("batchNo")
@@ -284,6 +287,7 @@ def createInventory():
 
 # Route to handle update an Inventory 
 @updateInventoryRoute.route("/api/updateInventory/<id>", methods=["PUT"])
+@login_required # Ensures user is authorized to access api call
 def updateInventory(id):
     # Request all information and store in variables
     batchNo = request.json.get("batchNo")
@@ -351,6 +355,7 @@ def updateInventory(id):
 
 # Route to handle deletion of an inventory
 @deleteInventoryRoute.route("/api/deleteInventory/<id>", methods = ["DELETE"])
+@login_required # Ensures user is authorized to access api call
 def delete(id):
     inventoryId = request.json.get("id")
     # Remove document with specified id from database
