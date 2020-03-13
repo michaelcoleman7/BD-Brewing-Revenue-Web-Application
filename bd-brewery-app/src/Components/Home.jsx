@@ -7,9 +7,15 @@ import Tab from 'react-bootstrap/Tab';
 import StockReturn from './StockReturn';
 import Warrant from './Warrant';
 import BreweryInformation from './BreweryInformation';
+import { withAuth } from '@okta/okta-react';
 
 //Component to display all tab options to user
 class Home extends React.Component {
+  
+ async componentDidMount() {
+    const accessToken = await this.props.auth.getAccessToken();
+    localStorage.setItem('jwt-token', accessToken);
+  }
     render() {
       return <div>
         <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example" className="custom-nav-bg">
@@ -33,4 +39,4 @@ class Home extends React.Component {
     }
   }
 //export component for use
-export default Home;
+export default (withAuth(Home));
