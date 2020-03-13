@@ -7,6 +7,7 @@ import sys
 from pymongo import MongoClient
 from bson import ObjectId
 import calculations
+from authorization import login_required
 import env
 
 # class to manage MongoDB ObjectId - as returns "object of type ObjectId is not serializable" without encoder
@@ -55,6 +56,7 @@ deleteBreweryinfoRoute = Blueprint("deleteBreweryInfo", __name__)
 
 # Route for accessing all brews
 @indexBrewRoute.route("/api/brew")
+@login_required # Ensures user is authorized to access api call
 def indexBrew():
     brews = []
 
@@ -68,6 +70,7 @@ def indexBrew():
 
 # Route to handle individual brews
 @brewRoute.route("/api/brew/<id>", methods=["GET"])
+@login_required # Ensures user is authorized to access api call
 def brewSingle(id):
     # Find one object from mongo using the object id
     cursor = brewCollection.find_one({"_id":ObjectId(id)})
@@ -77,6 +80,7 @@ def brewSingle(id):
 
 # Route to handle creation of a brew
 @createBrewRoute.route("/api/createbrew", methods=["POST"])
+@login_required # Ensures user is authorized to access api call
 def createBrew():
     # Request all information and store in variables
     beer = request.json.get("beer")
@@ -123,6 +127,7 @@ def createBrew():
 
 # Route to handle update of a brew 
 @updateBrewRoute.route("/api/updateBrew/<id>", methods=["PUT"])
+@login_required # Ensures user is authorized to access api call
 # Added cross origin to prevent blocking of requests
 #@cross_origin(origin='localhost',headers=['Content-Type','Authorization']) 
 def updateBrew(id):
@@ -175,6 +180,7 @@ def updateBrew(id):
 
 # Route to handle deletion of a brew
 @deleteBrewRoute.route("/api/deleteBrew/<id>", methods = ["DELETE"])
+@login_required # Ensures user is authorized to access api call
 def delete(id):
     brewId = request.json.get("id")
     # Remove document with specified id from database
