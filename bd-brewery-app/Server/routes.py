@@ -366,6 +366,7 @@ def delete(id):
 
 # Route to handle return of all stock return info
 @indexStockReturnRoute.route("/api/stockreturn")
+@login_required # Ensures user is authorized to access api call
 def indexStockReturn():
     stockReturn = []
 
@@ -380,6 +381,7 @@ def indexStockReturn():
 
 # Route to handle return stock return of a stock return by id
 @indexStockReturnRoute.route("/api/stockreturn/<id>", methods=["GET"])
+@login_required # Ensures user is authorized to access api call
 def stockReturnSingle(id):
     # Find one object from mongo using the object id
     cursor = stockReturnCollection.find_one({"_id":ObjectId(id)})
@@ -389,6 +391,7 @@ def stockReturnSingle(id):
 
 # Route to handle creation of a stock return
 @createStockReturnRoute.route("/api/createstockreturn", methods=["POST"])
+@login_required # Ensures user is authorized to access api call
 def createStockReturn():
     # Request all information and store in variables
     beer = request.json.get("beer")
@@ -428,6 +431,7 @@ def createStockReturn():
 
 # Route to handle delete of a stock return
 @deleteStockReturnRoute.route("/api/deletestockreturn/<id>", methods = ["DELETE"])
+@login_required # Ensures user is authorized to access api call
 def delete(id):
     # Get id from url param
     stockReturnId = request.json.get("id")
@@ -440,6 +444,7 @@ def delete(id):
 
 # Route to handle return brew info 
 @indexBreweryInfoRoute.route("/api/brewinfo")
+@login_required # Ensures user is authorized to access api call
 def indexBreweryInfo():
     # findone will return the first document that matches the specified criteria, so when no criteria given returns first document
     # only one brew info document at one time so will always match info
@@ -450,6 +455,7 @@ def indexBreweryInfo():
 
 # Route to handle creation of brew info 
 @createBreweryInfoRoute.route("/api/createbrewinfo", methods=["POST"])
+@login_required # Ensures user is authorized to access api call
 def createBreweryInfo():
     # Request all information and store in variables
     brewerName = request.json.get("brewerName")
@@ -501,6 +507,7 @@ def createBreweryInfo():
 
 # Route to handle deletion of brew info 
 @deleteBreweryinfoRoute.route("/api/deletebrewinfo", methods = ["DELETE"])
+@login_required # Ensures user is authorized to access api call
 def deletebreweryInfo():
     # Remove all documents from collection
     breweryInformationCollection.remove({})
