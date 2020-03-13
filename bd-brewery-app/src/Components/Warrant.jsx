@@ -12,8 +12,17 @@ const Warrant = () => {
   const [totalHLPercent, setTotalHLPercent] = useState("");
   const [routeRedirect, setRedirect] = useState(false); 
   const getStockReturns = () => {
+    //add options with headers to ensure authorization
+    const options = {
+      method: "get",
+      headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`
+      }
+    }
+
     // fetch stock return data from api
-    fetch(process.env.REACT_APP_API_URL+"api/stockreturn").then(res =>{
+    fetch(process.env.REACT_APP_API_URL+"api/stockreturn",options).then(res =>{
       return res.json();
     }).then(stockReturns => {
       setStockReturns(stockReturns.data);
@@ -85,7 +94,7 @@ const Warrant = () => {
           <option>Select a Stock Return...</option>
           {stockReturnOptions}
         </select><br/>
-        <label style={{color: "black"}}>Repayments - Hectolitre %</label>
+        <label style={{color: "black"}}>Repayments - Hectolitre %, to be taken away from Total Duty</label>
         <input type="text" onChange={event => setRepaymentsAllowed(event.target.value)}/></div>
       </Modal.Body>
       <Modal.Footer>
@@ -107,9 +116,9 @@ return(
             <Card bg="primary" style={{width: '28rem'}}>          
               <Link onClick={handleShow}> <Card.Img src={require("../Images/warrant.jpg")} height="300"/></Link>
               <Card.Body>
-                <Card.Title className="custom-card">View Current Warrant</Card.Title>
+                <Card.Title className="custom-card">View a Warrant</Card.Title>
                 <Card.Text className="custom-card-text">
-                  View Warrant to be sent to revenue.
+                  View Warrant using a stock return to be sent to revenue.
                 </Card.Text>
               </Card.Body>
             </Card>

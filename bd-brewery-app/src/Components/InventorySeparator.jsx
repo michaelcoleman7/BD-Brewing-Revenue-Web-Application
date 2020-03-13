@@ -18,7 +18,6 @@ const InventorySeparator = () => {
       fetch(process.env.REACT_APP_API_URL+"api/inventory",options).then(res =>{
           return res.json();
         }).then(inventories => {
-          console.log(inventories);
           setinventories(inventories.data);
         }).catch(err => {
           console.log(err);

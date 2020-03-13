@@ -60,8 +60,17 @@ import '../Stylesheets/button.css';
         let quotationlessId = id.replace(/['"]+/g, "");     
         setStockReturnId(quotationlessId);
 
+            //add options with headers to ensure authorization
+            const options = {
+                method: "get",
+                headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`
+                }
+            }
+
         //fetch single stock return from api using id from props
-        fetch(process.env.REACT_APP_API_URL+"api/stockreturn/"+quotationlessId).then(res => {
+        fetch(process.env.REACT_APP_API_URL+"api/stockreturn/"+quotationlessId, options).then(res => {
             return res.json();
         }).then(res => {
             //setup stock return variabels
@@ -123,7 +132,8 @@ import '../Stylesheets/button.css';
         const options = { 
             method: 'delete',
             headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`
             },
             body: JSON.stringify({id: stockReturnId})
         } 

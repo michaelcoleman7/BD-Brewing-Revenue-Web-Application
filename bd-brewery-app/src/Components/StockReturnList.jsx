@@ -10,8 +10,17 @@ const StockReturnList = () => {
   const [monthDate, setMonthDate] = useState("");
   const [selectedMonth, setSelectedMonth] = useState("None Selected");
   const getStockReturns = () => {
+    //add options with headers to ensure authorization
+    const options = {
+      method: "get",
+      headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`
+      }
+    }
+
     //fetch stock return data from api
-    fetch(process.env.REACT_APP_API_URL+"api/stockreturn").then(res =>{
+    fetch(process.env.REACT_APP_API_URL+"api/stockreturn",options).then(res =>{
       return res.json();
     }).then(stockReturns => {
       //set stock returns to returned data

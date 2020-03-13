@@ -22,8 +22,17 @@ const StockReturn = () => {
 
   //function to get inventories - used to create a stock return
   const getInventories = () => {
+    //add options with headers to ensure authorization
+    const options = {
+      method: "get",
+      headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`
+      }
+    }
+    
     //fetch inventory data from api
-    fetch(process.env.REACT_APP_API_URL+"api/inventory").then(res =>{
+    fetch(process.env.REACT_APP_API_URL+"api/inventory",options).then(res =>{
       return res.json();
     }).then(inventories => {
       //set inventories
@@ -87,7 +96,8 @@ const StockReturn = () => {
     const options = {
         method: "post",
         headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`
         },
         body: JSON.stringify(stockreturn)
     }
@@ -186,7 +196,7 @@ const StockReturn = () => {
         <input type="checkbox" id="importDel" onChange={importDelChecked}></input> Deliveries External Brewery import<br/>
         <label hidden={hiddenValDel}>Deliveries: </label> <input type="radio" hidden={hiddenValDel} name="importDel" checked={otherBreweryCheckDel} onChange={event =>swapRadiosDel(event)}></input>&nbsp;<p style={{display: "inline-block"}} hidden={hiddenValDel}>Other Brewery</p> &nbsp;
         <input type="radio"  hidden={hiddenValDel} name="importDel" checked={otherCountryCheckDel} onChange={event =>swapRadiosDel(event)}></input>&nbsp;<p style={{display: "inline-block"}} hidden={hiddenValDel}>Imported from Abroad</p>
-        <DatePicker format="MM/yyyy" onChange={event => dateChange(event)}/> Date Selected: {selectedMonth}
+        <DatePicker format="MM/yyyy" onChange={event => dateChange(event)}/> Date Selected: <b>{selectedMonth}</b>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>

@@ -41,8 +41,17 @@ const divStyle = {
 
     // Get brew info from api
     const getBreweryInfo = () => { 
+            //add options with headers to ensure authorization
+    const options = {
+        method: "get",
+        headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`
+        }
+      }
+
         //fetch info from api using variables
-        fetch(process.env.REACT_APP_API_URL+"api/brewinfo").then(res => {
+        fetch(process.env.REACT_APP_API_URL+"api/brewinfo", options).then(res => {
             return res.json();
         }).then(res => {
             //set data from api into variables
@@ -89,7 +98,8 @@ const divStyle = {
             const options = {
                 method: "post",
                 headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`
                 },
                 body: JSON.stringify(breweryinfo)
             }
@@ -147,7 +157,8 @@ const divStyle = {
         const options = { 
             method: 'delete',
             headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`
             },
             body: JSON.stringify()
           } 

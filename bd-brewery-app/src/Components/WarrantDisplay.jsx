@@ -43,8 +43,17 @@ const WarrentDisplay = (props) => {
 
     //function to get brewery information from api
     const getBreweryInfo = () => { 
+        //add options with headers to ensure authorization
+        const options = {
+            method: "get",
+            headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`
+            }
+        }
+
         //fetch brew info from api
-        fetch(process.env.REACT_APP_API_URL+"api/brewinfo").then(res => {
+        fetch(process.env.REACT_APP_API_URL+"api/brewinfo",options).then(res => {
             return res.json();
         }).then(res => {
             let parsed = JSON.parse(res.data);
