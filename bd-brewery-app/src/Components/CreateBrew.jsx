@@ -43,7 +43,16 @@ const divStyle = {
 
     //Function to get brews from api - used to check if batchNo already exists
     const getBrews = () => {
-        fetch(process.env.REACT_APP_API_URL+"api/brew").then(res =>{
+        //add options with headers to ensure authorization
+        const options = {
+            method: "get",
+            headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`
+            }
+        }
+        //fetch brews from server
+        fetch(process.env.REACT_APP_API_URL+"api/brew", options).then(res =>{
             return res.json();
         }).then(brews => {
             setbrews(brews.data);
