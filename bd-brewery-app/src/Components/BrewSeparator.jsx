@@ -5,10 +5,20 @@ import ListGroup from 'react-bootstrap/ListGroup';
 // component to separate all brews by beers
 const BrewSeparator = () => {
   const [brews, setbrews] = useState([]);
+
+  //add options with headers to ensure authorization
+  const options = {
+    method: "get",
+    headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`
+    }
+  }
+
   //method to fetch brews from the api
   const getBrews = () => {
     //fetch api data from server using enviornment variable
-    fetch(process.env.REACT_APP_API_URL+"api/brew").then(res =>{
+    fetch(process.env.REACT_APP_API_URL+"api/brew",options).then(res =>{
       return res.json();
     }).then(brews => {
       //set brews array

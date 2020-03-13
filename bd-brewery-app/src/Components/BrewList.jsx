@@ -10,8 +10,17 @@ const BrewList = (props) => {
   const [monthDate, setMonthDate] = useState("");
   const [selectedMonth, setSelectedMonth] = useState("None Selected");
   const getBrews = () => {
+
+    //add options with headers to ensure authorization
+    const options = {
+      method: "get",
+      headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`
+      }
+    }
     //fetch api data from server using enviornment variable
-    fetch(process.env.REACT_APP_API_URL+"api/brew").then(res =>{
+    fetch(process.env.REACT_APP_API_URL+"api/brew", options).then(res =>{
       return res.json();
     }).then(brews => {
       //set brews array

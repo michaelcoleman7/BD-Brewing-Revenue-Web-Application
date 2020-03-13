@@ -80,7 +80,8 @@ const divStyle = {
             const options = {
                 method: "post",
                 headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`
                 },
                 body: JSON.stringify(brew)
             }

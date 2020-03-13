@@ -57,8 +57,17 @@ const divStyle = {
         let quotationlessId = id.replace(/['"]+/g, "");     
         setBrewId(quotationlessId);
 
+        //add options with headers to ensure authorization
+        const options = {
+            method: "get",
+            headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`
+            }
+        }
+
         //get individual brew from api call using url set in enviornemnt variables
-        fetch(process.env.REACT_APP_API_URL+"api/brew/"+quotationlessId).then(res => {
+        fetch(process.env.REACT_APP_API_URL+"api/brew/"+quotationlessId, options).then(res => {
             return res.json();
         }).then(res => {
             //set brew data into variables
@@ -106,12 +115,13 @@ const divStyle = {
                 packaged: packaged
             }
 
-          //console.log(brew)
+          //add options with headers to ensure authorization and allow cross origin requests
           const options = { 
             method: 'put',
             headers: {
               'Content-Type': 'application/json',
-              'Access-Control-Allow-Origin' : '*'
+              'Access-Control-Allow-Origin' : '*',
+              'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`
             },
                body: JSON.stringify(brew)   
           }
@@ -162,10 +172,13 @@ const divStyle = {
 
     // function to delete brew from database
     const deleteItem = (brewId) => {
+        //add options with headers to ensure authorization
         const options = { 
             method: 'delete',
             headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`
+              
             },
             body: JSON.stringify({id: brewId})
           } 
