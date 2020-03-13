@@ -6,7 +6,16 @@ import ListGroup from 'react-bootstrap/ListGroup';
 const InventorySeparator = () => {
     const [inventories, setinventories] = useState([]);
     const getInventories = () => {
-      fetch(process.env.REACT_APP_API_URL+"api/inventory").then(res =>{
+        //add options with headers to ensure authorization
+        const options = {
+          method: "get",
+          headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`
+          }
+        }
+
+      fetch(process.env.REACT_APP_API_URL+"api/inventory",options).then(res =>{
         return res.json();
       }).then(inventories => {
         console.log(inventories);

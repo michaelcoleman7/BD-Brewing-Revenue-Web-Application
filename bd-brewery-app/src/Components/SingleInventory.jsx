@@ -56,8 +56,17 @@ const divStyle = {
         let quotationlessId = id.replace(/['"]+/g, "");     
         setInventoryId(quotationlessId);
 
+        //add options with headers to ensure authorization
+        const options = {
+            method: "get",
+            headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`
+            }
+        }
+
         //fetch singl inventory data from server using id
-        fetch(process.env.REACT_APP_API_URL+"api/inventory/"+quotationlessId).then(res => {
+        fetch(process.env.REACT_APP_API_URL+"api/inventory/"+quotationlessId, options).then(res => {
             return res.json();
         }).then(res => {
             //setup single brew info - store in variables
@@ -86,8 +95,16 @@ const divStyle = {
 
     // function to set get brews data needed for editing inventory data
     const getBrews = () => {
+        //add options with headers to ensure authorization
+        const options = {
+            method: "get",
+            headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`
+            }
+        }
         //fetch brews data from api
-        fetch(process.env.REACT_APP_API_URL+"api/brew").then(res =>{
+        fetch(process.env.REACT_APP_API_URL+"api/brew",options).then(res =>{
           return res.json();
         }).then(brews => {
             //set brews data to brews variable
@@ -124,7 +141,8 @@ const divStyle = {
             method: 'put',
             headers: {
               'Content-Type': 'application/json',
-              'Access-Control-Allow-Origin' : '*'
+              'Access-Control-Allow-Origin' : '*',
+              'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`
             },
                body: JSON.stringify(inventory)   
           }
@@ -165,7 +183,8 @@ const divStyle = {
         const options = { 
             method: 'delete',
             headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`
             },
             body: JSON.stringify({id: inventoryId})
           } 

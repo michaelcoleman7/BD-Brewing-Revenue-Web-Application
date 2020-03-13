@@ -40,7 +40,16 @@ const divStyle = {
 
     //Function to get brews from api - used to create an inventory
     const getBrews = () => {
-        fetch(process.env.REACT_APP_API_URL+"api/brew").then(res =>{
+        //add options with headers to ensure authorization
+        const options = {
+            method: "get",
+            headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`
+            }
+        }
+
+        fetch(process.env.REACT_APP_API_URL+"api/brew",options).then(res =>{
           return res.json();
         }).then(brews => {
           setbrews(brews.data);
@@ -78,7 +87,8 @@ const divStyle = {
             const options = {
                 method: "post",
                 headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`
                 },
                 body: JSON.stringify(inventory)
             }

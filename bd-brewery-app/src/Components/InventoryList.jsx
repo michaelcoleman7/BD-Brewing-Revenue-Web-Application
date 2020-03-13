@@ -12,8 +12,16 @@ const InventoryList = (props) => {
 
   // Function to get inventories from api
   const getInventories = () => {
+    //add options with headers to ensure authorization
+    const options = {
+      method: "get",
+      headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('jwt-token')}`
+      }
+    }
     //fetch inventories data from api
-    fetch(process.env.REACT_APP_API_URL+"api/inventory").then(res =>{
+    fetch(process.env.REACT_APP_API_URL+"api/inventory",options).then(res =>{
       return res.json();
     }).then(inventories => {
       //set inventories returned to array
