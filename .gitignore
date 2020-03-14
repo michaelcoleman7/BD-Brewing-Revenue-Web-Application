@@ -1,2 +1,31 @@
-
 *.pyc
+/Server/env
+
+# dependencies
+/bd-brewery-app/node_modules
+/bd-brewery-app/.pnp
+/bd-brewery-app/.pnp.js
+
+# testing
+/bd-brewery-app/coverage
+
+# production
+/bd-brewery-app/build
+
+# misc
+/bd-brewery-app.DS_Store
+/bd-brewery-app/.env
+/bd-brewery-app/.env.local
+/bd-brewery-app/.env.development.local
+/bd-brewery-app/.env.test.local
+/bd-brewery-app/.env.production.local
+
+/bd-brewery-app/npm-debug.log*
+/bd-brewery-app/yarn-debug.log*
+/bd-brewery-app/yarn-error.log*
+
+/Server/__pycache__/
+
+/Server/env.py
+/Server/requirements.txt
+/Server/Procfile
