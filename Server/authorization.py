@@ -1,6 +1,6 @@
 from functools import wraps
 from flask import request, g, abort
-from jwt import decode, exceptions
+import jwt
 import json
 
 # function to ensure user is logged in via checking the autorization headers sent with a request - adapted from https://developer.okta.com/blog/2018/12/20/crud-app-with-python-flask-react
@@ -13,9 +13,9 @@ def login_required(f):
       
        try:
            token = authorization.split(' ')[1]
-           resp = decode(token, None, verify=False, algorithms=['HS256'])
+           resp = jwt.decode(token, None, verify=False, algorithms=['HS256'])
            g.user = resp['sub']
-       except exceptions.DecodeError as identifier:
+       except jwt.exceptions.DecodeError as identifier:
            return json.dumps({'error': 'invalid authorization token'}), 403, {'Content-type': 'application/json'}
       
        return f(*args, **kwargs)
