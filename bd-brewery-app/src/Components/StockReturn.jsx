@@ -9,6 +9,7 @@ import { format } from 'date-fns';
 //Component to create stock returns aswell as ability to navigate to viewing stock returns
 const StockReturn = () => {
   const [inventories, setinventories] = useState([]);
+  const [invLength, setInvLength] = useState(0);
   const [beer, setBeer] = useState([]);
   const [hiddenValRec, setHiddenValRec] = useState([]);
   const [hiddenValDel, setHiddenValDel] = useState([]);
@@ -37,6 +38,7 @@ const StockReturn = () => {
     }).then(inventories => {
       //set inventories
       setinventories(inventories.data);
+      setInvLength(inventories.data.length)
 
       //set initial values for data
       setBeer(null);
@@ -56,7 +58,7 @@ const StockReturn = () => {
 
   let inventorylist = []
   //set up beers into a list to allow beer selection used in stock return
-  for (var i = 0; i < inventories.length; i++) {
+  for (var i = 0; i < invLength; i++) {
       if(!inventorylist.includes(inventories[i].beer)){
         inventorylist.push(inventories[i].beer);
       }

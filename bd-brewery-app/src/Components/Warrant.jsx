@@ -8,6 +8,7 @@ import { Redirect } from 'react-router';
 const Warrant = () => {
   const [repaymentsAllowed, setRepaymentsAllowed] = useState("");
   const [stockReturns, setStockReturns] = useState([]);
+  const [stockreturnLength, setStockreturnLength] = useState(0);
   const [totalDutyOwed, setTotalDutyOwed] = useState("");
   const [totalHLPercent, setTotalHLPercent] = useState("");
   const [routeRedirect, setRedirect] = useState(false); 
@@ -26,6 +27,7 @@ const Warrant = () => {
       return res.json();
     }).then(stockReturns => {
       setStockReturns(stockReturns.data);
+      setStockreturnLength(stockReturns.data.length);
     }).catch(err => {
       console.log(err);
     })
@@ -58,7 +60,7 @@ const Warrant = () => {
 
   //add stock return info into list for options display
   let stockreturnlist = []
-  for (var i = 0; i < stockReturns.length; i++) {
+  for (var i = 0; i < stockreturnLength; i++) {
     //concat beer and date to show identifing information of a stock return - could have multiple of same name with a different month
     var infoconcat = stockReturns[i].beer +" : "+ stockReturns[i].stockReturnDate
     stockreturnlist.push(infoconcat);
