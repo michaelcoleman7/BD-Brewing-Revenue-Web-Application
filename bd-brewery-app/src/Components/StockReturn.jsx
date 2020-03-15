@@ -4,6 +4,7 @@ import { Redirect } from 'react-router';
 import Card from 'react-bootstrap/Card';
 import {Modal,Button} from 'react-bootstrap';
 import DatePicker from 'react-date-picker';
+import Alert from 'react-bootstrap/Alert';
 import { format } from 'date-fns';
 
 //Component to create stock returns aswell as ability to navigate to viewing stock returns
@@ -20,6 +21,7 @@ const StockReturn = () => {
   const [routeRedirect, setRedirect] = useState(""); 
   const [monthDate, setMonthDate] = useState("");
   const [selectedMonth, setSelectedMonth] = useState("None Selected");
+  const [showAlert, setAlertShow] = useState(false);
 
   //function to get inventories - used to create a stock return
   const getInventories = () => {
@@ -114,8 +116,27 @@ const StockReturn = () => {
           console.log(err)
       })    
     }
-    setShow(false);
+    else{
+      setAlertShow(!showAlert);
+      setShow(false);
+    }
   } 
+
+  let alertError;
+  //if showalert = true, then show alert with error data
+  if(showAlert){
+    alertError =
+          <React.Fragment>
+              <center>
+              <Alert style={{width: "33%"}} variant="danger" onClose={() => setAlertShow(false)} dismissible>
+                  <Alert.Heading>Invalid Stock Return Format!</Alert.Heading>
+                  <p>
+                      Please ensure to choose a beer and a date!
+                  </p>
+              </Alert>
+              </center>
+          </React.Fragment>
+  }
   //function for showing import values to user based on user selection - Reciepts
   const importRecChecked = () => {
     if(hiddenValRec){
@@ -235,7 +256,8 @@ return(
               </Card.Body>
             </Card>
       </div>
-      {modal}
+      {modal} <br/>
+      {alertError}
     </React.Fragment>)
   }
 //Export component for use

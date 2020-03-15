@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import {Modal,Button} from 'react-bootstrap';
 import { Redirect } from 'react-router';
+import Alert from 'react-bootstrap/Alert';
 
 //component to show user the current warrent
 const Warrant = () => {
@@ -12,6 +13,8 @@ const Warrant = () => {
   const [totalDutyOwed, setTotalDutyOwed] = useState("");
   const [totalHLPercent, setTotalHLPercent] = useState("");
   const [routeRedirect, setRedirect] = useState(false); 
+  const [showAlert, setAlertShow] = useState(false);
+
   const getStockReturns = () => {
     //add options with headers to ensure authorization
     const options = {
@@ -45,7 +48,10 @@ const Warrant = () => {
     if(totalDutyOwed != ""  && totalHLPercent !="" && repaymentsAllowed !=""){
       setRedirect(true);
     }
-    setShow(false);
+    else{
+      setShow(false);
+      setAlertShow(!showAlert);
+    }
   }
 
   const redirect = routeRedirect;
@@ -82,6 +88,22 @@ const Warrant = () => {
   const stockReturnOptions = stockreturnlist.map((beer) =>
     <option>{beer}</option>
   );
+
+  let alertError;
+  //if showalert = true, then show alert with error data
+  if(showAlert){
+    alertError =
+          <React.Fragment>
+              <center>
+              <Alert style={{width: "33%"}} variant="danger" onClose={() => setAlertShow(false)} dismissible>
+                  <Alert.Heading>Invalid Warrant Format!</Alert.Heading>
+                  <p>
+                      Please ensure to choose a Stock Return and a repayments value. (Number)
+                  </p>
+              </Alert>
+              </center>
+          </React.Fragment>
+  }
 
   //set modal up for when user clicks create warrent, it pops up with user creation options
   let modal =       
@@ -125,7 +147,8 @@ return(
               </Card.Body>
             </Card>
       </div>
-      {modal}
+      {modal}<br/>
+      {alertError}
     </React.Fragment>)
   }
 
