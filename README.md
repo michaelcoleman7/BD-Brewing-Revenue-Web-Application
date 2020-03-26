@@ -1,7 +1,5 @@
 # BD-Brewing-Revenue-Web-Application
-Web Application which deals with revenue for Black Donkey Brewing LTD
-
-React Based web application which using flask as a backend server. This then connects to mongo DB.
+This is a project which deals with revenue calculations for Black Donkey Brewing LTD. They are a brewing company in Srah, Co.Roscommon Ireland. it is a React Based web application used to carry out revenue calculations for a brewery. This connects to a flask backend API server which carrys out requests on data and any data manipulation in the form of calculations that needs to be carried out. This then connects to MongoDB database where all data is stored for user to display and update information.
 
 ## How to Install and Run:
 #### Web Application:
