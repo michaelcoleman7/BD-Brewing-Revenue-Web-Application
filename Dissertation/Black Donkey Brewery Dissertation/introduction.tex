@@ -1,0 +1,83 @@
+{\noindent\Large\textbf {Abstract:}} \\  \\ This document details a solution to a problem in the calculation of revenue figures which was identified within the brewing industry. The document details how this was planned, solved and methods used in order to carry out the project with respect to the clients requirements. The client was Michaela Dillon who works with Black Donkey Brewery. The problem recognised by the client was that the revenue process within the brewing industry was manually calculated, leading to a very error prone system. The solution identified was to create a web application which allows users to view and generate the necessities to carry out the revenue process and a server to carry out the calculations and store them within a database.
+\chapter{Introduction}
+This section gives an overview of the project, reasons the product owner was in need of the project and the goals which were to be achieved in the production of this project. It also deals with the project context and relevant topics surrounding the project.
+
+\section{Client}
+The client is Michaela Dillion. She is part of a brewing company called Black Donkey Brewery located in Srah, Ballinlough, Co. Roscommon. They have a brewing process which results in keeping track of brews, inventories, warrants and stock returns to ensure they are paying the correct amounts to revenue. 
+
+\section{Client Problem}
+The client has to carry out the above process manually by entering and calculating amounts which can lead to many mistakes during the revenue calculating process. This process of handling brews, inventories, warrants and stock returns must be carried out for every batch of each beer that is brewed by the brewery. The client identified that this process was far too mistake prone and time consuming. They also had to keep storage of these files in the event that a mistake was made or a check of an older file was needed to be carried out. This process needs to be carried out once per month. As a result of having to report monthly to revenue, information of the documents about every batch of beer produced within that month and keeping track of correct figures, the client felt they had to find another solution.
+
+\section{Project Solution}
+The solution identified that a web application that would carry out all of these calculations dynamically and store the data in a database would be a viable option for the automation of this process. The web application would allow the client to enter the minimalist amount of information needed to create each of the documents required to be sent to revenue. This data would then be stored so that making changes to the data is a simple process and that the calculations would be automatically carried out upon the change being made.
+
+\section{Context}
+This section details the project in areas such as deliverables needed for the project, scope, risk and security issues etc.
+
+\subsection{Project Objective}
+The objectives were decided upon before development of the project. These were decided upon after an initial meeting with the client. \\ \\
+The objectives gathered from the meeting were:
+\begin{itemize}
+    \item  Establish a general consensus about the project and understand the requirements needed for the project. 
+    \item Research techniques and technologies to use to ﬁnd the best solution for the project. 
+    \item Design a system architecture that is the most suitable for the project.
+    \item Create a system adequate for accomplishing all the requirements that client has specified.
+\end{itemize}
+\newpage
+
+\subsection{Requirements}
+An initial project meeting was held with the client in order to outline the essential requirements needed in order to undertake this project. This meeting allowed for a mutual understanding of all parties and gave an insight into the project complexity. The requirements gathered from the meeting were as follows:
+\begin{itemize}
+    \item A web application which allows the user to manage all the documents which are needed to be sent to revenue each month.
+    \item The application must carry out all the calculations for the user with the least amount of data entry possible.
+    \item Users should be able to create, update and delete these documents as well as have the ability to print them out to be sent to revenue. 
+    \item All data stored must be saved in a database and be accessible at any time for the user via a server.
+    \item The server must carry out calculations on data if necessary.
+    \item The application must be available to the user via the use of a cloud service.
+    \item All of the above processes must be able to be carried out while ensuring the user's data is protected through the usage of security measures.
+\end{itemize}
+
+
+\subsection{Project Scope}
+The project contains a web application, API server, database and a cloud server. The scope requires the designing and implementing of all aspects of the project to an acceptable standard with which the client is satisfied. The project is similar to one that may be carried out in industry. The project contains many components such as data handling, analysis, transfer and manipulation, managing cloud systems, organising a database, as well as a web application and a server. These are common areas which would be included in the scope of a full stack development project.
+\newpage
+
+\subsection{Project Risk}
+The risks involved in this project were similar to that which would be issues and problems foreseen in industrial projects of this nature. Before development was carried out these risks were accessed and recorded. Monitoring of the risks was carried out throughout the development process to ensure they were avoided.\\
+The risks recorded were: 
+\begin{itemize}
+    \item Usage of new technologies for the developer.
+    \item Technologies chosen may be incompatible.
+    \item Possible Architecture and Design flaws.
+    \item Miscommunication of requirements
+    \item Lack of requirements gathered.
+    \item Time management of the workload for punctual completion.
+    \item Will the system be of suitable standard for the client and perform as required.
+    \item User data protection
+\end{itemize}
+
+\subsection{Security}
+Security is a vital part of this project as it is based around important data which is relevant to the client only and should not be accessible to unauthorized users. Each component of the system must have security measures in place. Access to the application must be prevented without verifying if the user has access rights. The user’s password and username must be secured. Also data that is received from or sent to the API must also have authorization in order to gain access to any HTTP method functionality.
+\newpage
+
+\subsection{Project Metrics}
+This section discusses what would be classified as a success for this project and what would make the project be deemed a failure. For the project to be deemed a success the minimum requirements that should be met are as follows:
+\begin{itemize}
+    \item There should be a basic web application which allows the user to input data relevant to the revenue computation process.
+    \item Have the web application communicate with a API in order to carry out requests.
+    \item Carry out calculations on the server needed for data.
+    \item Have the server connect to a database which stores the data.
+    \item Allow the user the ability to view and print this data.
+\end{itemize}
+Falling short on any one of these major requirements would result in the project being deemed a failure due to their cruciality to the requirements being met.
+
+\subsection{Project Schedule}
+The project schedule had to be planned before the development process could be started. This was to help ensure the project stays on track and deadlines are met. This is a very important component in software development as poor organization and time management is the downfall of many software projects. \par
+The early stages of scheduling focused on the requirements of the project. This included project meetings with the client to gather necessary requirements as well as develop an understanding of the process that was needed to be undertaken. There also was a focus on the technologies that were going to be needed for the project and learning how they would each integrate into the project. \par
+When all requirements were gathered, focus then began to turn to the development of the web application and implementation of a prototype version which had the basic functionality needed. Focus was then turned to a prototype server and a line of communication was established  between them. \par
+When all prototypes in the project were completed, attention was turned to producing the fully functioning version of all components within the project. When the components were fully finished they were then switched to cloud deployment and tested to ensure functionality.
+
+\section{Github}
+Github was used in order to keep track of the project and provide a backup of the code. The Github repository contains a readme which gives a brief overview of the project and explains instructions as to how one would go about installing the project. \\
+Link for the GitHub Repository: \\
+https://github.com/michaelcoleman7/BD-Brewing-Revenue-Web-Application
